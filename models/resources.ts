@@ -28,3 +28,10 @@ export interface Service {
   yTwitter: string
   Communities: string[]
 }
+
+export interface ServicesLists {
+  Name: string
+  Services: string[] // list of IDs linking to services table
+  Status: string
+  Owner: string[] // list of IDs linking to organizations table
+}
