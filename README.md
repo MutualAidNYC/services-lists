@@ -1,7 +1,7 @@
 # Mutual Aid NYC Services List
 A [Next.js](https://nextjs.org) website for displaying NYC health, human and social services lists in the [Open Referral](https://openreferral.org) data format. Data is managed via [Airtable](https://airtable.com).
 
-## Tecnical Overview
+## Technical Overview
 As of our most recent design, the major components and technologies are as follows: 
 * Website Front-End
   * Uses Next JS and houses most (if not all) critical logic for fetching and displaying list data from the Intermediate Database. 
@@ -12,8 +12,8 @@ As of our most recent design, the major components and technologies are as follo
 
 ![Component Diagram](images/component_diagram.png)
 
-### Tech Stack
-- TypeScript
+## Tech Stack
+- [TypeScript](https://www.typescriptlang.org)
 - [Chakra UI](https://chakra-ui.com) 
 - [Prisma](https://www.prisma.io/)(?)
 - [PostgresSQL](https://www.postgresql.org/)
@@ -21,10 +21,12 @@ As of our most recent design, the major components and technologies are as follo
 - [Airtable](https://airtable.com)
 
 ## Requirements
-- Node.js
+- [Node.js](https://nodejs.org/en/)
 
 ## Running Locally
 - Copy this repo: `git clone https://github.com/MutualAidNYC/services-lists.git`
-- Install dependencies: `npm i`
+- Install dependencies: `npm install`
+- Copy the `sample.env` file: `cp sample.env .env.local`
+- Add your Airtable API key and the id of the Airtable base containing your data.
 - Start a development server: `npm run dev`
 - View the site locally at http://localhost:3000/
