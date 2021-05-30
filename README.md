@@ -28,3 +28,9 @@ As of our most recent design, the major components and technologies are as follo
 - Install dependencies: `npm i`
 - Start a development server: `npm run dev`
 - View the site locally at http://localhost:3000/
+
+## Running with Docker
+- Copy this repo: `git clone https://github.com/MutualAidNYC/services-lists.git`
+- Install dependencies: `npm i`
+- Build docker image from main directory: `docker build -t services-lists-docker . `
+- Run created image: `docker run -p 3000:3000 services-lists-docker`
