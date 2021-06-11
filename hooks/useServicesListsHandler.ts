@@ -13,7 +13,6 @@ export interface ServicesListsHandler {
 export const useServicesListsHandler = (): ServicesListsHandler => {
   const { 
     isLoading,
-    isError,
     data,
   } = useQuery<ServicesList[], Error>("servicesLists", () => getServicesLists("Status='Published'"))
 
