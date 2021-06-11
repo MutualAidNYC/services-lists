@@ -29,7 +29,7 @@ export interface Service {
   Communities: string[]
 }
 
-export interface ServicesLists {
+export interface ServicesList {
   Name: string
   Services: string[] // list of IDs linking to services table
   Status: string

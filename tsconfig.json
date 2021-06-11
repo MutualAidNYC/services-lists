@@ -10,16 +10,13 @@
     "skipLibCheck": true,
     "strict": false,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
+    "noEmit": false,
     "esModuleInterop": true,
-    "module": "commonjs",
+    "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
-    "plugins": [
-      {"transform": "ts-transformer-keys/transformer"}
-    ]
+    "jsx": "preserve"
   },
   "include": [
     "next-env.d.ts",

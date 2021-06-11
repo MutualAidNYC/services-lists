@@ -27,6 +27,6 @@ As of our most recent design, the major components and technologies are as follo
 - Copy this repo: `git clone https://github.com/MutualAidNYC/services-lists.git`
 - Install dependencies: `npm install`
 - Copy the `sample.env` file: `cp sample.env .env.local`
-- Add your Airtable API key and the id of the Airtable base containing your data.
+- Add your Airtable API key and the id of the Airtable base containing your data to the `.env.local` file.
 - Start a development server: `npm run dev`
 - View the site locally at http://localhost:3000/

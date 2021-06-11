@@ -46,12 +46,12 @@ export const Table = ({columns, data}: TableProps ): JSX.Element =>  {
         {rows.map(row => {
           prepareRow(row)
           return (
-            <Tr>
-              {row.cells.map(cell => {
+            <Tr {...row.getRowProps}>
+              {row.cells.map(cell => (
                 <Td {...cell.getCellProps()}>
                   {cell.render("Cell")}
                 </Td>
-              })}
+              ))}
             </Tr>
           )
         })}
