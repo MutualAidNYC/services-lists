@@ -1,0 +1,73 @@
+/* Variables */
+:root {
+  /*temp color names*/
+  --green-gray: #283F44;
+  --purple-ish: #3C113C;
+  --light-pink: #FFEEFF;
+  --very-black: #000000;
+  --white-for-sure: #FFFFFF;
+
+  --body-color: #E5E5E5;
+
+  --container-width-max: 1280px;
+  --page-width-max: 600px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--body-color);
+  overflow-y: scroll;
+}
+
+.container {
+  /*max-width: var(--container-width-max);*/
+  /*padding: 45px 25px;*/
+  display: flex;
+  flex-direction: row;
+}
+
+.nav-container { 
+  width: 100%;
+  height: 160px;
+  background: var(--green-gray);
+}
+
+.nav-logo {
+  position: absolute;
+  width: 108px;
+  height: 96px;
+  left: 32px;
+  top: 32px;
+  background: url(images/manyc_logo.png);
+}
+
+.nav-list {
+  width: 65%;
+  height: 100%;
+  float: right;
+}
+
+.nav-list ul {
+  width: 100%;
+  height: 100%;
+}
+
+.nav-list ul li {
+  padding-left: 29px;
+  padding-top: 68px;
+  float: left;
+  font-family: 'Neue Haas Grotesk Text Pro', 'Karla', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  letter-spacing: 0.05em;
+  color: #FFFFFF;
+  list-style: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
