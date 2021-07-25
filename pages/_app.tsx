@@ -11,7 +11,7 @@ export default function App({ Component, pageProps }): JSX.Element {
   return (
     <QueryClientProvider client={queryClient}>
       <ChakraProvider>
-        <Navbar />
+        <Navbar/>
         <Component {...pageProps} />
       </ChakraProvider>
     </QueryClientProvider>

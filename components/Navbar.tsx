@@ -12,7 +12,7 @@ export const Navbar = (): JSX.Element => {
           htmlWidth="108px"
           htmlHeight="96px"
           objectFit="cover"
-          src="/manyc_logo.png"
+          src="/manyc_logo_no_background.png"
           alt="Mutual Aid NYC"
         />
       <HStack spacing='32px'>
