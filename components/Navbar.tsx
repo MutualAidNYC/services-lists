@@ -1,16 +1,20 @@
 import { 
   Flex,
-  Text,
   HStack,
   Link,
+  Image
 } from '@chakra-ui/react'
 
 export const Navbar = (): JSX.Element => {
   return (
-    <Flex alignItems='center' bgColor='#283F44' color='white' px='32px' py='64px' justifyContent='space-between'>
-      <Text>
-        Mutual Aid NYC
-      </Text>
+    <Flex alignItems='center' bgColor='#283F44' color='white' px='32px' py='32px' justifyContent='space-between'>
+        <Image
+          htmlWidth="108px"
+          htmlHeight="96px"
+          objectFit="cover"
+          src="/manyc_logo.png"
+          alt="Mutual Aid NYC"
+        />
       <HStack spacing='32px'>
         <Link>
           Services
