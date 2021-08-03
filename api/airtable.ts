@@ -1,25 +1,7 @@
-import Airtable from 'airtable'
-import Base from 'airtable/lib/base';
-import Record from 'airtable/lib/record';
-import Table from 'airtable/lib/table';
+import Airtable, { Base } from 'airtable'
 
 export class AirtableClient {
-  base: {
-    (tableName: string): Table;
-    _base: Base;
-    getId(): string;
-    makeRequest(options: {
-        method?: string;
-        path?: string;
-        qs?: globalThis.Record<string, any>;
-        headers?: globalThis.Record<string, any>;
-        body?: globalThis.Record<string, any>;
-        _numAttempts?: number;
-    }): Promise<Response & {
-        statusCode: number;
-    }>;
-    table(tableName: string): Table;
-  }
+  base: Base
 
   constructor(apiKey: string, baseId: string) {
     this.base = new Airtable({apiKey: apiKey}).base(baseId)
@@ -41,7 +23,7 @@ export class AirtableClient {
     await this.base.table(tableName).select({
       filterByFormula: filter ? filter : ''
     }).eachPage(
-      (records: Record[], fetchNextPage: () => void) => {
+      (records, processNextPage) => {
         records.forEach(record => {
           const object = {} as O
           keys.forEach(key => {
@@ -50,7 +32,7 @@ export class AirtableClient {
           objects.push(object)
         })
 
-        fetchNextPage()
+        processNextPage()
       }
     )
 
