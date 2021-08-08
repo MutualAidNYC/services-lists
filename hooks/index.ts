@@ -1,1 +1,1 @@
-export * from "./useServicesListsHandler"
+export * from './useServicesLists'

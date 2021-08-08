@@ -1,23 +1,11 @@
-import React from "react"
-import { Table } from "../components"
-import { useServicesListsHandler } from "../hooks"
+import { Heading } from '@chakra-ui/react'
+import { ServicesLists } from '../components/ServicesLists'
 
 export default function Home(): JSX.Element {
-  const {
-    servicesListsColumns,
-    servicesListsData,
-    isLoading,
-  } = useServicesListsHandler()
-
   return (
     <>
-      {isLoading && <div>is loading</div>}
-      {!isLoading &&
-        <Table
-          columns={servicesListsColumns}
-          data={servicesListsData}
-        />
-      }
+      <Heading fontSize='48px' mb='36px'>Services Lists</Heading>
+      <ServicesLists />
     </>
   )
 }

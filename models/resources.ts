@@ -30,8 +30,11 @@ export interface Service {
 }
 
 export interface ServicesList {
-  Name: string
+  name: string
+  description: string
   Services: string[] // list of IDs linking to services table
+  ServicesNames: string[]
+  taxonomies: string[]
   Status: string
   Owner: string[] // list of IDs linking to organizations table
 }
