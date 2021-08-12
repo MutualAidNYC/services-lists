@@ -21,7 +21,7 @@ export class AirtableClient {
     let objects: O[] = []
 
     await this.base.table(tableName).select({
-      filterByFormula: filter ? filter : ''
+      filterByFormula: filter ? filter : '',
     }).eachPage(
       (records, processNextPage) => {
         records.forEach(record => {
