@@ -1,9 +1,9 @@
 import { Stack } from '@chakra-ui/react'
-import { useServicesLists } from '../../hooks'
+import { useServicesListsContext } from '../../hooks'
 import { ServicesListItem } from './ServicesListItem'
 
 export const ServicesLists = (): JSX.Element => {
-  const { servicesLists } = useServicesLists()
+  const { servicesLists } = useServicesListsContext()
 
   return (
     <Stack spacing='36px'>
