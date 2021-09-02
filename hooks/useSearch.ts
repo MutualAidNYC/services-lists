@@ -31,7 +31,6 @@ export const useSearch = <T>(
     }
 
     const updatedData = searchFunctions[selectedFilter](query, data)
-    console.log(updatedData)
     setData(updatedData)
   }
 
