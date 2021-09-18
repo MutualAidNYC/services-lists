@@ -15,17 +15,19 @@ As of our most recent design, the major components and technologies are as follo
 ## Tech Stack
 - [TypeScript](https://www.typescriptlang.org)
 - [Chakra UI](https://chakra-ui.com) 
-- [Prisma](https://www.prisma.io/)(?)
+- [Prisma](https://www.prisma.io/) (?)
 - [PostgresSQL](https://www.postgresql.org/)
 - [Sync Inc](https://syncinc.so/)
 - [Airtable](https://airtable.com)
 
 ## Requirements
 - [Node.js](https://nodejs.org/en/)
+- [Yarn 1](https://classic.yarnpkg.com/lang/en/)
 
 ## Running Locally
 - Copy this repo: `git clone https://github.com/MutualAidNYC/services-lists.git`
-- Install dependencies: `npm install`
+- Install the Yarn package manager (version 1): `npm install -global yarn`
+- Install dependencies: `yarn install`
 - Copy the `sample.env` file: `cp sample.env .env.local`
 - Add your Airtable API key and the id of the Airtable base containing your data to the `.env.local` file.
 - Start a development server: `npm run dev`
