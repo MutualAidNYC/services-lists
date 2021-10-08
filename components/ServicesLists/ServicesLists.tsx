@@ -7,7 +7,12 @@ export const ServicesLists = (): JSX.Element => {
 
   return (
     <Stack spacing='36px'>
-      {servicesLists?.map((servicesList, i) => <ServicesListItem key={i} servicesList={servicesList} />)}
+      {servicesLists?.map(servicesList => 
+        <ServicesListItem
+          key={servicesList.name}
+          servicesList={servicesList}
+        />
+      )}
     </Stack>
   )
 }
