@@ -28,7 +28,7 @@ export class AirtableClient {
       filterByFormula: filter,
     }).all()
 
-    // Map records to object specfiied by keys
+    // Map records to object specfied by keys
     records.forEach(record => {
       const object = {} as O
       keys.forEach(key => {
