@@ -17,24 +17,25 @@ export class AirtableClient {
     return object
   }
 
-  async get<O extends object>(tableName: string, keys: (keyof O)[],  filter?: string): Promise<O[]> {
-    let objects: O[] = []
+  async getAll<O extends object>(
+    tableName: string,
+    keys: (keyof O)[],
+    filter: string = '',
+  ): Promise<O[]> {
+    const objects: O[] = []
 
-    await this.base.table(tableName).select({
-      filterByFormula: filter ? filter : '',
-    }).eachPage(
-      (records, processNextPage) => {
-        records.forEach(record => {
-          const object = {} as O
-          keys.forEach(key => {
-            object[key.toString()] = record.get(key.toString())
-          })
-          objects.push(object)
-        })
+    const records = await this.base.table(tableName).select({
+      filterByFormula: filter,
+    }).all()
 
-        processNextPage()
-      }
-    )
+    // Map records to object specfied by keys
+    records.forEach(record => {
+      const object = {} as O
+      keys.forEach(key => {
+        object[key.toString()] = record.get(key.toString())
+      })
+      objects.push(object)
+    })
 
     return objects
   }

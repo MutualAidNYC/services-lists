@@ -5,6 +5,7 @@ export const theme = extendTheme({
     darkTeal: '#283F44',
     darkPurple: '#3C113C',
     lightPink: '#FFEEFF',
+    lightGray: '#F1F1F1',
     black: '#000000',
     white: '#FFFFFF',
   },
