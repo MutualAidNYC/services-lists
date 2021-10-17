@@ -38,3 +38,7 @@ export interface ServicesList {
   Status: string
   Owner: string[] // list of IDs linking to organizations table
 }
+
+export interface TaxonomyTerm {
+  term: string
+}

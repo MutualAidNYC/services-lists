@@ -7,8 +7,8 @@ import {
   useState,
 } from 'react'
 import { useQuery } from 'react-query'
-import { getAllServicesLists } from '../api'
-import { ServicesList } from '../models'
+import { getAllServicesLists, getAllTaxonomies } from '../api'
+import { ServicesList, TaxonomyTerm } from '../models'
 
 export interface ServicesListsHandler {
   isLoading: boolean
@@ -18,6 +18,8 @@ export interface ServicesListsHandler {
   sortFieldsTextToVal: Record<string, string>
   setOrder: Dispatch<SetStateAction<string | string[]>>
   setSortFields: Dispatch<SetStateAction<string | string[]>>
+  taxonomies: string[]
+  setFilters: Dispatch<SetStateAction<string | string[]>>
 }
 
 const ServicesListContext = createContext<ServicesListsHandler>({} as ServicesListsHandler)
@@ -26,7 +28,7 @@ export const useServicesListsContext = (): ServicesListsHandler => useContext(Se
 
 export const useServicesLists = (): ServicesListsHandler => {
   const {
-    isLoading,
+    isLoading: isLoadingServicesLists,
     data: baseServicesLists,
   } = useQuery<ServicesList[], Error>(
     ['servicesLists'],
@@ -38,6 +40,21 @@ export const useServicesLists = (): ServicesListsHandler => {
   )
   const [servicesLists, setServicesLists] = useState(baseServicesLists)
   useEffect(() => setServicesLists(baseServicesLists), [baseServicesLists])
+
+  const {
+    isLoading: isLoadingTaxonomies,
+    data: taxonomyTerms,
+  } = useQuery<TaxonomyTerm[], Error>(
+    ['taxonomies'],
+    () => getAllTaxonomies('NOT({services} = BLANK())'),
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  )
+  const taxonomies = taxonomyTerms
+    ?.map(term => term.term)
+    ?.filter(term => term !== '-Not Listed')
 
   const handleSearch = (query: string): void => {
     if (query === '') {
@@ -74,14 +91,27 @@ export const useServicesLists = (): ServicesListsHandler => {
       setServicesLists(sortedServicesLists)
     }
   }, [order, sortFields])
+
+  const [filters, setFilters] = useState<string | string[]>([])
+  useEffect(() => {
+    if (filters.length === 0) {
+      return
+    }
+
+    setServicesLists(baseServicesLists?.filter(servicesList =>
+      servicesList.taxonomies?.some(taxonomy => filters.includes(taxonomy))
+    ))
+  }, [filters])
   
   return {
-    isLoading,
+    isLoading: isLoadingServicesLists || isLoadingTaxonomies,
     servicesLists,
     handleSearch,
     order,
     sortFieldsTextToVal,
     setOrder,
     setSortFields,
+    taxonomies,
+    setFilters,
   }
 }
