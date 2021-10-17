@@ -23,7 +23,6 @@ export default function Home(): JSX.Element {
     taxonomies,
     setFilters,
   } = servicesListHandler
-  console.log('taxonomies', taxonomies)
 
   return (
     <ServicesListsProvider value={servicesListHandler}>

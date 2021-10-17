@@ -83,11 +83,13 @@ export const useServicesLists = (): ServicesListsHandler => {
     if (order === 'asc') {
       const sortedServicesLists = [...servicesLists]
       sortFieldsArray.forEach(field => sortedServicesLists.sort((a, b) => a[field] > b[field] ? 1 : -1))
+      console.log('sortedServicesLists', sortedServicesLists)
       setServicesLists(sortedServicesLists)
     }
     else if (order === 'desc') {
       const sortedServicesLists = [...servicesLists]
       sortFieldsArray.forEach(field => sortedServicesLists.sort((a, b) => a[field] < b[field] ? 1 : -1))
+      console.log('sortedServicesLists', sortedServicesLists)
       setServicesLists(sortedServicesLists)
     }
   }, [servicesLists, order, sortFields])
@@ -95,6 +97,7 @@ export const useServicesLists = (): ServicesListsHandler => {
   const [filters, setFilters] = useState<string | string[]>([])
   useEffect(() => {
     if (filters.length === 0) {
+      setServicesLists(baseServicesLists)
       return
     }
 
@@ -102,7 +105,7 @@ export const useServicesLists = (): ServicesListsHandler => {
       servicesList.taxonomies?.some(taxonomy => filters.includes(taxonomy))
     ))
   }, [baseServicesLists, filters])
-  
+
   return {
     isLoading: isLoadingServicesLists || isLoadingTaxonomies,
     servicesLists,
