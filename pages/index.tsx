@@ -10,10 +10,10 @@ import {
   MenuOptionGroup,
 } from '@chakra-ui/react'
 import { SearchBar, ServicesLists } from '../components'
-import { ServicesListsProvider, useServicesLists } from '../hooks'
+import { ServicesListsProvider, useAllServicesLists } from '../hooks'
 
 export default function Home(): JSX.Element {
-  const servicesListHandler = useServicesLists()
+  const allServicesListsHandler = useAllServicesLists()
   const {
     handleSearch,
     order,
@@ -22,10 +22,10 @@ export default function Home(): JSX.Element {
     setSortFields,
     taxonomies,
     setFilters,
-  } = servicesListHandler
+  } = allServicesListsHandler
 
   return (
-    <ServicesListsProvider value={servicesListHandler}>
+    <ServicesListsProvider value={allServicesListsHandler}>
       <Heading fontSize='heading1' mb='36px'>Services Lists</Heading>
       <SearchBar handleSearch={handleSearch} w='66%' mb='24px' />
       <HStack spacing="24px" mb="24px">

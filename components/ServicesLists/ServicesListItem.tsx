@@ -1,20 +1,28 @@
 import {
-  Box,
-  BoxProps,
   Heading,
   HStack,
+  LinkBox,
+  LinkBoxProps,
+  LinkOverlay,
   Text,
 } from '@chakra-ui/react'
+import NextLink from 'next/link'
 import { ServicesList } from '../../models'
 
-interface ServicesListItemProps extends BoxProps {
+interface ServicesListItemProps extends LinkBoxProps {
   servicesList: ServicesList
 }
 
 export const ServicesListItem = ({ servicesList, ...props }: ServicesListItemProps): JSX.Element => {
   return (
-    <Box {...props}>
-      <Heading fontSize='subheading2' mb='16px'>{servicesList.name}</Heading>
+    <LinkBox {...props}>
+      <Heading fontSize='subheading2' mb='16px'>
+        <NextLink href={`/list/${encodeURIComponent(servicesList.id)}`} passHref>
+          <LinkOverlay>
+            {servicesList.name}
+          </LinkOverlay>
+        </NextLink>
+      </Heading>
       <Text>{servicesList.description}</Text>
       <HStack spacing='16px' mt='8px'>
         {servicesList.taxonomies?.map((taxonomy, i) => (
@@ -28,6 +36,6 @@ export const ServicesListItem = ({ servicesList, ...props }: ServicesListItemPro
           </Text>
         ))}
       </HStack>
-    </Box>
+    </LinkBox>
   )
 }
