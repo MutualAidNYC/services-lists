@@ -10,7 +10,7 @@ import { useQuery } from 'react-query'
 import { getAllServicesLists, getAllTaxonomies } from '../api'
 import { ServicesList, TaxonomyTerm } from '../models'
 
-export interface ServicesListsHandler {
+export interface AllServicesListsHandler {
   isLoading: boolean
   servicesLists: ServicesList[]
   handleSearch: (query: string) => void
@@ -22,16 +22,16 @@ export interface ServicesListsHandler {
   setFilters: Dispatch<SetStateAction<string | string[]>>
 }
 
-const ServicesListContext = createContext<ServicesListsHandler>({} as ServicesListsHandler)
-export const ServicesListsProvider = ServicesListContext.Provider
-export const useServicesListsContext = (): ServicesListsHandler => useContext(ServicesListContext)
+const AllServicesListContext = createContext<AllServicesListsHandler>({} as AllServicesListsHandler)
+export const ServicesListsProvider = AllServicesListContext.Provider
+export const useAllServicesListsContext = (): AllServicesListsHandler => useContext(AllServicesListContext)
 
-export const useServicesLists = (): ServicesListsHandler => {
+export const useAllServicesLists = (): AllServicesListsHandler => {
   const {
-    isLoading: isLoadingServicesLists,
+    isLoading: isLoadingAllServicesLists,
     data: baseServicesLists,
   } = useQuery<ServicesList[], Error>(
-    ['servicesLists'],
+    ['allServicesLists'],
     () => getAllServicesLists(),
     {
       retry: false,
@@ -105,7 +105,7 @@ export const useServicesLists = (): ServicesListsHandler => {
   }, [baseServicesLists, filters])
 
   return {
-    isLoading: isLoadingServicesLists || isLoadingTaxonomies,
+    isLoading: isLoadingAllServicesLists || isLoadingTaxonomies,
     servicesLists,
     handleSearch,
     order,
