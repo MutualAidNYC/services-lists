@@ -8,13 +8,15 @@ import {
   MenuItemOption,
   MenuList,
   MenuOptionGroup,
+  Stack,
 } from '@chakra-ui/react'
-import { SearchBar, ServicesLists } from '../components'
+import { SearchBar, ServicesListItem } from '../components'
 import { ServicesListsProvider, useAllServicesLists } from '../hooks'
 
 export default function Home(): JSX.Element {
   const allServicesListsHandler = useAllServicesLists()
   const {
+    servicesLists,
     handleSearch,
     order,
     sortFieldsTextToVal,
@@ -68,7 +70,14 @@ export default function Home(): JSX.Element {
           </MenuList>
         </Menu>
       </HStack>
-      <ServicesLists />
+      <Stack spacing='36px'>
+        {servicesLists?.map(servicesList => 
+          <ServicesListItem
+            key={servicesList.name}
+            servicesList={servicesList}
+          />
+        )}
+      </Stack>
     </ServicesListsProvider>
   )
 }

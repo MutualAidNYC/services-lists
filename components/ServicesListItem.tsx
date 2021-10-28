@@ -7,7 +7,7 @@ import {
   Text,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
-import { ServicesList } from '../../models'
+import { ServicesList } from '../models'
 
 interface ServicesListItemProps extends LinkBoxProps {
   servicesList: ServicesList

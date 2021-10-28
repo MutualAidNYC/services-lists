@@ -1,14 +1,14 @@
 import { Heading, Stack } from '@chakra-ui/react'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { ServiceItem } from '../../components/ServiceItem'
+import { ServiceItem } from '../../components'
 import { ServiceListProvider, useServiceList } from '../../hooks'
 
 export const ListPage: NextPage = () => {
   const router = useRouter()
   const serviceListHandler = useServiceList(router.query.listId as string)
   const { isLoading, listName, services } = serviceListHandler
-  console.log('services', services)
+
   return (
     <ServiceListProvider value={serviceListHandler}>
       <Heading mb="36px">{listName}</Heading>
