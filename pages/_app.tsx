@@ -5,6 +5,7 @@ import {
   Fonts,
   Navbar,
   theme,
+  Map
 } from '../components'
 import { Box } from '@chakra-ui/react'
 
@@ -19,6 +20,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
         <Box px='176px' py='48px'>
           <Component {...pageProps} />
         </Box> 
+        <Map></Map>
       </ChakraProvider>
     </QueryClientProvider>
   )
