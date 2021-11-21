@@ -18,7 +18,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
         <Navbar />
         <Box px='176px' py='48px'>
           <Component {...pageProps} />
-        </Box> 
+        </Box>
       </ChakraProvider>
     </QueryClientProvider>
   )

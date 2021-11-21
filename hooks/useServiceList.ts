@@ -1,14 +1,14 @@
 import { createContext, useContext } from 'react'
 import { useQueries, useQuery, UseQueryOptions } from 'react-query'
 import { getServiceListById, getServiceById, getLocationById } from '../api'
-import { Location, Service, ServicesList } from '../models'
+import { Coordinate, Location, Service, ServicesList } from '../models'
 
 export interface ServiceListHandler {
   isLoading: boolean
   listName: string
   services: Service[]
-  locationToServiceMap: Map<google.maps.LatLngLiteral, string>
-  defaultMapCenter: google.maps.LatLngLiteral
+  coordinateToServiceMap: Map<Coordinate, string>
+  defaultMapCenter: Coordinate
 }
 
 const ServiceListContext = createContext({} as ServiceListHandler)
@@ -64,26 +64,26 @@ export const useServiceList = (listId: string): ServiceListHandler => {
     }) ?? [] // cannot be undefined or useQueries throws an error
   const locationQueryResults = useQueries<UseQueryOptions<Location, Error>[]>(locationQueryOptions)
   const isLoadingLocations = locationQueryResults.some(result => result.isLoading)
-  const locationToServiceMap = new Map<google.maps.LatLngLiteral, string>()
+  const coordinateToServiceMap = new Map<Coordinate, string>()
   locationQueryResults.forEach(result => {
     // skip mapping if id is undefined
     if (!result.data?.id) {
       return
     }
 
-    const location = {
-      lat: Number(result.data.latitude),
-      lng: Number(result.data.longitude),
+    const coordinate = {
+      longitude: Number(result.data.latitude),
+      latitude: Number(result.data.longitude),
     }
 
-    locationToServiceMap.set(location, locationIdToServiceMap[result.data.id])
+    coordinateToServiceMap.set(coordinate, locationIdToServiceMap[result.data.id])
   })
 
   return {
     isLoading: isLoadingServiceList || isLoadingServices || isLoadingLocations,
     listName: serviceList?.name ?? '',
     services: services.some(service => !service) ? [] : services as Service[], // return empty list if any service is undefined
-    locationToServiceMap,
-    defaultMapCenter: {lat: 40.730610, lng: -73.935242}, // NYC lat, lng
+    coordinateToServiceMap,
+    defaultMapCenter: {longitude: -73.935242, latitude: 40.730610}, // NYC lat, lng
   }
 }

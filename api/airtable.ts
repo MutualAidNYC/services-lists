@@ -1,5 +1,4 @@
 import Airtable, { Base } from 'airtable'
-import { ObjectIndices } from '../models'
 
 export class AirtableClient {
   base: Base
