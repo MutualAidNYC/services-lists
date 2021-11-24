@@ -27,5 +27,4 @@ export const MapMarker = ({position, title}: MarkerProps): JSX.Element => {
       }
     </>
   )
-
 }
