@@ -11,7 +11,7 @@ export const ListPage: NextPage = () => {
     isLoading,
     listName,
     services,
-    coordinateToServiceMap,
+    locationToServiceMap,
     defaultMapCenter,
   } = serviceListHandler
 
@@ -28,7 +28,7 @@ export const ListPage: NextPage = () => {
       </Stack>
       <Map
         defaultCenter={defaultMapCenter}
-        coordinateToNameMap={coordinateToServiceMap} 
+        markerPositionToLabelMap={locationToServiceMap} 
       />
     </ServiceListProvider>
   )

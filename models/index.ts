@@ -3,5 +3,4 @@ export interface ObjectIndices {
   [index: string]: any
 }
 
-export * from './map'
 export * from './services'
