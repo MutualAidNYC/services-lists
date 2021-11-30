@@ -81,12 +81,12 @@ export const useAllServicesLists = (): AllServicesListsHandler => {
 
     const sortFieldsArray = typeof sortFields === 'string' ? [sortFields] : sortFields
     if (order === 'asc') {
-      const sortedServicesLists = [...servicesLists]
+      const sortedServicesLists = [...servicesLists ?? []]
       sortFieldsArray.forEach(field => sortedServicesLists.sort((a, b) => a[field] > b[field] ? 1 : -1))
       setServicesLists(sortedServicesLists)
     }
     else if (order === 'desc') {
-      const sortedServicesLists = [...servicesLists]
+      const sortedServicesLists = [...servicesLists ?? []]
       sortFieldsArray.forEach(field => sortedServicesLists.sort((a, b) => a[field] < b[field] ? 1 : -1))
       setServicesLists(sortedServicesLists)
     }
@@ -106,13 +106,13 @@ export const useAllServicesLists = (): AllServicesListsHandler => {
 
   return {
     isLoading: isLoadingAllServicesLists || isLoadingTaxonomies,
-    servicesLists,
+    servicesLists: servicesLists ?? [],
     handleSearch,
     order,
     sortFieldsTextToVal,
     setOrder,
     setSortFields,
-    taxonomies,
+    taxonomies: taxonomies ?? [],
     setFilters,
   }
 }

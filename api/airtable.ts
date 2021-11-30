@@ -7,22 +7,26 @@ export class AirtableClient {
     this.base = new Airtable({apiKey: apiKey}).base(baseId)
   }
 
-  async getById<O extends object>(tableName: string, keys: (keyof O)[], id: string): Promise<O> {
+  async getById<T>(
+    tableName: string,
+    keys: (keyof T)[],
+    id: string,
+  ): Promise<T> {
     const record = await this.base.table(tableName).find(id)
 
-    const object = {} as O
+    const object: {[key: string]: any} = {}
     keys.forEach(key => {
       object[key.toString()] = record.get(key.toString())
     })
-    return object
+    return object as T
   }
 
-  async getAll<O extends object>(
+  async getAll<T>(
     tableName: string,
-    keys: (keyof O)[],
+    keys: (keyof T)[],
     filter: string = '',
-  ): Promise<O[]> {
-    const objects: O[] = []
+  ): Promise<T[]> {
+    const objects: T[] = []
 
     const records = await this.base.table(tableName).select({
       filterByFormula: filter,
@@ -30,13 +34,13 @@ export class AirtableClient {
 
     // Map records to object specfied by keys
     records.forEach(record => {
-      const object = {} as O
+      const object: {[key: string]: any} = {}
       keys.forEach(key => {
         object[key.toString()] = record.get(key.toString())
       })
-      objects.push(object)
+      objects.push(object as T)
     })
 
-    return objects
+    return objects as T[]
   }
 }

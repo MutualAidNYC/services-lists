@@ -1,3 +1,5 @@
+import { ObjectIndices } from '.';
+
 // TODO: Coordinate with research team to get rid of unnecessary fields 
 export interface Service {
   name: string
@@ -16,7 +18,7 @@ export interface Service {
   phones: string[] // list of IDs linking to phones table
   schedule: string[] // list of IDs linking to schedules table
   contacts: string[] // list of IDs linking to locations table
-  id: number | string
+  id: string
   interpretationServices: string[]
   address: string[] // 
   xStatus: string
@@ -29,7 +31,7 @@ export interface Service {
   Communities: string[]
 }
 
-export interface ServicesList {
+export interface ServicesList extends ObjectIndices {
   id: string
   name: string
   description: string
@@ -42,4 +44,10 @@ export interface ServicesList {
 
 export interface TaxonomyTerm {
   term: string
+}
+
+export interface Location {
+  id: string
+  latitude: string
+  longitude: string
 }

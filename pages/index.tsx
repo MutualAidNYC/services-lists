@@ -61,7 +61,7 @@ export default function Home(): JSX.Element {
           <MenuButton as={Button}>Filter by</MenuButton>
           <MenuList>
             <MenuOptionGroup type="checkbox" onChange={e => setFilters(e)}>
-              {taxonomies?.map((taxonomy, i) => 
+              {taxonomies.map((taxonomy, i) => 
                 <MenuItemOption value={taxonomy} key={i}>
                   {taxonomy}
                 </MenuItemOption>
@@ -71,7 +71,7 @@ export default function Home(): JSX.Element {
         </Menu>
       </HStack>
       <Stack spacing='36px'>
-        {servicesLists?.map(servicesList => 
+        {servicesLists.map(servicesList => 
           <ServicesListItem
             key={servicesList.name}
             servicesList={servicesList}

@@ -1,8 +1,11 @@
 import { AirtableClient } from './airtable'
-import { Service, ServicesList, TaxonomyTerm } from '../models'
+import { Location, Service, ServicesList, TaxonomyTerm } from '../models'
 import { keys } from 'ts-transformer-keys'
 
-const ServicesClient = new AirtableClient(process.env.NEXT_PUBLIC_RESOURCES_API_KEY, process.env.NEXT_PUBLIC_RESOURCES_BASE_ID)
+const ServicesClient = new AirtableClient(
+  process.env.NEXT_PUBLIC_RESOURCES_API_KEY ?? '',
+  process.env.NEXT_PUBLIC_RESOURCES_BASE_ID ?? '',
+)
 
 export const getAllServicesLists = (filter?: string): Promise<ServicesList[]> => {
   return ServicesClient.getAll<ServicesList>(
@@ -26,4 +29,8 @@ export const getServiceListById = (id: string): Promise<ServicesList> => {
 
 export const getServiceById = (id: string): Promise<Service> => {
   return ServicesClient.getById<Service>('services', keys<Service>(), id)
+}
+
+export const getLocationById = (id: string): Promise<Location> => {
+  return ServicesClient.getById<Location>('locations', keys<Location>(), id)
 }
