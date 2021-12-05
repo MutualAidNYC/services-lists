@@ -25,6 +25,7 @@ export const ServicesListItem = ({ servicesList, ...props }: ServicesListItemPro
         </NextLink>
       </Heading>
       <Text>{servicesList.Author ? "Created By " + servicesList.Author : null}</Text>
+      <Text>{servicesList.Created ? "Created On " + servicesList.Created: null}</Text>
       <Text>{servicesList.description}</Text>
       <HStack spacing='16px' mt='8px'>
         {servicesList.taxonomies?.map((taxonomy, i) => (
