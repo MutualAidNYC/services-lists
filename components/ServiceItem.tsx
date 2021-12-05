@@ -23,22 +23,32 @@ export const ServiceItem = ({
 }: ServiceProps): JSX.Element => {
 
   return (
-    <Box {...props}>
+    <Box {...props} boxShadow='md' rounded='lg' p='8' _hover={{ boxShadow: 'dark-lg' }}>
       <LinkBox mb="16px">
         <HStack spacing="8px">
           <LinkIcon />
           <LinkOverlay href={service.url}>
-            <Heading fontSize="subheading2">{service.name}</Heading>
+            <Heading fontSize="subheading2" >{service.name}</Heading>
           </LinkOverlay>
         </HStack>
       </LinkBox>
       <Stack spacing="8px">
+      {service.address && (
+          <LinkBox>
+            <HStack spacing="8px">
+              
+              <Text _hover={{ textDecoration: 'underline' }} >
+                {service.address[0]}
+              </Text>
+            </HStack>
+          </LinkBox>
+        )}
         <Text>{service.description}</Text>
         {service.email && (
           <LinkBox>
             <HStack spacing="8px">
               <EmailIcon />
-              <LinkOverlay href={`mailto:${service.email}`}>
+              <LinkOverlay href={`mailto:${service.email}`} _hover={{ textDecoration: 'underline' }} >
                 {service.email}
               </LinkOverlay>
             </HStack>
@@ -48,7 +58,7 @@ export const ServiceItem = ({
           <LinkBox>
             <HStack spacing="8px">
               <PhoneIcon />
-              <LinkOverlay href={`tel:${service.phoneNumbers[0]}`}>
+              <LinkOverlay href={`tel:${service.phoneNumbers[0]}`} _hover={{ textDecoration: 'underline' }}> 
                 {service.phoneNumbers[0]}
               </LinkOverlay>
             </HStack>

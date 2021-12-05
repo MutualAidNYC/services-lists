@@ -33,7 +33,7 @@ export const Map = ({
       ? <GoogleMap
           mapContainerStyle={{
             height: "400px",
-            width: "67%",
+            width: "100%",
           }}
           center={
             center
