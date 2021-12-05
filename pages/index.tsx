@@ -60,7 +60,6 @@ export default function Home(): JSX.Element {
           </MenuList>
         </Menu>
         <Menu closeOnSelect={false}>
-          <MenuButton as={Button}>Filter by</MenuButton>
           <MenuList>
             <MenuOptionGroup type="checkbox" onChange={e => setFilters(e)}>
               {taxonomies.map((taxonomy, i) =>
