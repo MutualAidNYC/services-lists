@@ -30,7 +30,7 @@ export default function Home(): JSX.Element {
 
   return (
     <ServicesListsProvider value={allServicesListsHandler}>
-      <Heading fontSize='heading1' mb='36px'>Services Lists</Heading>
+      <Heading fontSize='heading1' mb='36px'>Resource Lists</Heading>
       <SearchBar handleSearch={handleSearch} w='66%' mb='24px' />
       <HStack spacing="24px" mb="24px">
         <Menu closeOnSelect={false}>

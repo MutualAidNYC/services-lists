@@ -15,23 +15,17 @@ export const Navbar = (): JSX.Element => {
         alt="Mutual Aid NYC"
       />
       <HStack spacing='32px'>
-        <Link>
-          Services
+        <Link href='#'>
+          Resource Lists 
+        </Link>
+        <Link href='https://resources.mutualaid.nyc/'>
+          Resource Directory 
         </Link>
         <Link>
-          Categories
+          Create New List   (Coming Soon)
         </Link>
-        <Link>
-          Lists
-        </Link>
-        <Link>
-          Submit A New List
-        </Link>
-        <Link>
-          Organizations
-        </Link>
-        <Link>
-          About
+        <Link href='https://mutualaid.nyc/'>
+          About MutualAidNYC
         </Link>
       </HStack>
     </Flex>
