@@ -5,31 +5,26 @@ import {
   useJsApiLoader,
 } from '@react-google-maps/api'
 import { getCenter } from 'geolib'
-import { GeolibInputCoordinates } from 'geolib/es/types'
+import { Address } from '../../models'
 import { MapMarker } from './MapMarker'
 
 interface MapProps extends GoogleMapProps {
   defaultCenter: google.maps.LatLngLiteral
-  markerPositionToLabelMap: Map<google.maps.LatLngLiteral, string>
+  addressIdToLabel: Record<string, string>
+  addresses: Address[]
 }
 
 export const Map = ({
   defaultCenter,
-  markerPositionToLabelMap,
+  addressIdToLabel,
+  addresses,
   ...props
 }: MapProps): JSX.Element => {
   const { isLoaded, loadError } = useJsApiLoader({
       googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_JS_API_KEY ?? '',
   })
 
-  const geoLibCoords: GeolibInputCoordinates[] = []
-  const markers: JSX.Element[] = []
-  markerPositionToLabelMap.forEach((label, position) => {
-    markers.push(<MapMarker key={label} position={position} title={label} />)
-    geoLibCoords.push({latitude: position.lat, longitude: position.lng})
-  })
-
-  const center = getCenter(geoLibCoords)
+  const center = getCenter(addresses.map(address => ({latitude: address.latitude, longitude: address.longitude})))
 
   return (
     loadError
@@ -48,7 +43,13 @@ export const Map = ({
           zoom={11}
           {...props}
         >
-          {markers}
+          {addresses.map(address => (
+            <MapMarker
+              key={address.id}
+              label={addressIdToLabel[address.id]}
+              address={address} 
+            />
+          ))}
         </GoogleMap>
       : <Spinner />
   )

@@ -11,14 +11,15 @@ export const ListPage: NextPage = () => {
     isLoading,
     listName,
     services,
-    locationToServiceMap,
+    addressIdToServiceName,
+    addresses,
     defaultMapCenter,
   } = serviceListHandler
 
   return (
     <ServiceListProvider value={serviceListHandler}>
       <Heading mb="36px">{listName}</Heading>
-      <Stack spacing="36px">
+      <Stack spacing="36px" mb="36px">
         {!isLoading && services.map(service =>
           <ServiceItem
             key={service.id}
@@ -28,7 +29,8 @@ export const ListPage: NextPage = () => {
       </Stack>
       <Map
         defaultCenter={defaultMapCenter}
-        markerPositionToLabelMap={locationToServiceMap} 
+        addressIdToLabel={addressIdToServiceName}
+        addresses={addresses}
       />
     </ServiceListProvider>
   )

@@ -1,8 +1,19 @@
-import { Text } from '@chakra-ui/react'
-import { InfoWindow, Marker, MarkerProps } from '@react-google-maps/api'
+import { Box, Heading, Text } from '@chakra-ui/react'
+import { InfoWindow, Marker } from '@react-google-maps/api'
 import { useState } from 'react'
+import { Address } from '../../models'
 
-export const MapMarker = ({position, title}: MarkerProps): JSX.Element => {
+interface MapMarkerProps {
+  label: string
+  address: Address
+}
+
+export const MapMarker = ({ label, address }: MapMarkerProps): JSX.Element => {
+  const position = {
+    lat: Number(address.latitude),
+    lng: Number(address.longitude),
+  }
+
   const marker = new google.maps.Marker()
   marker.setOptions({
     anchorPoint: new google.maps.Point(0, -40),
@@ -22,7 +33,11 @@ export const MapMarker = ({position, title}: MarkerProps): JSX.Element => {
           anchor={marker}
           onCloseClick={() => setShowInfoWindow(false)}
         >
-          <Text>{title}</Text>
+          <Box w="240px">
+            <Heading fontSize="16px" mb="8px">{label}</Heading>
+            <Text>{address.address_1}</Text>
+            <Text>{`${address.city}, ${address.state_province} ${address.postal_code}`}</Text>
+          </Box>
         </InfoWindow>
       }
     </>

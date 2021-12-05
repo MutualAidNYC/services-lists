@@ -1,5 +1,5 @@
 import { AirtableClient } from './airtable'
-import { Location, Service, ServicesList, TaxonomyTerm } from '../models'
+import { Address, Service, ServicesList, TaxonomyTerm } from '../models'
 import { keys } from 'ts-transformer-keys'
 
 const ServicesClient = new AirtableClient(
@@ -31,6 +31,6 @@ export const getServiceById = (id: string): Promise<Service> => {
   return ServicesClient.getById<Service>('services', keys<Service>(), id)
 }
 
-export const getLocationById = (id: string): Promise<Location> => {
-  return ServicesClient.getById<Location>('locations', keys<Location>(), id)
+export const getAddressById = (id: string): Promise<Address> => {
+  return ServicesClient.getById<Address>('physical_addresses', keys<Address>(), id)
 }

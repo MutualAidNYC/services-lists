@@ -1,15 +1,60 @@
-import { Box, BoxProps, Heading, Text } from '@chakra-ui/react'
-import { Service } from '../models'
+import { EmailIcon, LinkIcon, PhoneIcon } from '@chakra-ui/icons'
+import {
+  Box,
+  BoxProps,
+  Heading,
+  HStack,
+  LinkBox,
+  LinkOverlay,
+  Stack,
+  Text,
+} from '@chakra-ui/react'
+import { Address, Service } from '../models'
 
 interface ServiceProps extends BoxProps {
   service: Service
+  address?: Address
 }
 
-export const ServiceItem = ({ service, ...props }: ServiceProps): JSX.Element => {
+export const ServiceItem = ({
+  service,
+  address,
+  ...props
+}: ServiceProps): JSX.Element => {
+
   return (
     <Box {...props}>
-      <Heading fontSize="subheading2" mb="16px">{service.name}</Heading>
-      <Text>{service.description}</Text>
+      <LinkBox mb="16px">
+        <HStack spacing="8px">
+          <LinkIcon />
+          <LinkOverlay href={service.url}>
+            <Heading fontSize="subheading2">{service.name}</Heading>
+          </LinkOverlay>
+        </HStack>
+      </LinkBox>
+      <Stack spacing="8px">
+        <Text>{service.description}</Text>
+        {service.email && (
+          <LinkBox>
+            <HStack spacing="8px">
+              <EmailIcon />
+              <LinkOverlay href={`mailto:${service.email}`}>
+                {service.email}
+              </LinkOverlay>
+            </HStack>
+          </LinkBox>
+        )}
+        {service.phoneNumbers && (
+          <LinkBox>
+            <HStack spacing="8px">
+              <PhoneIcon />
+              <LinkOverlay href={`tel:${service.phoneNumbers[0]}`}>
+                {service.phoneNumbers[0]}
+              </LinkOverlay>
+            </HStack>
+          </LinkBox>
+        )}
+      </Stack>
     </Box>
   )
 }

@@ -1,34 +1,13 @@
 import { ObjectIndices } from '.';
 
-// TODO: Coordinate with research team to get rid of unnecessary fields 
 export interface Service {
-  name: string
-  organizations: string[] // array of IDs linking to organizations table
-  locations: string[] // list of IDs linking to locations table
-  alternativeName: string
-  description: string
-  url: string
-  email: string
-  status: string
-  applicationProcess: string
-  waitTime: string
-  fees: string
-  accreditations: string[]
-  licenses: string[]
-  phones: string[] // list of IDs linking to phones table
-  schedule: string[] // list of IDs linking to schedules table
-  contacts: string[] // list of IDs linking to locations table
   id: string
-  interpretationServices: string[]
-  address: string[] // 
-  xStatus: string
-  xAIRSTaxonomy: string[]
-  programs: string[] // list of IDs linking to programs table
-  yNeighborhoods: string[] // list of IDs linking to Neighborhoods table
-  yFacebook: string
-  yInstagram: string
-  yTwitter: string
-  Communities: string[]
+  name: string
+  description: string
+  address?: string[] // list of IDs linking to locations table
+  url: string
+  email?: string
+  phoneNumbers?: string[]
 }
 
 export interface ServicesList extends ObjectIndices {
@@ -46,8 +25,12 @@ export interface TaxonomyTerm {
   term: string
 }
 
-export interface Location {
+export interface Address {
   id: string
+  address_1: string
+  city: string
+  state_province: string
+  postal_code: string
   latitude: string
   longitude: string
 }
