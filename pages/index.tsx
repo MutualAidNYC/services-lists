@@ -9,9 +9,11 @@ import {
   MenuList,
   MenuOptionGroup,
   Stack,
+  Box,
 } from '@chakra-ui/react'
 import { SearchBar, ServicesListItem } from '../components'
 import { ServicesListsProvider, useAllServicesLists } from '../hooks'
+import Select from 'react-select'
 
 export default function Home(): JSX.Element {
   const allServicesListsHandler = useAllServicesLists()
@@ -61,7 +63,7 @@ export default function Home(): JSX.Element {
           <MenuButton as={Button}>Filter by</MenuButton>
           <MenuList>
             <MenuOptionGroup type="checkbox" onChange={e => setFilters(e)}>
-              {taxonomies.map((taxonomy, i) => 
+              {taxonomies.map((taxonomy, i) =>
                 <MenuItemOption value={taxonomy} key={i}>
                   {taxonomy}
                 </MenuItemOption>
@@ -69,15 +71,37 @@ export default function Home(): JSX.Element {
             </MenuOptionGroup>
           </MenuList>
         </Menu>
+        <Box width='20vw'>
+          <Select
+            isMulti
+            isSearchable
+            autoFocus
+            closeMenuOnSelect={false}
+            placeholder="Filter By"
+            options={taxonomies?.map((taxonomy) => ({ value: taxonomy, label: taxonomy }))}
+            onChange={(e) => { setFilters(e.map((e) => e.value)) }}
+            theme={(theme) => ({
+              ...theme,
+              borderRadius: 16,
+              colors: {
+                ...theme.colors,
+                primary25: '#B2DFDB',
+                primary: 'black',
+              },
+            })}
+          />
+        </Box>
+
       </HStack>
       <Stack spacing='36px'>
-        {servicesLists.map(servicesList => 
+        {servicesLists?.map(servicesList =>
           <ServicesListItem
             key={servicesList.name}
             servicesList={servicesList}
           />
         )}
       </Stack>
+
     </ServicesListsProvider>
   )
 }
