@@ -1,13 +1,14 @@
 import { createContext, useContext } from 'react'
 import { useQueries, useQuery, UseQueryOptions } from 'react-query'
-import { getServiceListById, getServiceById, getLocationById } from '../api'
-import { Location, Service, ServicesList } from '../models'
+import { getServiceListById, getServiceById, getAddressById } from '../api'
+import { Address, Service, ServicesList } from '../models'
 
 export interface ServiceListHandler {
   isLoading: boolean
   listName: string
   services: Service[]
-  locationToServiceMap: Map<google.maps.LatLngLiteral, string>
+  addressIdToServiceName: Record<string, string>
+  addresses: Address[]
   defaultMapCenter: google.maps.LatLngLiteral
 }
 
@@ -44,46 +45,34 @@ export const useServiceList = (listId: string): ServiceListHandler => {
   const isLoadingServices = serviceQueryResults.some(result => result.isLoading)
   const services = serviceQueryResults.map(result => result.data)
 
-  const locationIdToServiceMap: Record<string, string> = {}
-  const locationQueryOptions = services
-    .filter(service => service?.locations) // not all services have locations
-    .flatMap(service => { // need to flatten because some services have multiple locations
-      service?.locations?.forEach(locationId => locationIdToServiceMap[locationId] = service.name)
-      return service?.locations
+  const addressIdToServiceName: Record<string, string> = {}
+  const addressQueryOptions = services
+    .filter(service => service?.address) // not all services have addresses
+    .flatMap(service => { // need to flatten because some services have multiple addresses
+      service?.address?.forEach(addressId => addressIdToServiceName[addressId] = service.name)
+      return service?.address
     })
-    .map(locationId => {
+    .map(addressId => {
       return {
-        queryKey: ['location', locationId],
-        queryFn: () => getLocationById(locationId ?? ''),
+        queryKey: ['address', addressId],
+        queryFn: () => getAddressById(addressId ?? ''),
         config: {
-          enabled: !!locationId,
+          enabled: !!addressId,
           retry: false,
           refetchOnWindowFocus: false,
         }
       }
     }) ?? [] // cannot be undefined or useQueries throws an error
-  const locationQueryResults = useQueries<UseQueryOptions<Location, Error>[]>(locationQueryOptions)
-  const isLoadingLocations = locationQueryResults.some(result => result.isLoading)
-  const locationToServiceMap = new Map<google.maps.LatLngLiteral, string>()
-  locationQueryResults.forEach(result => {
-    // skip mapping if id is undefined
-    if (!result.data?.id) {
-      return
-    }
-
-    const location = {
-      lat: Number(result.data.latitude),
-      lng: Number(result.data.longitude),
-    }
-
-    locationToServiceMap.set(location, locationIdToServiceMap[result.data.id])
-  })
+  const addressQueryResults = useQueries<UseQueryOptions<Address, Error>[]>(addressQueryOptions)
+  const isLoadingAddresses = addressQueryResults.some(result => result.isLoading)
+  const addresses = addressQueryResults.map(result => result.data)
 
   return {
-    isLoading: isLoadingServiceList || isLoadingServices || isLoadingLocations,
+    isLoading: isLoadingServiceList || isLoadingServices || isLoadingAddresses,
     listName: serviceList?.name ?? '',
     services: services.some(service => !service) ? [] : services as Service[], // return empty list if any service is undefined
-    locationToServiceMap,
+    addressIdToServiceName,
+    addresses: addresses.some(address => !address) ? [] : addresses as Address[], // return empty list if any address is undefined
     defaultMapCenter: {lat: 40.730610, lng: -73.935242}, // NYC lat, lng
   }
 }
