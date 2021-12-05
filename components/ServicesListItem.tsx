@@ -14,6 +14,7 @@ interface ServicesListItemProps extends LinkBoxProps {
 }
 
 export const ServicesListItem = ({ servicesList, ...props }: ServicesListItemProps): JSX.Element => {
+  console.log(servicesList)
   return (
     <LinkBox {...props}>
       <Heading fontSize='subheading2' mb='16px'>
@@ -23,6 +24,7 @@ export const ServicesListItem = ({ servicesList, ...props }: ServicesListItemPro
           </LinkOverlay>
         </NextLink>
       </Heading>
+      <Text>{servicesList.Author ? "Created By: " + servicesList.Author : null}</Text>
       <Text>{servicesList.description}</Text>
       <HStack spacing='16px' mt='8px'>
         {servicesList.taxonomies?.map((taxonomy, i) => (

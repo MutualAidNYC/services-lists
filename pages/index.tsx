@@ -59,17 +59,29 @@ export default function Home(): JSX.Element {
             </MenuOptionGroup>
           </MenuList>
         </Menu>
-        <Menu closeOnSelect={false}>
-          <MenuList>
-            <MenuOptionGroup type="checkbox" onChange={e => setFilters(e)}>
-              {taxonomies.map((taxonomy, i) =>
-                <MenuItemOption value={taxonomy} key={i}>
-                  {taxonomy}
-                </MenuItemOption>
-              )}
-            </MenuOptionGroup>
-          </MenuList>
-        </Menu>
+        <Box width='20vw'>
+          <Select
+            autoFocus
+            closeMenuOnSelect={true}
+            placeholder="Sort By"
+            options={Object.keys(sortFieldsTextToVal).map((text, i) =>  ({ value: text, label: text}))}
+            onChange={(e) => { 
+              if (e?.value != null) {
+                setFilters(e.value) 
+              }
+            }}
+            theme={(theme) => ({
+              ...theme,
+              borderRadius: 16,
+              colors: {
+                ...theme.colors,
+                primary25: '#B2DFDB',
+                primary: 'black',
+              },
+            })}
+          />
+        </Box>
+
         <Box width='20vw'>
           <Select
             isMulti

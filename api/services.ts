@@ -1,6 +1,7 @@
 import { AirtableClient } from './airtable'
 import { Address, Service, ServicesList, TaxonomyTerm } from '../models'
 import { keys } from 'ts-transformer-keys'
+import { Console } from 'console'
 
 const ServicesClient = new AirtableClient(
   process.env.NEXT_PUBLIC_RESOURCES_API_KEY ?? '',
