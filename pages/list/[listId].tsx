@@ -27,11 +27,13 @@ export const ListPage: NextPage = () => {
           />
         )}
       </Stack>
-      <Map
-        defaultCenter={defaultMapCenter}
-        addressIdToLabel={addressIdToServiceName}
-        addresses={addresses}
-      />
+      {addresses.length > 0 && (
+        <Map
+          defaultCenter={defaultMapCenter}
+          addressIdToLabel={addressIdToServiceName}
+          addresses={addresses}
+        />
+      )}
     </ServiceListProvider>
   )
 }
