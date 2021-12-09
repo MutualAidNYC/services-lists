@@ -27,7 +27,7 @@ export const Navbar = (): JSX.Element => {
           Create New List   (Coming Soon)
         </Link>
         <Link href='https://mutualaid.nyc/'>
-          About MutualAidNYC
+          About Mutual Aid NYC
         </Link>
       </HStack>
     </Flex>

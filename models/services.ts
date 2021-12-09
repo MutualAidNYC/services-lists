@@ -17,10 +17,8 @@ export interface ServicesList extends ObjectIndices {
   Services: string[] // list of IDs linking to services table
   ServicesNames: string[]
   taxonomies: string[]
-  Status: string
-  Owner: string[] // list of IDs linking to organizations table
-  Author: string
-  Created: string
+  creator: string
+  createdAt: string
 }
 
 export interface TaxonomyTerm {

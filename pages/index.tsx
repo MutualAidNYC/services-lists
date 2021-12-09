@@ -61,29 +61,6 @@ export default function Home(): JSX.Element {
         </Menu>
         <Box width='20vw'>
           <Select
-            autoFocus
-            closeMenuOnSelect={true}
-            placeholder="Sort By"
-            options={Object.keys(sortFieldsTextToVal).map((text, i) =>  ({ value: text, label: text}))}
-            onChange={(e) => { 
-              if (e?.value != null) {
-                setFilters(e.value) 
-              }
-            }}
-            theme={(theme) => ({
-              ...theme,
-              borderRadius: 16,
-              colors: {
-                ...theme.colors,
-                primary25: '#B2DFDB',
-                primary: 'black',
-              },
-            })}
-          />
-        </Box>
-
-        <Box width='20vw'>
-          <Select
             isMulti
             isSearchable
             autoFocus
