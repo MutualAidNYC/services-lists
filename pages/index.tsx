@@ -66,7 +66,7 @@ export default function Home(): JSX.Element {
             autoFocus
             closeMenuOnSelect={false}
             placeholder="Filter By"
-            options={taxonomies?.map((taxonomy) => ({ value: taxonomy, label: taxonomy }))}
+            options={taxonomies.map((taxonomy) => ({ value: taxonomy, label: taxonomy }))}
             onChange={(e) => { setFilters(e.map((e) => e.value)) }}
             theme={(theme) => ({
               ...theme,
@@ -82,7 +82,7 @@ export default function Home(): JSX.Element {
 
       </HStack>
       <Stack spacing='36px'>
-        {servicesLists?.map(servicesList =>
+        {servicesLists.map(servicesList =>
           <ServicesListItem
             key={servicesList.name}
             servicesList={servicesList}

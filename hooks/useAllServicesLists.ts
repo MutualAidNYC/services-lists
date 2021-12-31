@@ -10,7 +10,7 @@ import { useQuery } from 'react-query'
 import { getAllServicesLists, getAllTaxonomies } from '../api'
 import { ServicesList, TaxonomyTerm } from '../models'
 
-export interface AllServicesListsHandler {
+interface AllServicesListsHandler {
   isLoading: boolean
   servicesLists: ServicesList[]
   handleSearch: (query: string) => void
@@ -78,7 +78,7 @@ export const useAllServicesLists = (): AllServicesListsHandler => {
     if (sortFields.length === 0) {
       return
     }
-
+  
     const sortFieldsArray = typeof sortFields === 'string' ? [sortFields] : sortFields
     if (order === 'asc') {
       const sortedServicesLists = [...servicesLists ?? []]
@@ -90,7 +90,7 @@ export const useAllServicesLists = (): AllServicesListsHandler => {
       sortFieldsArray.forEach(field => sortedServicesLists.sort((a, b) => a[field] < b[field] ? 1 : -1))
       setServicesLists(sortedServicesLists)
     }
-  }, [servicesLists, order, sortFields])
+  }, [order, sortFields])
 
   const [filters, setFilters] = useState<string | string[]>([])
   useEffect(() => {

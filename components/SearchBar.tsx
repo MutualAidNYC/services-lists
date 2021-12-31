@@ -30,8 +30,8 @@ export const SearchBar = ({
         children={<SearchIcon />}
       />
       <Input
-        onChange={event => setQuery(event.target.value)}
-        onKeyDown={event => onEnter(event)}
+        onChange={e => setQuery(e.target.value)}
+        onKeyDown={e => onEnter(e)}
       />
     </InputGroup>
   )

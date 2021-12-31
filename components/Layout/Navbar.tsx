@@ -23,8 +23,8 @@ export const Navbar = (): JSX.Element => {
         <Link href='https://resources.mutualaid.nyc/'>
           Resource Directory
         </Link>
-        <Link>
-          Create New List   (Coming Soon)
+        <Link href="/create-list">
+          Create New List
         </Link>
         <Link href='https://mutualaid.nyc/'>
           About Mutual Aid NYC
