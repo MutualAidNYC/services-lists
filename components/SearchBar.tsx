@@ -7,15 +7,29 @@ import {
 import { useState, KeyboardEvent } from 'react'
 import { SearchIcon } from './Icons'
 
-interface SearchBarProps extends InputGroupProps {
-  handleSearch: (query: string) => void
+interface SearchBarProps<T> extends InputGroupProps {
+  data: T[]
+  setData: (data: T[]) => void
+  searchFields: string[]
 }
 
-export const SearchBar = ({
-  handleSearch,
+export const SearchBar = <T,>({
+  data,
+  setData,
+  searchFields,
   ...props
-}: SearchBarProps): JSX.Element => {
+}: SearchBarProps<T>): JSX.Element => {
   const [query, setQuery] = useState('')
+  const handleSearch = (query: string): void => {
+    if (query === '') {
+      setData(data)
+      return
+    }
+
+    setData(data.filter(
+      datum => searchFields.some(field => (datum[field as keyof T] as unknown as string).toLowerCase().includes(query.toLowerCase()))
+    ))
+  }
 
   const onEnter = (event: KeyboardEvent<HTMLInputElement>)  => {
     if (event.key === 'Enter') {

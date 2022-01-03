@@ -1,14 +1,13 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
-import { useSearch } from '.'
 import { getAllServices } from '../api'
 import { Service } from '../models'
 
 interface CreateListHandler {
   isLoading: boolean
+  baseServices: Service[]
   services: Service[]
   setServices: (services: Service[]) => void
-  handleSearch: (query: string) => void
 }
 
 const CreateListContext = createContext<CreateListHandler>({} as CreateListHandler)
@@ -28,14 +27,13 @@ export const useCreateList = (): CreateListHandler => {
     }
   )
 
-  const [services, setServices] = useState(baseServices ?? [])
-  useEffect(() => setServices(baseServices ?? []), [baseServices])
-  const { handleSearch } = useMemo(() => useSearch(baseServices ?? [], ['name', 'description'], setServices), [baseServices])
+  const [services, setServices] = useState(baseServices)
+  useEffect(() => setServices(baseServices), [baseServices])
 
   return {
     isLoading: isLoadingServices,
-    services,
+    baseServices: baseServices ?? [],
+    services: services ?? [],
     setServices,
-    handleSearch,
   }
 }
