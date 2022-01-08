@@ -5,17 +5,21 @@ import {
   Box,
 } from '@chakra-ui/react'
 import { SearchBar, ServicesListItem, SortMenu } from '../components'
-import { useAllServicesLists } from '../hooks'
+import { useAllServicesLists, useTaxonomyFilter } from '../hooks'
 import Select from 'react-select'
+import { ServicesList } from '../models'
 
 export default function Home(): JSX.Element { 
   const {
     baseServicesLists,
     servicesLists,
     setServicesLists,
-    taxonomies,
-    setFilters,
   } = useAllServicesLists()
+
+  const filterFunction = (servicesList: ServicesList, filters: string[]) =>
+    servicesList.taxonomies?.some(taxonomy => filters.includes(taxonomy)) ?? false
+  const { taxonomyOptions, setFilters } = useTaxonomyFilter(baseServicesLists, setServicesLists, filterFunction)
+
   const sortFieldsTextToVal = {Name: 'name', Description: 'description'}
 
   return (
@@ -30,8 +34,8 @@ export default function Home(): JSX.Element {
             isSearchable
             closeMenuOnSelect={false}
             placeholder="Filter By"
-            options={taxonomies.map((taxonomy) => ({ value: taxonomy, label: taxonomy }))}
-            onChange={(e) => { setFilters(e.map((e) => e.value)) }}
+            options={taxonomyOptions}
+            onChange={e => { setFilters(e.map((e) => e.value)) }}
             theme={(theme) => ({
               ...theme,
               borderRadius: 16,

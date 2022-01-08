@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { getAllServices } from '../api'
 import { Service } from '../models'
@@ -26,7 +26,6 @@ export const useCreateList = (): CreateListHandler => {
       refetchOnWindowFocus: false,
     }
   )
-
   const [services, setServices] = useState(baseServices)
   useEffect(() => setServices(baseServices), [baseServices])
 
