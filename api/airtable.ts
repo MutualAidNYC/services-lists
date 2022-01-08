@@ -4,7 +4,7 @@ export class AirtableClient {
   base: Base
 
   constructor(apiKey: string, baseId: string) {
-    this.base = new Airtable({apiKey: apiKey}).base(baseId)
+    this.base = new Airtable({ apiKey: apiKey }).base(baseId)
   }
 
   async getById<T>(
@@ -14,7 +14,7 @@ export class AirtableClient {
   ): Promise<T> {
     const record = await this.base.table(tableName).find(id)
 
-    const object: {[key: string]: any} = {}
+    const object: { [key: string]: any } = {}
     keys.forEach(key => {
       object[key.toString()] = record.get(key.toString())
     })
@@ -34,7 +34,7 @@ export class AirtableClient {
 
     // Map records to object specfied by keys
     records.forEach(record => {
-      const object: {[key: string]: any} = {}
+      const object: { [key: string]: any } = {}
       keys.forEach(key => {
         object[key.toString()] = record.get(key.toString())
       })
@@ -42,5 +42,18 @@ export class AirtableClient {
     })
 
     return objects as T[]
+  }
+
+  createServiceList(
+    tableName: string,
+    id: string,
+    name: string,
+    description: string,
+    url: string, 
+    addresses?: string[],
+    phoneNumbers?: string[], 
+    email?: string, 
+  ): string {
+      return tableName
   }
 }
