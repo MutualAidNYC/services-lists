@@ -8,6 +8,7 @@ export interface Service {
   url: string
   email?: string
   phoneNumbers?: string[]
+  taxonomyString?: string[]
 }
 
 export interface ServicesList extends ObjectIndices {

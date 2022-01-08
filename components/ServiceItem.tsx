@@ -54,6 +54,23 @@ export const ServiceItem = ({
             </HStack>
           </LinkBox>
         )}
+        {service.taxonomyString && (
+          <HStack>
+            <Heading fontSize="subheading3">
+              Resource categories:
+            </Heading>
+            {service.taxonomyString.map((taxonomy, i) => (
+              <Text
+                key={i}
+                bgColor="lightPink"
+                borderRadius="8px"
+                p="8px"
+              >
+                {taxonomy}
+              </Text>
+            ))}
+          </HStack>
+        )}
       </Stack>
     </Box>
   )

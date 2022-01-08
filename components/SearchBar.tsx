@@ -8,13 +8,13 @@ import { useState, KeyboardEvent } from 'react'
 import { SearchIcon } from './Icons'
 
 interface SearchBarProps<T> extends InputGroupProps {
-  data: T[]
+  baseData: T[]
   setData: (data: T[]) => void
   searchFields: string[]
 }
 
 export const SearchBar = <T,>({
-  data,
+  baseData,
   setData,
   searchFields,
   ...props
@@ -22,11 +22,11 @@ export const SearchBar = <T,>({
   const [query, setQuery] = useState('')
   const handleSearch = (query: string): void => {
     if (query === '') {
-      setData(data)
+      setData(baseData)
       return
     }
 
-    setData(data.filter(
+    setData(baseData.filter(
       datum => searchFields.some(field => (datum[field as keyof T] as unknown as string).toLowerCase().includes(query.toLowerCase()))
     ))
   }

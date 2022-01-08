@@ -5,7 +5,6 @@ import {
   Fonts,
   Navbar,
   theme,
-  Map
 } from '../components'
 import { Box } from '@chakra-ui/react'
 

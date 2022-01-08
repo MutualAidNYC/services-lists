@@ -21,14 +21,13 @@ export default function Home(): JSX.Element {
   return (
     <>
       <Heading fontSize='heading1' mb='36px'>Resource Lists</Heading>
-      <SearchBar data={baseServicesLists} setData={setServicesLists} searchFields={['name', 'description']} w='66%' mb='24px' />
+      <SearchBar baseData={baseServicesLists} setData={setServicesLists} searchFields={['name', 'description']} w='66%' mb='24px' />
       <HStack spacing="24px" mb="24px">
         <SortMenu data={servicesLists} setData={setServicesLists} sortFieldsTextToVal={sortFieldsTextToVal} />
         <Box width='20vw'>
           <Select
             isMulti
             isSearchable
-            autoFocus
             closeMenuOnSelect={false}
             placeholder="Filter By"
             options={taxonomies.map((taxonomy) => ({ value: taxonomy, label: taxonomy }))}
