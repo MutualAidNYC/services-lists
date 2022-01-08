@@ -41,8 +41,9 @@ export const SearchBar = <T,>({
     <InputGroup {...props}>
       <InputLeftElement
         pointerEvents="none"
-        children={<SearchIcon />}
-      />
+      >
+        <SearchIcon />
+      </InputLeftElement>
       <Input
         onChange={e => setQuery(e.target.value)}
         onKeyDown={e => onEnter(e)}

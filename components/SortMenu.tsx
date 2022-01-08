@@ -33,7 +33,6 @@ export const SortMenu = <T,>({
     const sortFieldsArray = typeof sortFields === 'string' ? [sortFields] : sortFields
     if (order === 'asc') {
       const sortedData = [...data]
-      console.log(sortedData)
       sortFieldsArray.forEach(field => sortedData.sort((a, b) => a[field as keyof T] > b[field as keyof T] ? 1 : -1))
       setData(sortedData)
     } else {
