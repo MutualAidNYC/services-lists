@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
-import { getAllTaxonomies } from '../api'
-import { TaxonomyTerm } from '../models'
+import { getAllTaxonomies } from 'api'
+import { TaxonomyTerm } from 'models'
 
 interface TaxonomyFilterHandler{
   isLoading: boolean

@@ -4,10 +4,10 @@ import {
   Stack,
   Box,
 } from '@chakra-ui/react'
-import { SearchBar, ServicesListItem, SortMenu } from '../components'
-import { useAllServicesLists, useTaxonomyFilter } from '../hooks'
+import { SearchBar, ServicesListItem, SortMenu } from 'components'
+import { useAllServicesLists, useTaxonomyFilter } from 'hooks'
 import Select from 'react-select'
-import { ServicesList } from '../models'
+import { ServicesList } from 'models'
 
 export default function Home(): JSX.Element { 
   const {

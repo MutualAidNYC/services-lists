@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
-import { getAllServices } from '../api'
-import { Service } from '../models'
+import { getAllServices } from 'api'
+import { Service } from 'models'
 
 interface CreateListHandler {
   isLoading: boolean

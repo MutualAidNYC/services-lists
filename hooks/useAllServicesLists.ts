@@ -5,8 +5,8 @@ import {
   useState,
 } from 'react'
 import { useQuery } from 'react-query'
-import { getAllServicesLists } from '../api'
-import { ServicesList } from '../models'
+import { getAllServicesLists } from 'api'
+import { ServicesList } from 'models'
 
 interface AllServicesListsHandler {
   isLoading: boolean

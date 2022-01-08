@@ -1,9 +1,9 @@
 import { Heading, HStack, Stack } from '@chakra-ui/react'
 import { NextPage } from 'next'
 import Select from 'react-select'
-import { SearchBar, ServiceItem, SortMenu } from '../components'
-import { useCreateList, useTaxonomyFilter } from '../hooks'
-import { Service } from '../models'
+import { SearchBar, ServiceItem, SortMenu } from 'components'
+import { useCreateList, useTaxonomyFilter } from 'hooks'
+import { Service } from 'models'
 
 export const CreateListPage: NextPage = () => {
   const { baseServices, services, setServices } = useCreateList()

@@ -1,6 +1,5 @@
 import {
   Heading,
-  HStack,
   LinkBox,
   LinkBoxProps,
   LinkOverlay,
@@ -8,8 +7,8 @@ import {
   Wrap,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
-import { ServicesList } from '../models'
-import { formatDate } from '../utils'
+import { ServicesList } from 'models'
+import { formatDate } from 'utils'
 
 interface ServicesListItemProps extends LinkBoxProps {
   servicesList: ServicesList
