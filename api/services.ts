@@ -36,5 +36,5 @@ export const getAddressById = (id: string): Promise<Address> => {
 }
 
 export const createServicesLists = (servicesLists: ServicesList[]): Promise<ServicesList[]> => {
-    return ServicesClient.createRow<ServicesList>('Services Lists', keys<ServicesList>(), []);
+    return ServicesClient.createRow<ServicesList>('Services Lists', keys<ServicesList>(), []); // TODO: This will be replaced with functional call
 }
