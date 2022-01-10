@@ -1,5 +1,4 @@
 import Airtable,  { Base }  from 'airtable'
-import { ServicesList } from '../models'
 
 export class AirtableClient {
   base: Base
