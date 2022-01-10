@@ -1,4 +1,5 @@
-import Airtable, { Base } from 'airtable'
+import Airtable,  { Base }  from 'airtable'
+import { ServicesList } from '../models'
 
 export class AirtableClient {
   base: Base
@@ -44,16 +45,24 @@ export class AirtableClient {
     return objects as T[]
   }
 
-  createServiceList(
+  async createRow<T>(
     tableName: string,
-    id: string,
-    name: string,
-    description: string,
-    url: string, 
-    addresses?: string[],
-    phoneNumbers?: string[], 
-    email?: string, 
-  ): string {
-      return tableName
+    keys: (keyof T)[],
+    recordData: any[], 
+  ): Promise<T[]> {
+    const objects: T[] = []
+
+    const records = await this.base(tableName).create(recordData)
+
+    // Map records to object specfied by keys
+    records.forEach(record => {
+      const object: { [key: string]: any } = {}
+      keys.forEach(key => {
+        object[key.toString()] = record.get(key.toString())
+      })
+      objects.push(object as T)
+    })
+
+    return objects as T[]
   }
 }

@@ -34,3 +34,7 @@ export const getServiceById = (id: string): Promise<Service> => {
 export const getAddressById = (id: string): Promise<Address> => {
   return ServicesClient.getById<Address>('physical_addresses', keys<Address>(), id)
 }
+
+export const createServicesLists = (servicesLists: ServicesList[]): Promise<ServicesList[]> => {
+    return ServicesClient.createRow<ServicesList>('Services Lists', keys<ServicesList>(), []);
+}
