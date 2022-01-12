@@ -15,6 +15,8 @@ interface ServicesListItemProps extends LinkBoxProps {
 }
 
 export const ServicesListItem = ({ servicesList, ...props }: ServicesListItemProps): JSX.Element => {
+  const taxonomies = [...new Set(servicesList.taxonomies)]
+
   return (
     <LinkBox {...props}>
       <Heading fontSize='subheading2' mb='16px'>
@@ -27,7 +29,7 @@ export const ServicesListItem = ({ servicesList, ...props }: ServicesListItemPro
       <Text>{servicesList.description}</Text>
       <Text>{`Created by ${servicesList.creator} on ${formatDate(servicesList.createdAt)}`}</Text>
       <Wrap spacing='16px' mt='8px' align="center">
-        {servicesList.taxonomies?.map((taxonomy, i) => (
+        {taxonomies.map((taxonomy, i) => (
           <Text
             key={i}
             bgColor='lightPink'
