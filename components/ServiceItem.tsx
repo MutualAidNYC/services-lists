@@ -9,7 +9,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { Address, Service } from '../models'
+import { Address, Service } from 'models'
 
 interface ServiceProps extends BoxProps {
   service: Service
@@ -53,6 +53,23 @@ export const ServiceItem = ({
               </LinkOverlay>
             </HStack>
           </LinkBox>
+        )}
+        {service.taxonomyString && (
+          <HStack>
+            <Heading fontSize="subheading3">
+              Resource categories:
+            </Heading>
+            {service.taxonomyString.map((taxonomy, i) => (
+              <Text
+                key={i}
+                bgColor="lightPink"
+                borderRadius="8px"
+                p="8px"
+              >
+                {taxonomy}
+              </Text>
+            ))}
+          </HStack>
         )}
       </Stack>
     </Box>

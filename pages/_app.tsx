@@ -5,8 +5,7 @@ import {
   Fonts,
   Navbar,
   theme,
-  Map
-} from '../components'
+} from 'components'
 import { Box } from '@chakra-ui/react'
 
 const queryClient = new QueryClient()

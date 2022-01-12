@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react'
 import { useQueries, useQuery, UseQueryOptions } from 'react-query'
-import { getServiceListById, getServiceById, getAddressById } from '../api'
-import { Address, Service, ServicesList } from '../models'
+import { getServiceListById, getServiceById, getAddressById } from 'api'
+import { Address, Service, ServicesList } from 'models'
 
 export interface ServiceListHandler {
   isLoading: boolean
