@@ -24,7 +24,7 @@ export const ServicesListItem = ({ servicesList, ...props }: ServicesListItemPro
         </NextLink>
       </Heading>
       <Text>{servicesList.description}</Text>
-      <HStack spacing='16px' mt='8px'>
+      <HStack spacing='16px' mt='8px' flexWrap={'wrap'}>
         {servicesList.taxonomies?.map((taxonomy, i) => (
           <Text
             key={i}
@@ -35,7 +35,7 @@ export const ServicesListItem = ({ servicesList, ...props }: ServicesListItemPro
             {taxonomy}
           </Text>
         ))}
-      </HStack>
+      </HStack> 
     </LinkBox>
   )
 }

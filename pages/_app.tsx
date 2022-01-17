@@ -16,10 +16,10 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
     <QueryClientProvider client={queryClient}>
       <ChakraProvider theme={theme}>
         <Fonts />
+
         <Navbar />
-        <Box px='176px' py='48px'>
-          <Component {...pageProps} />
-        </Box>
+        <Component {...pageProps} />
+
       </ChakraProvider>
     </QueryClientProvider>
   )
