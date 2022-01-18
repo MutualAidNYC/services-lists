@@ -5,7 +5,6 @@ import {
   useJsApiLoader,
 } from '@react-google-maps/api'
 import { getCenter } from 'geolib'
-import { useEffect, useMemo } from 'react'
 import { Address } from '../../models'
 import { MapMarker } from './MapMarker'
 
@@ -94,18 +93,3 @@ export const Map = ({
   )
 }
 
-{/* <MapMarker
-              opacity={selectedAddress? selectedAddress===address? 1.0 : 0.3 : 1.0}
-              key={address.id}
-              label={addressIdToLabel[address.id]}
-              address={address}            
-            /> */}
-
-            // addresses.map((address) => (
-            //   <MapMarker
-            //     opacity={selectedAddress ? selectedAddress === address ? 1.0 : 0.3 : 1.0}
-            //     key={address.id}
-            //     label={addressIdToLabel[address.id]}
-            //     address={address}
-            //   />
-            // ))

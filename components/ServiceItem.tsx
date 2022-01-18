@@ -9,7 +9,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { Address, Service } from '../models'
+import { Address, Service } from 'models'
 
 interface ServiceProps extends BoxProps {
   service: Service

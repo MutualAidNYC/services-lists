@@ -66,19 +66,7 @@ export const ListPage: NextPage = () => {
         setFilteredAddresses(updatedFilter)
     }, [filteredServices])
 
-    // const updateFilteredAddresses = () => {
-    //     console.log(filteredServices)
-    //     let updatedFilter: Address[] = []
-    //     for (let i = 0; i < filteredServices.length; i++) {
-    //         let temp = getAddress(filteredServices[i])
-    //         if (temp) {
-    //             updatedFilter.push(temp)
-    //         }
-    //     }
-    //     setFilteredAddresses(updatedFilter)
-    //     console.log(updatedFilter)
-    // }
-
+  
     const updateFilters = (serviceToAdd: Service) => {
         let exists = false
         for (let i = 0; i < filteredServices.length; i++) {

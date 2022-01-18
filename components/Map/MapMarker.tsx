@@ -1,7 +1,7 @@
 import { Box, Heading, Text } from '@chakra-ui/react'
 import { InfoWindow, Marker } from '@react-google-maps/api'
 import { useState } from 'react'
-import { Address } from '../../models'
+import { Address } from 'models'
 
 interface MapMarkerProps {
   label: string
