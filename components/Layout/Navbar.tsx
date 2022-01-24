@@ -1,4 +1,4 @@
-import { 
+import {
   Flex,
   HStack,
   Link,
@@ -8,30 +8,26 @@ import {
 export const Navbar = (): JSX.Element => {
   return (
     <Flex alignItems='center' bgColor='darkTeal' color='white' px='32px' py='32px' justifyContent='space-between'>
-      <Image
-        src='/manyc_logo_no_background.png'
-        w='108px'
-        h='96px'
-        alt="Mutual Aid NYC"
-      />
+      <Link href='/'>
+        <Image
+          src='/manyc_logo_no_background.png'
+          w='108px'
+          h='96px'
+          alt="Mutual Aid NYC"
+        />
+      </Link>
       <HStack spacing='32px'>
-        <Link>
-          Services
+        <Link href='/'>
+          Resource Lists
         </Link>
-        <Link>
-          Categories
+        <Link href='https://resources.mutualaid.nyc/'>
+          Resource Directory
         </Link>
-        <Link>
-          Lists
+        <Link href="/create-list">
+          Create New List
         </Link>
-        <Link>
-          Submit A New List
-        </Link>
-        <Link>
-          Organizations
-        </Link>
-        <Link>
-          About
+        <Link href='https://mutualaid.nyc/'>
+          About Mutual Aid NYC
         </Link>
       </HStack>
     </Flex>

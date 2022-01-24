@@ -8,6 +8,7 @@ export interface Service {
   email?: string
   addresses?: string[] // list of IDs linking to locations table
   phoneNumbers?: string[]
+  taxonomyString?: string[]
 }
 
 export interface ServicesList extends ObjectIndices {
@@ -16,9 +17,9 @@ export interface ServicesList extends ObjectIndices {
   description: string
   Services: string[] // list of IDs linking to services table
   ServicesNames: string[]
-  taxonomies: string[]
-  Status: string
-  Owner: string[] // list of IDs linking to organizations table
+  taxonomies?: string[]
+  creator: string
+  createdAt: string
 }
 
 export interface TaxonomyTerm {

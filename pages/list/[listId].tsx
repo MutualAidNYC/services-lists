@@ -1,8 +1,8 @@
 import { Heading, Stack } from '@chakra-ui/react'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { Map, ServiceItem } from '../../components'
-import { ServiceListProvider, useServiceList } from '../../hooks'
+import { Map, ServiceItem } from 'components'
+import { ServiceListProvider, useServiceList } from 'hooks'
 
 export const ListPage: NextPage = () => {
   const router = useRouter()

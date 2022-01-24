@@ -7,6 +7,18 @@ const ServicesClient = new AirtableClient(
   process.env.NEXT_PUBLIC_RESOURCES_BASE_ID ?? '',
 )
 
+export const getServiceListById = (id: string): Promise<ServicesList> => {
+  return ServicesClient.getById<ServicesList>('Services Lists', keys<ServicesList>(), id)
+}
+
+export const getServiceById = (id: string): Promise<Service> => {
+  return ServicesClient.getById<Service>('services', keys<Service>(), id)
+}
+
+export const getAddressById = (id: string): Promise<Address> => {
+  return ServicesClient.getById<Address>('physical_addresses', keys<Address>(), id)
+}
+
 export const getAllServicesLists = (filter?: string): Promise<ServicesList[]> => {
   return ServicesClient.getAll<ServicesList>(
     'Services Lists',
@@ -23,16 +35,12 @@ export const getAllTaxonomies = (filter?: string): Promise<TaxonomyTerm[]> => {
   )
 }
 
-export const getServiceListById = (id: string): Promise<ServicesList> => {
-  return ServicesClient.getById<ServicesList>('Services Lists', keys<ServicesList>(), id)
-}
-
-export const getServiceById = (id: string): Promise<Service> => {
-  return ServicesClient.getById<Service>('services', keys<Service>(), id)
-}
-
-export const getAddressById = (id: string): Promise<Address> => {
-  return ServicesClient.getById<Address>('physical_addresses', keys<Address>(), id)
+export const getAllServices = (filter?: string): Promise<Service[]> => {
+  return ServicesClient.getAll<Service>(
+    'services',
+    keys<Service>(),
+    filter,
+  )
 }
 
 export const createServicesLists = (servicesLists: ServicesList[]): Promise<ServicesList[]> => {

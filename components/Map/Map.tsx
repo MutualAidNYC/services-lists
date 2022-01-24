@@ -5,7 +5,7 @@ import {
   useJsApiLoader,
 } from '@react-google-maps/api'
 import { getCenter } from 'geolib'
-import { Address } from '../../models'
+import { Address } from 'models'
 import { MapMarker } from './MapMarker'
 
 interface MapProps extends GoogleMapProps {

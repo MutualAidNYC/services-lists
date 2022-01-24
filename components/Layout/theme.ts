@@ -18,5 +18,6 @@ export const theme = extendTheme({
     'heading2': '40px',
     'subheading1': '28px',
     'subheading2': '20px',
+    'subheading3': '16px',
   },
 })
