@@ -15,7 +15,8 @@ interface ServicesListItemProps extends LinkBoxProps {
 }
 
 export const ServicesListItem = ({ servicesList, ...props }: ServicesListItemProps): JSX.Element => {
-  const taxonomies = [...new Set(servicesList.taxonomies)]
+  // Airtable taxonomies field contains duplicates
+  const taxonomies = [...new Set(servicesList?.taxonomies)]
 
   return (
     <LinkBox {...props}>
