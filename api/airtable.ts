@@ -44,7 +44,7 @@ export class AirtableClient {
     return objects as T[]
   }
 
-  async createRow<T>(
+  async createRows<T>(
     tableName: string,
     keys: (keyof T)[],
     recordData: any[], 
