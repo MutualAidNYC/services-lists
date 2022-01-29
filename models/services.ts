@@ -6,7 +6,7 @@ export interface Service {
   description: string
   url: string
   email?: string
-  addresses?: string[] // list of IDs linking to locations table
+  address?: string[] // list of IDs linking to locations table
   phoneNumbers?: string[]
   taxonomyString?: string[]
 }

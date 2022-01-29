@@ -47,10 +47,10 @@ export const useServiceList = (listId: string): ServiceListHandler => {
 
   const addressIdToServiceName: Record<string, string> = {}
   const addressQueryOptions = services
-    .filter(service => service?.addresses) // not all services have addresses
+    .filter(service => service?.address) // not all services have addresses
     .flatMap(service => { // need to flatten because some services have multiple addresses
-      service?.addresses?.forEach(addressId => addressIdToServiceName[addressId] = service.name)
-      return service?.addresses
+      service?.address?.forEach(addressId => addressIdToServiceName[addressId] = service.name)
+      return service?.address
     })
     .map(addressId => {
       return {
