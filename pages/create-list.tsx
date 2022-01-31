@@ -1,12 +1,20 @@
-import { Heading, HStack, Stack } from '@chakra-ui/react'
+import { Button, Heading, HStack, Stack } from '@chakra-ui/react'
 import { NextPage } from 'next'
 import Select from 'react-select'
-import { SearchBar, ServiceItem, SortMenu } from 'components'
-import { useCreateList, useTaxonomyFilter } from 'hooks'
+import { SearchBar, ServiceItem, SortMenu, CreateListAlert, CreateListDrawer } from 'components'
+import { CreateListProvider, useCreateList, useTaxonomyFilter } from 'hooks'
 import { Service } from 'models'
+import { useState } from 'react'
 
 export const CreateListPage: NextPage = () => {
-  const { baseServices, services, setServices } = useCreateList()
+  const handler = useCreateList()
+  const {
+    baseServices,
+    services,
+    setServices,
+    onAlertOpen,
+    onDrawerOpen,
+  } = handler
 
   const filterFunction = (service: Service, filters: string[]) =>
     service.taxonomyString?.some(taxonomy => filters.includes(taxonomy)) ?? false
@@ -14,28 +22,42 @@ export const CreateListPage: NextPage = () => {
 
   const sortFieldsTextToVal = {Name: 'name', Description: 'description'}
 
+  const [selectedService, setSelectedService] = useState<Service>()
+
   return (
-    <>
-      <Heading fontSize="heading1" mb="36px">Create a resource list</Heading>
-      <SearchBar baseData={baseServices} setData={setServices} searchFields={['name', 'description']} mb="16px" />
-      <HStack spacing="16px" mb="36px">
-        <SortMenu data={services} setData={setServices} sortFieldsTextToVal={sortFieldsTextToVal} />
-        <Select
-          isMulti
-          isSearchable
-          instanceId="taxonomy-filter"
-          closeMenuOnSelect={false}
-          options={taxonomyOptions}
-          placeholder="Filter by resource category"
-          onChange={e => setFilters(e.map(e => e.value))}
-        />
-      </HStack>
-      <Stack spacing="36px">
+    <CreateListProvider value={handler}>
+      <Stack spacing="32px">
+        <Heading fontSize="heading1">Create a resource list</Heading>
+        <Stack spacing="16px">
+          <SearchBar baseData={baseServices} setData={setServices} searchFields={['name', 'description']} />
+          <HStack spacing="16px">
+            <SortMenu data={services} setData={setServices} sortFieldsTextToVal={sortFieldsTextToVal} />
+            <Select
+              isMulti
+              isSearchable
+              instanceId="taxonomy-filter"
+              closeMenuOnSelect={false}
+              options={taxonomyOptions}
+              placeholder="Filter by resource category"
+              onChange={e => setFilters(e.map(e => e.value))}
+            />
+          </HStack>
+          <Button w="fit-content" onClick={onDrawerOpen}>
+            View your list
+          </Button>
+        </Stack>
         {services.map(service => (
-          <ServiceItem key={service.id} service={service} />
+          <ServiceItem
+            key={`ServiceItem${service.id}`}
+            service={service}
+            onAlertOpen={onAlertOpen}
+            setSelectedService={setSelectedService}
+          />
         ))}
+        <CreateListAlert selectedService={selectedService} />
+        <CreateListDrawer />
       </Stack>
-    </>
+    </CreateListProvider>
   )
 }
 

@@ -7,7 +7,7 @@ import {
 
 export const Navbar = (): JSX.Element => {
   return (
-    <Flex alignItems='center' bgColor='darkTeal' color='white' px='32px' py='32px' justifyContent='space-between'>
+    <Flex alignItems='center' bgColor='darkTeal' color='white' px='32px' py='32px' justify='space-between'>
       <Link href='/'>
         <Image
           src='/manyc_logo_no_background.png'

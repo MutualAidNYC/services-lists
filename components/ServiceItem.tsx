@@ -1,7 +1,9 @@
-import { EmailIcon, LinkIcon, PhoneIcon } from '@chakra-ui/icons'
+import { AddIcon, EmailIcon, LinkIcon, PhoneIcon } from '@chakra-ui/icons'
 import {
   Box,
   BoxProps,
+  Button,
+  Flex,
   Heading,
   HStack,
   LinkBox,
@@ -9,29 +11,62 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { Address, Service } from 'models'
+import { Service } from 'models'
 
-interface ServiceProps extends BoxProps {
+interface AddServiceButtonProps {
+  onAlertOpen: () => void
   service: Service
-  address?: Address
+  setSelectedService: (service: Service) => void
+}
+
+const AddServiceButton = ({
+  onAlertOpen,
+  service,
+  setSelectedService,
+}: AddServiceButtonProps): JSX.Element => {
+  const onAlertOpenWrapper = (): void => {
+    setSelectedService(service)
+    onAlertOpen()
+  }
+
+  return (
+    <Button rightIcon={<AddIcon />} onClick={onAlertOpenWrapper} lineHeight="none">
+      Add to list
+    </Button>
+  )
+}
+
+
+interface ServiceItemProps extends BoxProps {
+  service: Service
+  onAlertOpen?: () => void
+  setSelectedService?: (service: Service) => void
 }
 
 export const ServiceItem = ({
   service,
-  address,
-  ...props
-}: ServiceProps): JSX.Element => {
-
+  onAlertOpen,
+  setSelectedService,
+}: ServiceItemProps): JSX.Element => {
   return (
-    <Box {...props}>
-      <LinkBox mb="16px">
-        <HStack spacing="8px">
-          <LinkIcon />
-          <LinkOverlay href={service.url}>
-            <Heading fontSize="subheading2">{service.name}</Heading>
-          </LinkOverlay>
-        </HStack>
-      </LinkBox>
+    <Box>
+      <Flex mb="16px" alignItems="center" justifyContent="space-between">
+        <LinkBox>
+          <HStack spacing="8px">
+            <LinkIcon />
+            <LinkOverlay href={service.url}>
+              <Heading fontSize="subheading2">{service.name}</Heading>
+            </LinkOverlay>
+          </HStack>
+        </LinkBox>
+        {onAlertOpen && setSelectedService && (
+          <AddServiceButton
+            onAlertOpen={onAlertOpen}
+            service={service}
+            setSelectedService={setSelectedService}
+          />
+        )}
+      </Flex>
       <Stack spacing="8px">
         <Text>{service.description}</Text>
         {service.email && (

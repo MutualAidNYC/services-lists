@@ -1,5 +1,3 @@
-import { ObjectIndices } from '.';
-
 export interface Service {
   id: string
   name: string
@@ -11,7 +9,7 @@ export interface Service {
   taxonomyString?: string[]
 }
 
-export interface ServicesList extends ObjectIndices {
+export interface ServicesList {
   id: string
   name: string
   description: string
