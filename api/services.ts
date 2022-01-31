@@ -38,3 +38,24 @@ export const getAllServices = (filter?: string): Promise<Service[]> => {
     filter,
   )
 }
+
+export const createServicesLists = (servicesLists: ServicesList[], publish: boolean): Promise<ServicesList[]> => {
+  if (servicesLists.length < 1) {
+    return new Promise(() => servicesLists)
+  }
+
+  return ServicesClient.createRows<ServicesList>('Services Lists', keys<ServicesList>(),
+    servicesLists.map(list => {
+      let listObject = {
+        "fields": {
+          "name": list.name,
+          "description": list.description,
+          "Status": ((publish) ? "Published" : "Draft"),
+          "Services": list.Services,
+          "creator": list.creator,
+        }
+      }
+      return listObject
+    })
+  );
+}

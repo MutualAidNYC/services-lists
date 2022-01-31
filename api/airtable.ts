@@ -1,10 +1,10 @@
-import Airtable, { Base } from 'airtable'
+import Airtable,  { Base }  from 'airtable'
 
 export class AirtableClient {
   base: Base
 
   constructor(apiKey: string, baseId: string) {
-    this.base = new Airtable({apiKey: apiKey}).base(baseId)
+    this.base = new Airtable({ apiKey: apiKey }).base(baseId)
   }
 
   async getById<T>(
@@ -23,6 +23,14 @@ export class AirtableClient {
       filterByFormula: filter,
     }).all()
 
+    return records.map(record => record.fields) as T[]
+  }
+
+  async createRows<T extends object>(
+    tableName: string,
+    recordData: any[], 
+  ): Promise<T[]> {
+    const records = await this.base(tableName).create(recordData)
     return records.map(record => record.fields) as T[]
   }
 }

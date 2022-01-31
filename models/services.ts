@@ -2,9 +2,9 @@ export interface Service {
   id: string
   name: string
   description: string
-  address?: string[] // list of IDs linking to locations table
   url: string
   email?: string
+  address?: string[] // list of IDs linking to locations table
   phoneNumbers?: string[]
   taxonomyString?: string[]
 }
