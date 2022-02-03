@@ -10,6 +10,7 @@ export const CreateListDrawer = (): JSX.Element => {
     selectedServices,
     form,
     onSubmit,
+    isCreatingServicesList,
   } = useCreateListContext()
 
   const { formState } = form
@@ -17,7 +18,7 @@ export const CreateListDrawer = (): JSX.Element => {
 
   const createListItems: JSX.Element[] = []
   for (const [serviceId, service] of selectedServices) {
-    createListItems.push(<CreateListItem key={`CreateListItem${serviceId}`} service={service} />)
+    createListItems.push(<CreateListItem key={serviceId} service={service} />)
   }
 
   return (
@@ -60,7 +61,7 @@ export const CreateListDrawer = (): JSX.Element => {
             </Center>
           )}
         </Flex>
-        <Button type="submit" w="fit-content" disabled={!isValid || createListItems.length === 0}>
+        <Button type="submit" w="fit-content" disabled={!isValid || createListItems.length === 0} isLoading={isCreatingServicesList}>
           Submit
         </Button>
       </Flex>

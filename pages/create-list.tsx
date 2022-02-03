@@ -48,7 +48,7 @@ export const CreateListPage: NextPage = () => {
         </Stack>
         {services.map(service => (
           <ServiceItem
-            key={`ServiceItem${service.id}`}
+            key={service.id}
             service={service}
             onAlertOpen={onAlertOpen}
             setSelectedService={setSelectedService}

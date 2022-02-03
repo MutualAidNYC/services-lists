@@ -1,11 +1,12 @@
 import { BaseSyntheticEvent, createContext, useContext, useEffect, useState } from 'react'
-import { useQuery } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 import { createServicesLists, getAllServices } from 'api'
-import { Service, ServicesList } from 'models'
+import { CreateServicesListRequest, Service, ServicesList } from 'models'
 import { useDisclosure } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form'
 import * as yup from 'yup'
+import { useRouter } from 'next/router'
 
 export interface CreateListForm {
   name: string
@@ -37,6 +38,7 @@ interface CreateListHandler {
   removeServiceFromList: (serviceId: string) => void
   form: UseFormReturn<CreateListForm>
   onSubmit: (e?: BaseSyntheticEvent) => Promise<void>
+  isCreatingServicesList: boolean
 }
 
 const CreateListContext = createContext<CreateListHandler>({} as CreateListHandler)
@@ -58,19 +60,6 @@ export const useCreateList = (): CreateListHandler => {
   const [services, setServices] = useState(baseServices)
   useEffect(() => setServices(baseServices), [baseServices])
 
-  /* TODO Replace this with correct create call */
-  var testList = <ServicesList>{}
-  // testList.id - This field is computer by airtable
-  testList.name = "Queens Food Resource List"
-  testList.description = "List for the food resources in or near Queens."
-  testList.Services = ["recM3Q4kaWcsETMPU", "recLyZ0RWwlpvALOP", "recN4JW8eaGvJ1iF2"]
-  //testList.ServicesNames - This field is computer by airtable
-  //testList.taxonomies - This field is computer by airtable
-  testList.creator = "neo"
-  //testList.createdAt - This field is computer by airtable
-  createServicesLists([testList], false)
-  /* End of temp call */
-
   const { isOpen: isAlertOpen, onOpen: onAlertOpen, onClose: onAlertClose } = useDisclosure({ id: 'createListAlert' })
 
   const { isOpen: isDrawerOpen, onOpen: onDrawerOpen, onClose: onDrawerClose } = useDisclosure({ id: 'createListDrawer' })
@@ -79,9 +68,27 @@ export const useCreateList = (): CreateListHandler => {
     mode: 'onBlur',
     resolver: yupResolver(createListSchema),
   })
+
+  const router = useRouter()
+  const {
+    mutate: createServicesListMutate,
+    isLoading: isCreatingServicesList,
+  } = useMutation<ServicesList[], Error, CreateServicesListRequest[]>(
+    createServicesListRequests => createServicesLists(createServicesListRequests), {
+    onSuccess: (data: ServicesList[]) => {
+      router.push(`/list/${data[0].id}`)
+    }
+  })
+
   const { handleSubmit } = form
   const submitHandler: SubmitHandler<CreateListForm> = data => {
-    console.log(data)
+    createServicesListMutate([{
+      name: data.name,
+      description: data.description,
+      creator: data.creator,
+      Status: 'Draft',
+      Services: [...selectedServices.keys()],
+    }])
   }
   const onSubmit = handleSubmit(submitHandler)
 
@@ -110,5 +117,6 @@ export const useCreateList = (): CreateListHandler => {
     removeServiceFromList,
     form,
     onSubmit,
+    isCreatingServicesList,
   }
 }

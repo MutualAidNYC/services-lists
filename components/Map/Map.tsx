@@ -5,6 +5,7 @@ import {
   useJsApiLoader,
 } from '@react-google-maps/api'
 import { getCenter } from 'geolib'
+import { GeolibInputCoordinates } from 'geolib/es/types'
 import { Address } from 'models'
 import { MapMarker } from './MapMarker'
 
@@ -24,7 +25,17 @@ export const Map = ({
       googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_JS_API_KEY ?? '',
   })
 
-  const center = getCenter(addresses.map(address => ({latitude: address.latitude, longitude: address.longitude})))
+  const coords: GeolibInputCoordinates[] = []
+  addresses.forEach(address => {
+    if (address.latitude && address.longitude) {
+      coords.push({
+        lat: address.latitude,
+        lng: address.longitude,
+      })
+    }
+  })
+  const center = getCenter(coords)
+  
 
   return (
     loadError

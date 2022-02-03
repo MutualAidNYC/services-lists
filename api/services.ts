@@ -1,5 +1,5 @@
 import { AirtableClient } from './airtable'
-import { Address, Service, ServicesList, TaxonomyTerm } from '../models'
+import { Address, CreateServicesListRequest, Service, ServicesList, TaxonomyTerm } from '../models'
 
 const ServicesClient = new AirtableClient(
   process.env.NEXT_PUBLIC_RESOURCES_API_KEY ?? '',
@@ -39,23 +39,22 @@ export const getAllServices = (filter?: string): Promise<Service[]> => {
   )
 }
 
-export const createServicesLists = (servicesLists: ServicesList[], publish: boolean): Promise<ServicesList[]> => {
+export const createServicesLists = (servicesLists: CreateServicesListRequest[]): Promise<ServicesList[]> => {
   if (servicesLists.length < 1) {
     return new Promise(() => servicesLists)
   }
 
-  return ServicesClient.createRows<ServicesList>('Services Lists', keys<ServicesList>(),
+  return ServicesClient.createRecords<CreateServicesListRequest, ServicesList>('Services Lists',
     servicesLists.map(list => {
-      let listObject = {
-        "fields": {
-          "name": list.name,
-          "description": list.description,
-          "Status": ((publish) ? "Published" : "Draft"),
-          "Services": list.Services,
-          "creator": list.creator,
+      return {
+        fields: {
+          name: list.name,
+          description: list.description,
+          Status: list.Status,
+          Services: list.Services,
+          creator: list.creator,
         }
       }
-      return listObject
     })
-  );
+  )
 }

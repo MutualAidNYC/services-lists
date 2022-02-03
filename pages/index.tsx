@@ -8,8 +8,9 @@ import { SearchBar, ServicesListItem, SortMenu } from 'components'
 import { useAllServicesLists, useTaxonomyFilter } from 'hooks'
 import Select from 'react-select'
 import { ServicesList } from 'models'
+import { NextPage } from 'next'
 
-export default function Home(): JSX.Element { 
+export const HomePage: NextPage = () => { 
   const {
     baseServicesLists,
     servicesLists,
@@ -51,7 +52,7 @@ export default function Home(): JSX.Element {
       <Stack spacing='36px'>
         {servicesLists.map(servicesList =>
           <ServicesListItem
-            key={servicesList.name}
+            key={servicesList.id}
             servicesList={servicesList}
           />
         )}
@@ -60,3 +61,5 @@ export default function Home(): JSX.Element {
     </>
   )
 }
+
+export default HomePage

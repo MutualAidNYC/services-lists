@@ -25,7 +25,7 @@ export const useAllServicesLists = (): AllServicesListsHandler => {
     data: baseServicesLists,
   } = useQuery<ServicesList[], Error>(
     ['allServicesLists'],
-    () => getAllServicesLists(),
+    () => getAllServicesLists("{Status} = 'Published'"),
     {
       retry: false,
       refetchOnWindowFocus: false,

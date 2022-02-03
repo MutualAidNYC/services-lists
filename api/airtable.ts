@@ -1,5 +1,9 @@
 import Airtable,  { Base }  from 'airtable'
 
+interface AirtableCreateObject<T> {
+  fields: T
+}
+
 export class AirtableClient {
   base: Base
 
@@ -17,7 +21,7 @@ export class AirtableClient {
 
   async getAll<T extends object>(
     tableName: string,
-    filter: string = '',
+    filter = '',
   ): Promise<T[]> {
     const records = await this.base.table(tableName).select({
       filterByFormula: filter,
@@ -26,11 +30,12 @@ export class AirtableClient {
     return records.map(record => record.fields) as T[]
   }
 
-  async createRows<T extends object>(
+  async createRecords<TRequest, TResponse extends object>(
     tableName: string,
-    recordData: any[], 
-  ): Promise<T[]> {
-    const records = await this.base(tableName).create(recordData)
-    return records.map(record => record.fields) as T[]
+    recordObjects: AirtableCreateObject<TRequest>[], 
+  ): Promise<TResponse[]> {
+    const records = await this.base(tableName).create(recordObjects)
+
+    return records.map(record => record.fields) as TResponse[]
   }
 }
