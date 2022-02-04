@@ -1,4 +1,10 @@
-import { BaseSyntheticEvent, createContext, useContext, useEffect, useState } from 'react'
+import {
+  BaseSyntheticEvent,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 import { useMutation, useQuery } from 'react-query'
 import { createServicesLists, getAllServices } from 'api'
 import { CreateServicesListRequest, Service, ServicesList } from 'models'
@@ -41,28 +47,35 @@ interface CreateListHandler {
   isCreatingServicesList: boolean
 }
 
-const CreateListContext = createContext<CreateListHandler>({} as CreateListHandler)
-export const useCreateListContext = (): CreateListHandler => useContext(CreateListContext)
+const CreateListContext = createContext<CreateListHandler>(
+  {} as CreateListHandler
+)
+export const useCreateListContext = (): CreateListHandler =>
+  useContext(CreateListContext)
 export const CreateListProvider = CreateListContext.Provider
 
 export const useCreateList = (): CreateListHandler => {
-  const {
-    isLoading: isLoadingServices,
-    data: baseServices,
-  } = useQuery<Service[], Error>(
-    ['allServices'],
-    () => getAllServices(),
-    {
-      retry: false,
-      refetchOnWindowFocus: false,
-    }
-  )
+  const { isLoading: isLoadingServices, data: baseServices } = useQuery<
+    Service[],
+    Error
+  >(['allServices'], () => getAllServices(), {
+    retry: false,
+    refetchOnWindowFocus: false,
+  })
   const [services, setServices] = useState(baseServices)
   useEffect(() => setServices(baseServices), [baseServices])
 
-  const { isOpen: isAlertOpen, onOpen: onAlertOpen, onClose: onAlertClose } = useDisclosure({ id: 'createListAlert' })
+  const {
+    isOpen: isAlertOpen,
+    onOpen: onAlertOpen,
+    onClose: onAlertClose,
+  } = useDisclosure({ id: 'createListAlert' })
 
-  const { isOpen: isDrawerOpen, onOpen: onDrawerOpen, onClose: onDrawerClose } = useDisclosure({ id: 'createListDrawer' })
+  const {
+    isOpen: isDrawerOpen,
+    onOpen: onDrawerOpen,
+    onClose: onDrawerClose,
+  } = useDisclosure({ id: 'createListDrawer' })
 
   const form = useForm<CreateListForm>({
     mode: 'onBlur',
@@ -74,25 +87,32 @@ export const useCreateList = (): CreateListHandler => {
     mutate: createServicesListMutate,
     isLoading: isCreatingServicesList,
   } = useMutation<ServicesList[], Error, CreateServicesListRequest[]>(
-    createServicesListRequests => createServicesLists(createServicesListRequests), {
-    onSuccess: (data: ServicesList[]) => {
-      router.push(`/list/${data[0].id}`)
+    (createServicesListRequests) =>
+      createServicesLists(createServicesListRequests),
+    {
+      onSuccess: (data: ServicesList[]) => {
+        router.push(`/list/${data[0].id}`)
+      },
     }
-  })
+  )
 
   const { handleSubmit } = form
-  const submitHandler: SubmitHandler<CreateListForm> = data => {
-    createServicesListMutate([{
-      name: data.name,
-      description: data.description,
-      creator: data.creator,
-      Status: 'Draft',
-      Services: [...selectedServices.keys()],
-    }])
+  const submitHandler: SubmitHandler<CreateListForm> = (data) => {
+    createServicesListMutate([
+      {
+        name: data.name,
+        description: data.description,
+        creator: data.creator,
+        Status: 'Draft',
+        Services: [...selectedServices.keys()],
+      },
+    ])
   }
   const onSubmit = handleSubmit(submitHandler)
 
-  const [selectedServices, setSelectedServices] = useState(new Map<string, Service>())
+  const [selectedServices, setSelectedServices] = useState(
+    new Map<string, Service>()
+  )
   const addServiceToList = (service: Service) => {
     setSelectedServices(selectedServices.set(service.id, service))
   }

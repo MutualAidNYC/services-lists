@@ -3,7 +3,7 @@ import { useQuery } from 'react-query'
 import { getAllTaxonomies } from 'api'
 import { TaxonomyTerm } from 'models'
 
-interface TaxonomyFilterHandler{
+interface TaxonomyFilterHandler {
   isLoading: boolean
   taxonomyOptions: { value: string; label: string }[]
   setFilters: (filters: string[]) => void
@@ -12,12 +12,9 @@ interface TaxonomyFilterHandler{
 export const useTaxonomyFilter = <T>(
   baseData: T[],
   setData: (data: T[]) => void,
-  filterFunction: (datum: T, filters: string[]) => boolean,
+  filterFunction: (datum: T, filters: string[]) => boolean
 ): TaxonomyFilterHandler => {
-  const {
-    isLoading,
-    data: taxonomyTerms,
-  } = useQuery<TaxonomyTerm[], Error>(
+  const { isLoading, data: taxonomyTerms } = useQuery<TaxonomyTerm[], Error>(
     ['taxonomies'],
     () => getAllTaxonomies('NOT({services} = BLANK())'),
     {
@@ -26,11 +23,11 @@ export const useTaxonomyFilter = <T>(
     }
   )
   const taxonomyOptions = taxonomyTerms
-    ?.filter(term => term.term !== '-Not Listed')
-    ?.map(term => {
+    ?.filter((term) => term.term !== '-Not Listed')
+    ?.map((term) => {
       return { value: term.term, label: term.term }
     })
-  
+
   const [filters, setFilters] = useState<string[]>([])
   useEffect(() => {
     if (filters.length === 0) {
@@ -38,7 +35,7 @@ export const useTaxonomyFilter = <T>(
       return
     }
 
-    setData(baseData.filter(datum => filterFunction(datum, filters)))
+    setData(baseData.filter((datum) => filterFunction(datum, filters)))
   }, [filters])
 
   return {

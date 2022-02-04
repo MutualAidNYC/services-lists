@@ -26,12 +26,18 @@ export const SearchBar = <T,>({
       return
     }
 
-    setData(baseData.filter(
-      datum => searchFields.some(field => (datum[field as keyof T] as unknown as string).toLowerCase().includes(query.toLowerCase()))
-    ))
+    setData(
+      baseData.filter((datum) =>
+        searchFields.some((field) =>
+          (datum[field as keyof T] as unknown as string)
+            .toLowerCase()
+            .includes(query.toLowerCase())
+        )
+      )
+    )
   }
 
-  const onEnter = (event: KeyboardEvent<HTMLInputElement>)  => {
+  const onEnter = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       handleSearch(query)
     }
@@ -39,14 +45,12 @@ export const SearchBar = <T,>({
 
   return (
     <InputGroup {...props}>
-      <InputLeftElement
-        pointerEvents="none"
-      >
+      <InputLeftElement pointerEvents="none">
         <SearchIcon />
       </InputLeftElement>
       <Input
-        onChange={e => setQuery(e.target.value)}
-        onKeyDown={e => onEnter(e)}
+        onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={(e) => onEnter(e)}
       />
     </InputGroup>
   )

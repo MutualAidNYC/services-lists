@@ -1,11 +1,7 @@
 import { AppProps } from 'next/app'
 import { ChakraProvider } from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import {
-  Fonts,
-  Navbar,
-  theme,
-} from 'components'
+import { Fonts, Navbar, theme } from 'components'
 import { Box } from '@chakra-ui/react'
 
 const queryClient = new QueryClient()
@@ -16,7 +12,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
       <ChakraProvider theme={theme}>
         <Fonts />
         <Navbar />
-        <Box px='176px' py='48px'>
+        <Box px="176px" py="48px">
           <Component {...pageProps} />
         </Box>
       </ChakraProvider>

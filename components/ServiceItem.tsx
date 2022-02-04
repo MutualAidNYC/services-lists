@@ -30,12 +30,15 @@ const AddServiceButton = ({
   }
 
   return (
-    <Button rightIcon={<AddIcon />} onClick={onAlertOpenWrapper} lineHeight="none">
+    <Button
+      rightIcon={<AddIcon />}
+      onClick={onAlertOpenWrapper}
+      lineHeight="none"
+    >
       Add to list
     </Button>
   )
 }
-
 
 interface ServiceItemProps extends BoxProps {
   service: Service
@@ -91,16 +94,9 @@ export const ServiceItem = ({
         )}
         {service.taxonomyString && (
           <HStack>
-            <Heading fontSize="subheading3">
-              Resource categories:
-            </Heading>
+            <Heading fontSize="subheading3">Resource categories:</Heading>
             {service.taxonomyString.map((taxonomy, i) => (
-              <Text
-                key={i}
-                bgColor="lightPink"
-                borderRadius="8px"
-                p="8px"
-              >
+              <Text key={i} bgColor="lightPink" borderRadius="8px" p="8px">
                 {taxonomy}
               </Text>
             ))}

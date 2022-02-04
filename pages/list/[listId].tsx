@@ -20,12 +20,10 @@ export const ListPage: NextPage = () => {
     <ServiceListProvider value={serviceListHandler}>
       <Heading mb="36px">{listName}</Heading>
       <Stack spacing="36px" mb="36px">
-        {!isLoading && services.map(service =>
-          <ServiceItem
-            key={service.id}
-            service={service}
-          />
-        )}
+        {!isLoading &&
+          services.map((service) => (
+            <ServiceItem key={service.id} service={service} />
+          ))}
       </Stack>
       {addresses.length > 0 && (
         <Map

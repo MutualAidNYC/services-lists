@@ -1,4 +1,4 @@
-export type Status = "Draft" | "Published"
+export type Status = 'Draft' | 'Published'
 
 export interface Service {
   id: string

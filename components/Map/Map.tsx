@@ -1,5 +1,5 @@
 import { Spinner, Text } from '@chakra-ui/react'
-import { 
+import {
   GoogleMap,
   GoogleMapProps,
   useJsApiLoader,
@@ -22,11 +22,11 @@ export const Map = ({
   ...props
 }: MapProps): JSX.Element => {
   const { isLoaded, loadError } = useJsApiLoader({
-      googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_JS_API_KEY ?? '',
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_JS_API_KEY ?? '',
   })
 
   const coords: GeolibInputCoordinates[] = []
-  addresses.forEach(address => {
+  addresses.forEach((address) => {
     if (address.latitude && address.longitude) {
       coords.push({
         lat: address.latitude,
@@ -35,33 +35,30 @@ export const Map = ({
     }
   })
   const center = getCenter(coords)
-  
 
-  return (
-    loadError
-    ? <Text>{loadError}</Text>
-    : isLoaded 
-      ? <GoogleMap
-          mapContainerStyle={{
-            height: "400px",
-            width: "67%",
-          }}
-          center={
-            center
-              ? {lat: center.latitude, lng: center.longitude}
-              : defaultCenter
-          }
-          zoom={11}
-          {...props}
-        >
-          {addresses.map(address => (
-            <MapMarker
-              key={address.id}
-              label={addressIdToLabel[address.id]}
-              address={address} 
-            />
-          ))}
-        </GoogleMap>
-      : <Spinner />
+  return loadError ? (
+    <Text>{loadError}</Text>
+  ) : isLoaded ? (
+    <GoogleMap
+      mapContainerStyle={{
+        height: '400px',
+        width: '67%',
+      }}
+      center={
+        center ? { lat: center.latitude, lng: center.longitude } : defaultCenter
+      }
+      zoom={11}
+      {...props}
+    >
+      {addresses.map((address) => (
+        <MapMarker
+          key={address.id}
+          label={addressIdToLabel[address.id]}
+          address={address}
+        />
+      ))}
+    </GoogleMap>
+  ) : (
+    <Spinner />
   )
 }
