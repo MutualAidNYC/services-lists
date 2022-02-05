@@ -34,9 +34,9 @@ export const useTaxonomyFilter = <T>(
       setData(baseData)
       return
     }
-
+    console.log('taxonomy filter')
     setData(baseData.filter((datum) => filterFunction(datum, filters)))
-  }, [filters])
+  }, [filters, baseData, setData, filterFunction])
 
   return {
     isLoading,

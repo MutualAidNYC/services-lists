@@ -42,7 +42,9 @@ export const createServicesLists = (
   servicesLists: CreateServicesListRequest[]
 ): Promise<ServicesList[]> => {
   if (servicesLists.length < 1) {
-    return new Promise((resolve) => {resolve([])})
+    return new Promise((resolve) => {
+      resolve([])
+    })
   }
 
   return ServicesClient.createRecords<CreateServicesListRequest, ServicesList>(

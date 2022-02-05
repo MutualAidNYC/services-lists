@@ -49,7 +49,7 @@ export const SortMenu = <T,>({
       )
       setData(sortedData)
     }
-  }, [order, sortFields])
+  }, [order, sortFields, data, setData])
 
   return (
     <Menu isLazy closeOnSelect={false}>

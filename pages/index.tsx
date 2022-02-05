@@ -4,18 +4,22 @@ import { useAllServicesLists, useTaxonomyFilter } from 'hooks'
 import Select from 'react-select'
 import { ServicesList } from 'models'
 import { NextPage } from 'next'
+import { useCallback } from 'react'
 
 export const HomePage: NextPage = () => {
   const { baseServicesLists, servicesLists, setServicesLists } =
     useAllServicesLists()
 
-  const filterFunction = (servicesList: ServicesList, filters: string[]) =>
-    servicesList.taxonomies?.some((taxonomy) => filters.includes(taxonomy)) ??
-    false
+  const filterByTaxonomies = useCallback(
+    (servicesList: ServicesList, filters: string[]) =>
+      servicesList.taxonomies?.some((taxonomy) => filters.includes(taxonomy)) ??
+      false,
+    []
+  )
   const { taxonomyOptions, setFilters } = useTaxonomyFilter(
     baseServicesLists,
     setServicesLists,
-    filterFunction
+    filterByTaxonomies
   )
 
   const sortFieldsTextToVal = { Name: 'name', Description: 'description' }
@@ -42,6 +46,7 @@ export const HomePage: NextPage = () => {
           <Select
             isMulti
             isSearchable
+            instanceId="taxonomySelect"
             closeMenuOnSelect={false}
             placeholder="Filter By"
             options={taxonomyOptions}

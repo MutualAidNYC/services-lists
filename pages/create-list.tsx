@@ -10,20 +10,23 @@ import {
 } from 'components'
 import { CreateListProvider, useCreateList, useTaxonomyFilter } from 'hooks'
 import { Service } from 'models'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 export const CreateListPage: NextPage = () => {
   const handler = useCreateList()
   const { baseServices, services, setServices, onAlertOpen, onDrawerOpen } =
     handler
 
-  const filterFunction = (service: Service, filters: string[]) =>
-    service.taxonomyString?.some((taxonomy) => filters.includes(taxonomy)) ??
-    false
+  const filterByTaxonomies = useCallback(
+    (service: Service, filters: string[]) =>
+      service.taxonomyString?.some((taxonomy) => filters.includes(taxonomy)) ??
+      false,
+    []
+  )
   const { taxonomyOptions, setFilters } = useTaxonomyFilter(
     baseServices,
     setServices,
-    filterFunction
+    filterByTaxonomies
   )
 
   const sortFieldsTextToVal = { Name: 'name', Description: 'description' }
@@ -49,7 +52,7 @@ export const CreateListPage: NextPage = () => {
             <Select
               isMulti
               isSearchable
-              instanceId="taxonomy-filter"
+              instanceId="taxonomySelect"
               closeMenuOnSelect={false}
               options={taxonomyOptions}
               placeholder="Filter by resource category"
