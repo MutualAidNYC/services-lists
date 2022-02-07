@@ -49,6 +49,8 @@ export const SearchBar = <T,>({
         <SearchIcon />
       </InputLeftElement>
       <Input
+        border="2px"
+        borderColor="black"
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={(e) => onEnter(e)}
       />
