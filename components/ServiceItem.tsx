@@ -1,7 +1,9 @@
-import { EmailIcon, LinkIcon, PhoneIcon } from '@chakra-ui/icons'
+import { AddIcon, EmailIcon, LinkIcon, PhoneIcon } from '@chakra-ui/icons'
 import {
   Box,
   BoxProps,
+  Button,
+  Flex,
   Heading,
   HStack,
   LinkBox,
@@ -9,35 +11,114 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { Address, Service } from 'models'
+import { Service } from 'models'
 
-interface ServiceProps extends BoxProps {
+interface AddServiceButtonProps {
+  onAlertOpen: () => void
   service: Service
-  address?: Address
+  setSelectedService: (service: Service) => void
+}
+
+const AddServiceButton = ({
+  onAlertOpen,
+  service,
+  setSelectedService,
+}: AddServiceButtonProps): JSX.Element => {
+  const onAlertOpenWrapper = (): void => {
+    setSelectedService(service)
+    onAlertOpen()
+  }
+
+  return (
+    <Button rightIcon={<AddIcon />} onClick={onAlertOpenWrapper} lineHeight="none">
+      Add to list
+    </Button>
+  )
+}
+
+
+interface ServiceItemProps extends BoxProps {
+  service: Service
+  onAlertOpen?: () => void
+  setSelectedService?: (service: Service) => void
 }
 
 export const ServiceItem = ({
   service,
-  address,
-  ...props
-}: ServiceProps): JSX.Element => {
-
-
-
-
-
+  onAlertOpen,
+  setSelectedService,
+}: ServiceItemProps): JSX.Element => {
   return (
-    <Box {...props}>
-      <Box boxShadow='md' rounded='lg' p='8' _hover={{ border: '2px', borderColor: 'teal' }} >
-        <LinkBox mb="16px">
+    <Box>
+      <Flex mb="16px" alignItems="center" justifyContent="space-between">
+        <LinkBox>
           <HStack spacing="8px">
             <LinkIcon />
-            <LinkOverlay href={service.url} _hover={{ textDecoration: 'underline' }}>
-              <Heading fontSize="subheading2"   >{service.name}</Heading>
+            <LinkOverlay href={service.url}>
+              <Heading fontSize="subheading2">{service.name}</Heading>
             </LinkOverlay>
           </HStack>
         </LinkBox>
-        <Stack spacing="8px">
+        {onAlertOpen && setSelectedService && (
+          <AddServiceButton
+            onAlertOpen={onAlertOpen}
+            service={service}
+            setSelectedService={setSelectedService}
+          />
+        )}
+      </Flex>
+      <Stack spacing="8px">
+        <Text>{service.description}</Text>
+        {service.email && (
+          <LinkBox>
+            <HStack spacing="8px">
+              <EmailIcon />
+              <LinkOverlay href={`mailto:${service.email}`}>
+                {service.email}
+              </LinkOverlay>
+            </HStack>
+          </LinkBox>
+        )}
+        {service.phoneNumbers && (
+          <LinkBox>
+            <HStack spacing="8px">
+              <PhoneIcon />
+              <LinkOverlay href={`tel:${service.phoneNumbers[0]}`}>
+                {service.phoneNumbers[0]}
+              </LinkOverlay>
+            </HStack>
+          </LinkBox>
+        )}
+        {service.taxonomyString && (
+          <HStack>
+            <Heading fontSize="subheading3">
+              Resource categories:
+            </Heading>
+            {service.taxonomyString.map((taxonomy, i) => (
+              <Text
+                key={i}
+                bgColor="lightPink"
+                borderRadius="8px"
+                p="8px"
+              >
+                {taxonomy}
+              </Text>
+
+            ))}
+          </HStack>)}
+
+
+
+      </Stack>
+    </Box>
+
+  )
+}
+
+
+/**
+
+ <Stack spacing="8px">
           {service.address && (
             <LinkBox>
               <HStack spacing="8px">
@@ -69,11 +150,21 @@ export const ServiceItem = ({
               </HStack>
             </LinkBox>
           )}
-
-        </Stack>
-      </Box>
-
-    </Box>
-  )
-}
+          {service.taxonomyString && (
+          <HStack>
+            <Heading fontSize="subheading3">
+              Resource categories:
+            </Heading>
+            {service.taxonomyString.map((taxonomy, i) => (
+              <Text
+                key={i}
+                bgColor="lightPink"
+                borderRadius="8px"
+                p="8px"
+              >
+                {taxonomy}
+              </Text>
+            ))}
+            </HStack>
+ */
 

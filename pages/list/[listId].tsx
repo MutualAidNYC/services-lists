@@ -19,7 +19,7 @@ export const ListPage: NextPage = () => {
     const [filteredAddresses, setFilteredAddresses] = useState<Address[]>([])
     const [filteredServices, setFilteredServices] = useState<Service[]>([])
 
-    
+
     const {
         isLoading,
         listName,
@@ -66,7 +66,7 @@ export const ListPage: NextPage = () => {
         setFilteredAddresses(updatedFilter)
     }, [filteredServices])
 
-  
+
     const updateFilters = (serviceToAdd: Service) => {
         let exists = false
         for (let i = 0; i < filteredServices.length; i++) {
@@ -100,9 +100,9 @@ export const ListPage: NextPage = () => {
 
                             {filteredServices.map((service) => {
                                 return (
-                                    <Box display='flex' flexDirection='row' justifyContent={'space-between'} key={service.id} border='2px' borderRadius={8} borderColor='gray.500' mx={1} px={1}  bg='teal.600' _hover={{background:'teal.500'}} >
+                                    <Box display='flex' flexDirection='row' justifyContent={'space-between'} key={service.id} border='2px' borderRadius={8} borderColor='gray.500' mx={1} px={1} bg='teal.600' _hover={{ background: 'teal.500' }} >
                                         {adjustName(service.name, 16)}
-                                        <CloseIcon mx={2} w={4} h={4} _hover={{color:'red'}} onClick={() => { removeFilter(service) }} pr={1} alignSelf='center' cursor='pointer' />
+                                        <CloseIcon mx={2} w={4} h={4} _hover={{ color: 'red' }} onClick={() => { removeFilter(service) }} pr={1} alignSelf='center' cursor='pointer' />
                                     </Box>
                                 )
                             })}
@@ -110,7 +110,7 @@ export const ListPage: NextPage = () => {
                                 <CloseIcon onClick={() => {
                                     setFilteredServices([])
                                     // updateFilteredAddresses
-                                }}  w={3} h={3} _hover={{color:'red'}} cursor='pointer' />
+                                }} w={3} h={3} _hover={{ color: 'red' }} cursor='pointer' />
                             </Box>
                         </Box>
 
@@ -129,11 +129,9 @@ export const ListPage: NextPage = () => {
                             }} >
 
                             {!isLoading && services.map((service) =>
-                                <Box onMouseOver={() => setSelectedAddress(getAddress(service))} onClick={() => updateFilters(service)} w='100%' cursor='pointer' >
+                                <Box onMouseOver={() => setSelectedAddress(getAddress(service))} onClick={() => updateFilters(service)} w='100%' cursor='pointer' key={service.id}>
                                     <ServiceItem
-                                        key={service.id}
                                         service={service}
-                                        address={getAddress(service)}
                                     />
                                 </Box>
                             )}
@@ -151,7 +149,7 @@ export const ListPage: NextPage = () => {
                             addresses={addresses}
                             selectedAddress={selectedAddress}
                             filteredAddreses={filteredAddresses}
-                           
+
                         />
                     </Center>
                 </HStack >
@@ -168,7 +166,7 @@ export const ListPage: NextPage = () => {
                             addresses={addresses}
                             selectedAddress={selectedAddress}
                             filteredAddreses={filteredAddresses}
-                            
+
                         />
                     </Center>
 

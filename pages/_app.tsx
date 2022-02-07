@@ -1,11 +1,10 @@
-import { AppProps } from 'next/app'
 import { ChakraProvider } from '@chakra-ui/react'
+import { Fonts, Navbar, theme } from 'components/Layout'
+import { AppProps } from 'next/app'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import {
-  Fonts,
-  Navbar,
-  theme,
-} from 'components'
+
+
+
 
 const queryClient = new QueryClient()
 

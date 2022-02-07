@@ -6,14 +6,11 @@ import {
   Image,
   Box,
   DrawerOverlay,
-  Button,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  Input,
+
   useDisclosure,
   VStack
 } from '@chakra-ui/react'
@@ -23,19 +20,20 @@ export const Navbar = (): JSX.Element => {
 
 
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const btnRef = React.useRef()
 
   return (
-    <Flex bgColor='darkTeal' color='white' justifyContent='space-between' alignItems='center' >
-      <Image
-        src='/manyc_logo_no_background.png'
-        w='108px'
-        h='96px'
-        alt="Mutual Aid NYC"
-      />
+    <Flex alignItems='center' bgColor='darkTeal' color='white' px='32px' py='32px' justify='space-between'>
+      <Link href='/'>
+        <Image
+          src='/manyc_logo_no_background.png'
+          w='108px'
+          h='96px'
+          alt="Mutual Aid NYC"
+        />
+      </Link>
       <HStack spacing='32px' pr={4} display={{ base: 'none', md: 'inherit' }}>
-        <Link>
-          Services
+        <Link href='/'>
+          Resource Lists
         </Link>
         <Link href='https://resources.mutualaid.nyc/'>
           Resource Directory
@@ -58,7 +56,7 @@ export const Navbar = (): JSX.Element => {
         >
           <DrawerOverlay />
           <DrawerContent bgColor='darkTeal' color='white'>
-            
+
             <DrawerCloseButton />
 
             <DrawerBody display='flex'  >

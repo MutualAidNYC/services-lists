@@ -38,13 +38,14 @@ export const SearchBar = <T,>({
   }
 
   return (
-    <InputGroup {...props}>
+   
+      <InputGroup {...props}  >
       <InputLeftElement
         pointerEvents="none"
       >
         <SearchIcon />
       </InputLeftElement>
-      <Input
+      <Input border='2px' borderColor='black'
         onChange={e => setQuery(e.target.value)}
         onKeyDown={e => onEnter(e)}
       />
