@@ -1,3 +1,4 @@
+import { ChevronDownIcon } from '@chakra-ui/icons'
 import {
   Button,
   Menu,
@@ -44,7 +45,7 @@ export const SortMenu = <T,>({
 
   return (
     <Menu isLazy closeOnSelect={false}>
-      <MenuButton as={Button} {...props}>Sort by</MenuButton> 
+      <MenuButton as={Button} {...props} variant='outline' borderRadius='16' fontWeight='normal' color='gray.600' borderColor='gray.400' >Sort by <ChevronDownIcon />  </MenuButton> 
       <MenuList w="fit-content">
         <MenuOptionGroup
           title="Order"

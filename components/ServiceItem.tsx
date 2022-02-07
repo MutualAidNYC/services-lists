@@ -103,10 +103,68 @@ export const ServiceItem = ({
               >
                 {taxonomy}
               </Text>
+
             ))}
-          </HStack>
-        )}
+          </HStack>)}
+
+
+
       </Stack>
     </Box>
+
   )
 }
+
+
+/**
+
+ <Stack spacing="8px">
+          {service.address && (
+            <LinkBox>
+              <HStack spacing="8px">
+
+                <Text _hover={{ textDecoration: 'underline' }} >
+                  {address?.address_1}
+                </Text>
+              </HStack>
+            </LinkBox>
+          )}
+          <Text>{service.description}</Text>
+          {service.email && (
+            <LinkBox>
+              <HStack spacing="8px">
+                <EmailIcon />
+                <LinkOverlay href={`mailto:${service.email}`} _hover={{ textDecoration: 'underline' }} >
+                  {service.email}
+                </LinkOverlay>
+              </HStack>
+            </LinkBox>
+          )}
+          {service.phoneNumbers && (
+            <LinkBox>
+              <HStack spacing="8px">
+                <PhoneIcon />
+                <LinkOverlay href={`tel:${service.phoneNumbers[0]}`} _hover={{ textDecoration: 'underline' }}>
+                  {service.phoneNumbers[0]}
+                </LinkOverlay>
+              </HStack>
+            </LinkBox>
+          )}
+          {service.taxonomyString && (
+          <HStack>
+            <Heading fontSize="subheading3">
+              Resource categories:
+            </Heading>
+            {service.taxonomyString.map((taxonomy, i) => (
+              <Text
+                key={i}
+                bgColor="lightPink"
+                borderRadius="8px"
+                p="8px"
+              >
+                {taxonomy}
+              </Text>
+            ))}
+            </HStack>
+ */
+
