@@ -22,9 +22,7 @@ export const Alert = ({
       <AlertDialogOverlay />
       <AlertDialogContent>
         <AlertDialogCloseButton />
-        <AlertDialogBody padding="32px">
-          {children}
-        </AlertDialogBody>
+        <AlertDialogBody padding="32px">{children}</AlertDialogBody>
       </AlertDialogContent>
     </AlertDialog>
   )

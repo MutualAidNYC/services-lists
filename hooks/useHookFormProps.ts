@@ -1,11 +1,19 @@
-import { FieldValues, UseFormRegisterReturn, UseFormReturn, Path} from 'react-hook-form'
+import {
+  FieldValues,
+  UseFormRegisterReturn,
+  UseFormReturn,
+  Path,
+} from 'react-hook-form'
 
 interface HookFormProps extends UseFormRegisterReturn {
   isInvalid: boolean
   error: string
 }
 
-export const useHookFormProps = <T extends FieldValues>(name: Path<T>, form: UseFormReturn<T>): HookFormProps => {
+export const useHookFormProps = <T extends FieldValues>(
+  name: Path<T>,
+  form: UseFormReturn<T>
+): HookFormProps => {
   const { register, formState } = form
   const { errors } = formState
 

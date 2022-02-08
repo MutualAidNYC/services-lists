@@ -3,9 +3,6 @@ import { Fonts, Navbar, theme } from 'components/Layout'
 import { AppProps } from 'next/app'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
-
-
-
 const queryClient = new QueryClient()
 
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
@@ -16,7 +13,6 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
 
         <Navbar />
         <Component {...pageProps} />
-
       </ChakraProvider>
     </QueryClientProvider>
   )

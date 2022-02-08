@@ -6,12 +6,14 @@ import { Address } from 'models'
 interface MapMarkerProps {
   label: string
   address: Address
-  opacity?: number | undefined,
-  
-
+  opacity?: number | undefined
 }
 
-export const MapMarker = ({ label, address, opacity }: MapMarkerProps): JSX.Element => {
+export const MapMarker = ({
+  label,
+  address,
+  opacity,
+}: MapMarkerProps): JSX.Element => {
   const position = {
     lat: Number(address.latitude),
     lng: Number(address.longitude),
@@ -31,19 +33,21 @@ export const MapMarker = ({ label, address, opacity }: MapMarkerProps): JSX.Elem
         position={position}
         onClick={() => setShowInfoWindow(true)}
       />
-      {showInfoWindow &&
+      {showInfoWindow && (
         <InfoWindow
           position={position}
           anchor={marker}
           onCloseClick={() => setShowInfoWindow(false)}
         >
           <Box w="240px">
-            <Heading fontSize="16px" mb="8px">{label}</Heading>
+            <Heading fontSize="16px" mb="8px">
+              {label}
+            </Heading>
             <Text>{address.address_1}</Text>
             <Text>{`${address.city}, ${address.state_province} ${address.postal_code}`}</Text>
           </Box>
         </InfoWindow>
-      }
+      )}
     </>
   )
 }

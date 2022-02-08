@@ -14,28 +14,34 @@ interface ServicesListItemProps extends LinkBoxProps {
   servicesList: ServicesList
 }
 
-export const ServicesListItem = ({ servicesList, ...props }: ServicesListItemProps): JSX.Element => {
+export const ServicesListItem = ({
+  servicesList,
+  ...props
+}: ServicesListItemProps): JSX.Element => {
   // Airtable taxonomies field contains duplicates
   const taxonomies = [...new Set(servicesList?.taxonomies)]
 
   return (
     <LinkBox {...props}>
-      <Heading fontSize='subheading2' mb='16px'>
-        <NextLink href={`/list/${encodeURIComponent(servicesList.id)}`} passHref>
-          <LinkOverlay>
-            {servicesList.name}
-          </LinkOverlay>
+      <Heading fontSize="subheading2" mb="16px">
+        <NextLink
+          href={`/list/${encodeURIComponent(servicesList.id)}`}
+          passHref
+        >
+          <LinkOverlay>{servicesList.name}</LinkOverlay>
         </NextLink>
       </Heading>
       <Text>{servicesList.description}</Text>
-      <Text>{`Created by ${servicesList.creator} on ${formatDate(servicesList.createdAt)}`}</Text>
-      <Wrap spacing='16px' mt='8px' align="center">
+      <Text>{`Created by ${servicesList.creator} on ${formatDate(
+        servicesList.createdAt
+      )}`}</Text>
+      <Wrap spacing="16px" mt="8px" align="center">
         {taxonomies.map((taxonomy, i) => (
           <Text
             key={i}
-            bgColor='lightPink'
-            borderRadius='15px'
-            p='8px'
+            bgColor="lightPink"
+            borderRadius="15px"
+            p="8px"
             maxW="240px"
             h="fit-content"
           >
