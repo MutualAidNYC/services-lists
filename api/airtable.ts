@@ -1,8 +1,4 @@
-import Airtable, { Base } from 'airtable'
-
-interface AirtableCreateObject<T> {
-  fields: T
-}
+import Airtable,  { Base }  from 'airtable'
 
 export class AirtableClient {
   base: Base
@@ -11,28 +7,30 @@ export class AirtableClient {
     this.base = new Airtable({ apiKey: apiKey }).base(baseId)
   }
 
-  async getById<T>(tableName: string, id: string): Promise<T> {
+  async getById<T>(
+    tableName: string,
+    id: string,
+  ): Promise<T> {
     const record = await this.base.table(tableName).find(id)
     return record.fields as unknown as T
   }
 
-  async getAll<T extends object>(tableName: string, filter = ''): Promise<T[]> {
-    const records = await this.base
-      .table(tableName)
-      .select({
-        filterByFormula: filter,
-      })
-      .all()
+  async getAll<T extends object>(
+    tableName: string,
+    filter: string = '',
+  ): Promise<T[]> {
+    const records = await this.base.table(tableName).select({
+      filterByFormula: filter,
+    }).all()
 
-    return records.map((record) => record.fields) as T[]
+    return records.map(record => record.fields) as T[]
   }
 
-  async createRecords<TRequest, TResponse extends object>(
+  async createRows<T extends object>(
     tableName: string,
-    recordObjects: AirtableCreateObject<TRequest>[]
-  ): Promise<TResponse[]> {
-    const records = await this.base(tableName).create(recordObjects)
-
-    return records.map((record) => record.fields) as TResponse[]
+    recordData: any[], 
+  ): Promise<T[]> {
+    const records = await this.base(tableName).create(recordData)
+    return records.map(record => record.fields) as T[]
   }
 }

@@ -14,10 +14,10 @@ export const theme = extendTheme({
     heading: 'Neue Haas Grotesk Display Pro',
   },
   fontSizes: {
-    heading1: '48px',
-    heading2: '40px',
-    subheading1: '28px',
-    subheading2: '20px',
-    subheading3: '16px',
+    'heading1': '48px',
+    'heading2': '40px',
+    'subheading1': '28px',
+    'subheading2': '20px',
+    'subheading3': '16px',
   },
 })

@@ -31,46 +31,27 @@ export const SortMenu = <T,>({
       return
     }
 
-    const sortFieldsArray =
-      typeof sortFields === 'string' ? [sortFields] : sortFields
+    const sortFieldsArray = typeof sortFields === 'string' ? [sortFields] : sortFields
     if (order === 'asc') {
       const sortedData = [...data]
-      sortFieldsArray.forEach((field) =>
-        sortedData.sort((a, b) =>
-          a[field as keyof T] > b[field as keyof T] ? 1 : -1
-        )
-      )
+      sortFieldsArray.forEach(field => sortedData.sort((a, b) => a[field as keyof T] > b[field as keyof T] ? 1 : -1))
       setData(sortedData)
     } else {
       const sortedData = [...data]
-      sortFieldsArray.forEach((field) =>
-        sortedData.sort((a, b) =>
-          a[field as keyof T] < b[field as keyof T] ? 1 : -1
-        )
-      )
+      sortFieldsArray.forEach(field => sortedData.sort((a, b) => a[field as keyof T] < b[field as keyof T] ? 1 : -1))
       setData(sortedData)
     }
-  }, [order, sortFields, data, setData])
+  }, [order, sortFields])
 
   return (
     <Menu isLazy closeOnSelect={false}>
-      <MenuButton
-        as={Button}
-        {...props}
-        variant="outline"
-        borderRadius="16"
-        fontWeight="normal"
-        color="gray.600"
-        borderColor="gray.400"
-      >
-        Sort by <ChevronDownIcon />{' '}
-      </MenuButton>
+      <MenuButton as={Button} {...props} variant='outline' borderRadius='16' fontWeight='normal' color='gray.600' borderColor='gray.400' >Sort by <ChevronDownIcon />  </MenuButton> 
       <MenuList w="fit-content">
         <MenuOptionGroup
           title="Order"
           type="radio"
           defaultValue="asc"
-          onChange={(e) => setOrder(e)}
+          onChange={e => setOrder(e)}
         >
           <MenuItemOption value="asc">Ascending</MenuItemOption>
           <MenuItemOption value="desc">Descending</MenuItemOption>
@@ -79,7 +60,7 @@ export const SortMenu = <T,>({
         <MenuOptionGroup
           title="Sort by"
           type="checkbox"
-          onChange={(e) => setSortFields(e)}
+          onChange={e => setSortFields(e)}
         >
           {Object.keys(sortFieldsTextToVal).map((text, i) => (
             <MenuItemOption key={i} value={sortFieldsTextToVal[text]}>

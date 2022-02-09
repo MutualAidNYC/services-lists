@@ -1,9 +1,8 @@
 import { Global } from '@emotion/react'
 
 export const Fonts = (): JSX.Element => {
-  return (
-    <Global
-      styles={`
+  return <Global 
+    styles={`
       @font-face {
         font-family: 'Neue Haas Grotesk Display Pro';
         src: url('../fonts/NeueHaasDisplay-Roman.eot');
@@ -24,7 +23,6 @@ export const Fonts = (): JSX.Element => {
         font-weight: bold;
         font-style: normal;
       }
-    `}
-    />
-  )
+    `} 
+  />
 }

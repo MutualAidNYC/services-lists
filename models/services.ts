@@ -24,6 +24,7 @@ export interface ServicesList extends CreateServicesListRequest {
   ServicesNames: string[]
   taxonomies?: string[]
   createdAt: string
+  status: string
 }
 
 export interface TaxonomyTerm {
