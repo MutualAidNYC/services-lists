@@ -30,15 +30,14 @@ export default function Home(): JSX.Element {
   const sortFieldsTextToVal = { Name: 'name', Description: 'description' }
 
   const [maxAmountDisplayed, setMaxAmountDisplayed] = useState(10)
-  const [numResultsLoaded, setnumResultsLoaded] = useState(0)
 
   const displayAmountOptions = [
-    { value: 5, label: '5' }, 
-    { value: 10, label: '10' }, 
+    { value: 5, label: '5' },
+    { value: 10, label: '10' },
     { value: 25, label: '25' },
     { value: 50, label: '50' },
     { value: 100, label: '100' },
-    { value: servicesLists.length , label: 'All' }
+    { value: servicesLists.length, label: 'All' }
   ]
 
 
@@ -92,13 +91,14 @@ export default function Home(): JSX.Element {
       <Box>
         <PaginatedList
           list={servicesLists}
+          useMinimalControls={true}
           itemsPerPage={maxAmountDisplayed}
           renderList={(list) => (
             <>
               {
                 list.map((item, i) => {
                   return (
-                    <Box key={i} w='100%' maxW='6xl' pl={{ base: 4, sm: 16, md: 32 }} >
+                    <Stack alignItems='left' key={i} w='100%' maxW='6xl' pl={{ base: 4, sm: 16, md: 32 }} >
                       <ServicesListItem
                         pr={{ base: '2px', sm: '8px' }}
                         w='100%'
@@ -106,44 +106,18 @@ export default function Home(): JSX.Element {
                         key={item.name}
                         servicesList={item}
                       />
-                    </Box>
+                    </Stack>
                   )
                 })
               }
-              <Text textAlign='center' fontWeight='bold' > {` ${list.length} results loaded.`}  </Text>
+              <Text textAlign='center' fontWeight='bold' > {list.length == 1 ? ` ${list.length} result loaded.` : ` ${list.length} results loaded.`}  </Text>
             </>
           )}
-
         />
       </Box>
-
-
-
-
-
-      
-
-
-
-
 
     </Box>
 
   )
 }
 
-
-
-{/* <Stack spacing='36px' alignItems='left' pl={{ base: 4, sm: 16, md: 32 }} >
-        {servicesLists?.map((servicesList, i) =>
-          <Box key={i} display={i >= displayAmount[0] && i <= displayAmount[1] ? 'inherit' : 'none'}>
-            <ServicesListItem
-              pr={{ base: '2px', sm: '8px' }}
-              w='100%'
-              _hover={{ base: {}, md: { background: '#fafafa', borderRadius: '24px' } }}
-              key={servicesList.name}
-              servicesList={servicesList}
-            />
-          </Box>
-        )}
-      </Stack> */}

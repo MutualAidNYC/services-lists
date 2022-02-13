@@ -1,5 +1,5 @@
 import { CloseIcon, LinkIcon } from '@chakra-ui/icons'
-import { Heading,  Center, HStack, Text, VStack, LinkBox, LinkOverlay, Box } from '@chakra-ui/react'
+import { Heading, Center, HStack, Text, VStack, LinkBox, LinkOverlay, Box } from '@chakra-ui/react'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import React, { useRef, useEffect, useState } from 'react'
@@ -21,9 +21,7 @@ import { EffectCoverflow, Pagination } from "swiper"
 export const ListPage: NextPage = () => {
     const router = useRouter()
 
-
     const serviceListHandler = useServiceList(router.query.listId as string)
-
 
     const [selectedAddress, setSelectedAddress] = useState<Address>()
     const [filteredAddresses, setFilteredAddresses] = useState<Address[]>([])
@@ -55,7 +53,6 @@ export const ListPage: NextPage = () => {
                 break
             }
         }
-        //console.log(res)
         return res
     }
 
@@ -81,14 +78,12 @@ export const ListPage: NextPage = () => {
         }
         if (!exists) {
             setFilteredServices([...filteredServices, serviceToAdd])
-            // updateFilteredAddresses()
         }
 
     }
 
     const removeFilter = (serviceToRemove: Service) => {
         setFilteredServices(filteredServices.filter((service) => service.id !== serviceToRemove.id))
-        // updateFilteredAddresses
     }
 
 
@@ -115,7 +110,6 @@ export const ListPage: NextPage = () => {
                             <Box alignSelf='center'>
                                 <CloseIcon onClick={() => {
                                     setFilteredServices([])
-                                    // updateFilteredAddresses
                                 }} w={3} h={3} _hover={{ color: 'red' }} cursor='pointer' />
                             </Box>
                         </Box>
@@ -144,11 +138,9 @@ export const ListPage: NextPage = () => {
 
                         </VStack>
 
-
-
                     </VStack>
 
-                    <Center w='50%' height='100%' pos='absolute' right={0} >
+                    <Center w='50%' height='100%' pos='absolute' right={0} borderLeft='2px'>
                         <Map
                             defaultCenter={defaultMapCenter}
                             addressIdToLabel={addressIdToServiceName}
