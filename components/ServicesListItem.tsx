@@ -11,7 +11,6 @@ import {
 import NextLink from 'next/link'
 import { ServicesList } from 'models'
 import { formatDate } from 'utils'
-import { ServiceListProvider } from 'hooks'
 
 
 interface ServicesListItemProps extends LinkBoxProps {

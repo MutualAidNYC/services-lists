@@ -11,6 +11,8 @@ import { SearchBar, ServicesListItem, SortMenu } from 'components'
 import { useAllServicesLists, useTaxonomyFilter } from 'hooks'
 import { ServicesList } from 'models'
 import { useState } from 'react'
+import { PaginatedList } from 'react-paginated-list'
+
 
 import Select from 'react-select'
 
@@ -27,22 +29,17 @@ export default function Home(): JSX.Element {
 
   const sortFieldsTextToVal = { Name: 'name', Description: 'description' }
 
-  const [displayAmount, setDisplayAmount] = useState([0, 9])
-
   const [maxAmountDisplayed, setMaxAmountDisplayed] = useState(10)
+  const [numResultsLoaded, setnumResultsLoaded] = useState(0)
 
-  // const updateRange = (num: number) => {
-  //   setMaxAmountDisplayed(num);
-
-  //   if (displayAmount[0] + maxAmountDisplayed >= servicesLists.length) {
-  //     setDisplayAmount([displayAmount[0] + maxAmountDisplayed, servicesLists.length])
-  //   } else {
-  //     setDisplayAmount([displayAmount[0] + maxAmountDisplayed, displayAmount[1] + maxAmountDisplayed])
-  //   }
-
-  // }
-
-
+  const displayAmountOptions = [
+    { value: 5, label: '5' }, 
+    { value: 10, label: '10' }, 
+    { value: 25, label: '25' },
+    { value: 50, label: '50' },
+    { value: 100, label: '100' },
+    { value: servicesLists.length , label: 'All' }
+  ]
 
 
 
@@ -78,9 +75,9 @@ export default function Home(): JSX.Element {
             <Select
               isSearchable
               closeMenuOnSelect={true}
-              placeholder={`${maxAmountDisplayed}`}
-              options={[{ value: 5, label: '5' }, { value: 10, label: '10' }, { value: 25, label: '25' }]}
-              // onChange={(e) => { e ? updateRange(e.value) : null }}
+              placeholder={`Amount`}
+              options={displayAmountOptions}
+              onChange={(e) => { e ? setMaxAmountDisplayed(e.value) : null }}
               theme={(theme) => ({
                 ...theme,
                 borderRadius: 16,
@@ -91,25 +88,53 @@ export default function Home(): JSX.Element {
         </HStack>
       </VStack>
 
-      {/* <Stack spacing='36px' alignItems='left' pl={{ base: 4, sm: 16, md: 32 }} >
-        {servicesLists?.map((servicesList, i) => {
-          i >= displayAmount[0] && i <= displayAmount[1] ?
-            <Box key={i} >
-              <ServicesListItem
-                pr={{ base: '2px', sm: '8px' }}
-                w='100%'
-                _hover={{ base: {}, md: { background: '#fafafa', borderRadius: '24px' } }}
-                key={servicesList.name}
-                servicesList={servicesList}
-              />
-            </Box>
-            :
-            null
-        }
-        )}
-      </Stack> */}
 
-      <Stack spacing='36px' alignItems='left' pl={{ base: 4, sm: 16, md: 32 }} >
+      <Box>
+        <PaginatedList
+          list={servicesLists}
+          itemsPerPage={maxAmountDisplayed}
+          renderList={(list) => (
+            <>
+              {
+                list.map((item, i) => {
+                  return (
+                    <Box key={i} w='100%' maxW='6xl' pl={{ base: 4, sm: 16, md: 32 }} >
+                      <ServicesListItem
+                        pr={{ base: '2px', sm: '8px' }}
+                        w='100%'
+                        _hover={{ base: {}, md: { background: '#fafafa', borderRadius: '24px' } }}
+                        key={item.name}
+                        servicesList={item}
+                      />
+                    </Box>
+                  )
+                })
+              }
+              <Text textAlign='center' fontWeight='bold' > {` ${list.length} results loaded.`}  </Text>
+            </>
+          )}
+
+        />
+      </Box>
+
+
+
+
+
+      
+
+
+
+
+
+    </Box>
+
+  )
+}
+
+
+
+{/* <Stack spacing='36px' alignItems='left' pl={{ base: 4, sm: 16, md: 32 }} >
         {servicesLists?.map((servicesList, i) =>
           <Box key={i} display={i >= displayAmount[0] && i <= displayAmount[1] ? 'inherit' : 'none'}>
             <ServicesListItem
@@ -121,38 +146,4 @@ export default function Home(): JSX.Element {
             />
           </Box>
         )}
-      </Stack>
-
-      <VStack w='100%' mt={8} px={{ base: '4px', sm: '8px', md: '16px' }} spacing={0}>
-
-        <Stack w='100%' justifyContent='space-between' direction='row'>
-          <Box />
-          <Text fontWeight='bold' > {(displayAmount[1] - displayAmount[0] + 1) + '  results loaded.'}  </Text>
-          <Text fontSize='md' pr={{ base: '12px' }}> {(displayAmount[0] + 1) + ' ... ' + (displayAmount[1] + 1) + ' out of ' + servicesLists.length}  </Text>
-        </Stack>
-
-
-        <HStack alignItems='left' justifyContent='right' w='100%'>
-          <ChevronLeftIcon w='32px' h='32px' _hover={{ width: '40px', height: '40px' }} onClick={() => {
-            displayAmount[0] - maxAmountDisplayed >= 0 ? setDisplayAmount([displayAmount[0] - maxAmountDisplayed, displayAmount[1] - maxAmountDisplayed])
-              : setDisplayAmount([displayAmount[0] - (displayAmount[0] - 0), displayAmount[1] - (displayAmount[0] - 0)])
-          }} />
-
-          <ChevronRightIcon w='32px' h='32px' _hover={{ width: '40px', height: '40px' }} onClick={() => {
-            displayAmount[1] + maxAmountDisplayed <= servicesLists?.length ? setDisplayAmount([displayAmount[0] + maxAmountDisplayed, displayAmount[1] + maxAmountDisplayed])
-              : setDisplayAmount([displayAmount[0] + (servicesLists?.length - displayAmount[1]), displayAmount[1] + (servicesLists?.length - displayAmount[1])])
-
-          }} />
-        </HStack>
-
-      </VStack>
-
-
-
-    </Box>
-
-  )
-}
-
-
-
+      </Stack> */}

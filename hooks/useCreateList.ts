@@ -67,7 +67,6 @@ export const useCreateList = (): CreateListHandler => {
   //testList.ServicesNames - This field is computer by airtable
   //testList.taxonomies - This field is computer by airtable
   testList.creator = "neo"
-  testList.status = 'Published'
   //testList.createdAt - This field is computer by airtable
   createServicesLists([testList], false)
   /* End of temp call */
