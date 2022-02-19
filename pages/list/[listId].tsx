@@ -1,13 +1,13 @@
-import { CloseIcon, LinkIcon, PlusSquareIcon } from '@chakra-ui/icons'
+import { PlusSquareIcon } from '@chakra-ui/icons'
 import { Heading, Center, HStack, Text, VStack, LinkBox, LinkOverlay, Box, Stack, Button } from '@chakra-ui/react'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Map, SearchBar, ServiceItem } from '../../components'
 import { ServiceListProvider, useServiceList } from '../../hooks'
 import { Address, Service } from '../../models'
 import { PaginatedList } from 'react-paginated-list'
-import Select, { ActionMeta, InputActionMeta, StylesConfig } from 'react-select'
+import Select from 'react-select'
 
 // Import Swiper styles & required modules
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -47,13 +47,6 @@ export const ListPage: NextPage = () => {
     { value: services.length, label: 'All' }
   ]
 
-  const adjustName = (name: string, length: number) => {
-    if (name.length >= length) {
-      return name.substring(0, length - 2).replaceAll(',', '') + "..."
-    }
-    return name
-  }
-
   function getAddress(service: Service): Address | undefined {
     let res = undefined;
     for (let i = 0; i < addresses.length; i++) {
@@ -66,15 +59,12 @@ export const ListPage: NextPage = () => {
     return res
   }
 
-  useEffect(() => {
-    clearFilter();
-  }, [])
-
-
+  useEffect(() => { clearFilter() }, [])
+  
   const clearFilter = () => {
-    let updatedFilter: Address[] = []
+    const updatedFilter: Address[] = []
     for (let i = 0; i < filteredServices.length; i++) {
-      let temp = getAddress(filteredServices[i])
+      const temp = getAddress(filteredServices[i])
       if (temp) {
         updatedFilter.push(temp)
       }
@@ -135,7 +125,6 @@ export const ListPage: NextPage = () => {
                 value={selectFilterValues.map(filter => ({ label: filter.name, value: filter }))}
                 options={services.map(s => ({ value: s, label: s.name }))}
                 onChange={(e, action) => {
-                  console.log(e);
                   switch (action.action) {
                     case 'remove-value':
                       removeFilter(action.removedValue.value)
@@ -196,7 +185,7 @@ export const ListPage: NextPage = () => {
                         }
                       }} >
                       <>
-                        {!isLoading && list.map((item, i) => {
+                        {!isLoading && list.map((item) => {
                           return (
                             <Box
                               // onMouseOver={() => setSelectedAddress(getAddress(item))}  hover over highlights a specific marker
