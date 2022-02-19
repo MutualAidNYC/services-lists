@@ -156,3 +156,5 @@ export const HomePage: NextPage = () => {
     </Box>
   )
 }
+
+export default HomePage
