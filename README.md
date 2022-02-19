@@ -1,6 +1,6 @@
-# Mutual Aid NYC Services List
+# Mutual Aid NYC Services Lists
 
-A [Next.js](https://nextjs.org) website for displaying NYC health, human and social services lists in the [Open Referral](https://openreferral.org) data format. Data is managed via [Airtable](https://airtable.com).
+A [Next.js](https://nextjs.org) website for displaying and creating NYC health, human and social services lists in the [Open Referral](https://openreferral.org) data format. Data is managed via [Airtable](https://airtable.com).
 
 ## Technical Overview
 
@@ -23,10 +23,6 @@ As of our most recent design, the major components and technologies are as follo
 - [React Query](https://react-query.tanstack.com)
 - [React Hook Form](https://react-hook-form.com)
 - [Yup](https://github.com/jquense/yup)
-- [Prisma](https://www.prisma.io/) (?)
-- [PostgresSQL](https://www.postgresql.org/)
-- [Sync Inc](https://syncinc.so/)
-- [Airtable](https://airtable.com)
 
 ## Requirements
 
