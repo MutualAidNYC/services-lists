@@ -64,8 +64,7 @@ export const ServicesListItem = ({ servicesList, ...props }: ServicesListItemPro
 
       <Wrap>
         {taxonomies.map((taxonomy, i) => (
-
-            <Tooltip label={taxonomy} rounded='xl'>
+            <Tooltip label={taxonomy} rounded='xl' key={i} >
               <Text
                 mx={2}
                 bgColor='lightPink'

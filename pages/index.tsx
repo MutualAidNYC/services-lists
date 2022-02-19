@@ -1,18 +1,16 @@
-import { ChevronDownIcon } from '@chakra-ui/icons'
 import {
   Heading,
   HStack,
   Stack,
   Box,
   VStack,
-  Text,
-  Spacer,
+  Text
 } from '@chakra-ui/react'
 import { SearchBar, ServicesListItem, SortMenu } from 'components'
 import { useAllServicesLists, useTaxonomyFilter } from 'hooks'
 import { ServicesList } from 'models'
 import { NextPage } from 'next'
-import { useCallback, useEffect, useState } from 'react'
+import { useState } from 'react'
 import Select from 'react-select'
 import { PaginatedList } from 'react-paginated-list'
 
@@ -20,8 +18,7 @@ export const Home: NextPage = () => {
   const {
     baseServicesLists,
     servicesLists,
-    setServicesLists,
-    filterByTaxonomies
+    setServicesLists
   } = useAllServicesLists()
 
   const filterFunction = (servicesList: ServicesList, filters: string[]) =>
