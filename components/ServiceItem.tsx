@@ -10,6 +10,8 @@ import {
   LinkOverlay,
   Stack,
   Text,
+  Tooltip,
+  Wrap,
 } from '@chakra-ui/react'
 import { Service } from 'models'
 
@@ -51,8 +53,16 @@ export const ServiceItem = ({
   onAlertOpen,
   setSelectedService,
 }: ServiceItemProps): JSX.Element => {
+
+  const adjustName = (name: string, length: number) => {
+    if (name.length >= length) {
+      return name.substring(0, length - 2).replaceAll(',', '') + "..."
+    }
+    return name
+  }
+
   return (
-    <Box>
+    <Box  boxShadow='md' rounded='lg' p='8' _hover={{ boxShadow: 'lg' }}>
       <Flex mb="16px" alignItems="center" justifyContent="space-between">
         <LinkBox>
           <HStack spacing="8px">
@@ -92,17 +102,30 @@ export const ServiceItem = ({
             </HStack>
           </LinkBox>
         )}
-        {service.taxonomyString && (
-          <HStack>
-            <Heading fontSize="subheading3">Resource categories:</Heading>
-            {service.taxonomyString.map((taxonomy, i) => (
-              <Text key={i} bgColor="lightPink" borderRadius="8px" p="8px">
-                {taxonomy}
-              </Text>
-            ))}
-          </HStack>
-        )}
+
+        <Box w='3xl'>
+          {service.taxonomyString && (
+            <Wrap>
+              {service.taxonomyString.map((taxonomy, i) => (
+                <Tooltip label={taxonomy} rounded='xl' key={i}>
+                  <Text textAlign='center' bgColor="lightPink" borderRadius="8px" p="8px">
+                    {adjustName(taxonomy, 18)}
+                  </Text>
+                </Tooltip>
+              ))}
+              </Wrap>
+          )}
+        </Box>
+
       </Stack>
     </Box>
   )
 }
+{/* <HStack>
+<Heading fontSize="subheading3">Resource categories:</Heading>
+{service.taxonomyString.map((taxonomy, i) => (
+  <Text key={i} bgColor="lightPink" borderRadius="8px" p="8px">
+    {taxonomy}
+  </Text>
+))}
+</HStack> */}
