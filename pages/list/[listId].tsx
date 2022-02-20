@@ -60,7 +60,7 @@ export const ListPage: NextPage = () => {
   }
 
   useEffect(() => { clearFilter() }, [])
-  
+
   const clearFilter = () => {
     const updatedFilter: Address[] = []
     for (let i = 0; i < filteredServices.length; i++) {
@@ -105,7 +105,7 @@ export const ListPage: NextPage = () => {
               {listName}
             </Heading>
             <LinkBox>
-            <LinkOverlay href={service.url} _hover={{ textDecoration: 'underline' }}>
+            <LinkOverlay _hover={{ textDecoration: 'underline' }}>
             <Button colorScheme='teal'> Create a new List <PlusSquareIcon mx={1} /> </Button>
             </LinkOverlay>
             </LinkBox>
