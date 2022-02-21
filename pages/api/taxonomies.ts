@@ -12,9 +12,13 @@ export default async (_: NextApiRequest, res: NextApiResponse) => {
   res.status(200).json(taxonomies)
 }
 
-async function getAllTaxonomiesCached() { 
-  const curr_time =  Date.now()
-  if (taxonomies_caches_time == null || taxonomies_caches_data == null || curr_time - TAXONOMIES_CACHE_TIMEOUT > taxonomies_caches_time) {
+async function getAllTaxonomiesCached() {
+  const curr_time = Date.now()
+  if (
+    taxonomies_caches_time == null ||
+    taxonomies_caches_data == null ||
+    curr_time - TAXONOMIES_CACHE_TIMEOUT > taxonomies_caches_time
+  ) {
     const taxonomies = await getAllTaxonomies()
     taxonomies_caches_time = curr_time
     taxonomies_caches_data = taxonomies

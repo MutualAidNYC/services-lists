@@ -12,9 +12,13 @@ export default async (_: NextApiRequest, res: NextApiResponse) => {
   res.status(200).json(services)
 }
 
-async function getAllServicesCached() { 
-  const curr_time =  Date.now()
-  if (services_caches_time == null || services_caches_data == null || curr_time - SERVICES_CACHE_TIMEOUT > services_caches_time) {
+async function getAllServicesCached() {
+  const curr_time = Date.now()
+  if (
+    services_caches_time == null ||
+    services_caches_data == null ||
+    curr_time - SERVICES_CACHE_TIMEOUT > services_caches_time
+  ) {
     const services = await getAllServices()
     services_caches_time = curr_time
     services_caches_data = services
