@@ -6,8 +6,12 @@ import {
   useState,
 } from 'react'
 import { useMutation, useQuery } from 'react-query'
-import { createServicesLists, getAllServices } from 'api'
-import { CreateServicesListRequest, Service, ServicesList } from 'models'
+import {
+  AirtableCreateResponse,
+  createServicesLists,
+  getAllServices,
+} from 'api'
+import { CreateServicesListRequest, Service } from 'models'
 import { useDisclosure } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form'
@@ -86,11 +90,11 @@ export const useCreateList = (): CreateListHandler => {
   const {
     mutate: createServicesListMutate,
     isLoading: isCreatingServicesList,
-  } = useMutation<ServicesList[], Error, CreateServicesListRequest[]>(
+  } = useMutation<AirtableCreateResponse[], Error, CreateServicesListRequest[]>(
     (createServicesListRequests) =>
       createServicesLists(createServicesListRequests),
     {
-      onSuccess: (data: ServicesList[]) => {
+      onSuccess: (data: AirtableCreateResponse[]) => {
         router.push(`/list/${data[0].id}`)
       },
     }

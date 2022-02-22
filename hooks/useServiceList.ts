@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 import { useQueries, useQuery, UseQueryOptions } from 'react-query'
-import { getServiceListById, getServiceById, getAddressById } from 'api'
+import { getServiceList, getService, getAddress } from 'api'
 import { Address, Service, ServicesList } from 'models'
 
 export interface ServiceListHandler {
@@ -21,7 +21,7 @@ export const useServiceList = (listId: string): ServiceListHandler => {
   const { isLoading: isLoadingServiceList, data: serviceList } = useQuery<
     ServicesList,
     Error
-  >(['serviceList', listId], () => getServiceListById(listId), {
+  >(['serviceList', listId], () => getServiceList(listId), {
     enabled: !!listId,
     retry: false,
     refetchOnWindowFocus: false,
@@ -31,7 +31,7 @@ export const useServiceList = (listId: string): ServiceListHandler => {
     serviceList?.Services?.map((serviceId) => {
       return {
         queryKey: ['service', serviceId],
-        queryFn: () => getServiceById(serviceId),
+        queryFn: () => getService(serviceId),
         config: {
           enabled: !!serviceId,
           retry: false,
@@ -60,7 +60,7 @@ export const useServiceList = (listId: string): ServiceListHandler => {
       .map((addressId) => {
         return {
           queryKey: ['address', addressId],
-          queryFn: () => getAddressById(addressId ?? ''),
+          queryFn: () => getAddress(addressId ?? ''),
           config: {
             enabled: !!addressId,
             retry: false,

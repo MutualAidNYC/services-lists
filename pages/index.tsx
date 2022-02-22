@@ -3,7 +3,7 @@ import { SearchBar, ServicesListItem, SortMenu } from 'components'
 import { useAllServicesLists, useTaxonomyFilter } from 'hooks'
 import { ServicesList } from 'models'
 import { NextPage } from 'next'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import Select from 'react-select'
 import { PaginatedList } from 'react-paginated-list'
 
@@ -11,13 +11,16 @@ export const HomePage: NextPage = () => {
   const { baseServicesLists, servicesLists, setServicesLists } =
     useAllServicesLists()
 
-  const filterFunction = (servicesList: ServicesList, filters: string[]) =>
-    servicesList.taxonomies?.some((taxonomy) => filters.includes(taxonomy)) ??
-    false
+  const filterByTaxonomies = useCallback(
+    (servicesList: ServicesList, filters: string[]) =>
+      servicesList.taxonomies?.some((taxonomy) => filters.includes(taxonomy)) ??
+      false,
+    []
+  )
   const { taxonomyOptions, setFilters } = useTaxonomyFilter(
     baseServicesLists,
     setServicesLists,
-    filterFunction
+    filterByTaxonomies
   )
 
   const sortFieldsTextToVal = { Name: 'name', Description: 'description' }

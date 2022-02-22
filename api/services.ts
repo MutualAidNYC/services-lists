@@ -1,4 +1,4 @@
-import { AirtableClient } from './airtable'
+import { AirtableClient, AirtableCreateResponse } from './airtable'
 import {
   Address,
   CreateServicesListRequest,
@@ -12,15 +12,15 @@ const ServicesClient = new AirtableClient(
   process.env.NEXT_PUBLIC_RESOURCES_BASE_ID ?? ''
 )
 
-export const getServiceListById = (id: string): Promise<ServicesList> => {
+export const getServiceList = (id: string): Promise<ServicesList> => {
   return ServicesClient.getById<ServicesList>('Services Lists', id)
 }
 
-export const getServiceById = (id: string): Promise<Service> => {
+export const getService = (id: string): Promise<Service> => {
   return ServicesClient.getById<Service>('services', id)
 }
 
-export const getAddressById = (id: string): Promise<Address> => {
+export const getAddress = (id: string): Promise<Address> => {
   return ServicesClient.getById<Address>('physical_addresses', id)
 }
 
@@ -40,14 +40,14 @@ export const getAllServices = (filter?: string): Promise<Service[]> => {
 
 export const createServicesLists = (
   servicesLists: CreateServicesListRequest[]
-): Promise<ServicesList[]> => {
+): Promise<AirtableCreateResponse[]> => {
   if (servicesLists.length < 1) {
     return new Promise((resolve) => {
       resolve([])
     })
   }
 
-  return ServicesClient.createRecords<CreateServicesListRequest, ServicesList>(
+  return ServicesClient.createRecords<CreateServicesListRequest>(
     'Services Lists',
     servicesLists.map((list) => {
       return {

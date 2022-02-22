@@ -4,8 +4,12 @@ interface AirtableCreateObject<T> {
   fields: T
 }
 
+export interface AirtableCreateResponse {
+  id: string
+}
+
 export class AirtableClient {
-  base: Base
+  private readonly base: Base
 
   constructor(apiKey: string, baseId: string) {
     this.base = new Airtable({ apiKey: apiKey }).base(baseId)
@@ -27,12 +31,16 @@ export class AirtableClient {
     return records.map((record) => record.fields) as T[]
   }
 
-  async createRecords<TRequest, TResponse extends object>(
+  async createRecords<T>(
     tableName: string,
-    recordObjects: AirtableCreateObject<TRequest>[]
-  ): Promise<TResponse[]> {
+    recordObjects: AirtableCreateObject<T>[]
+  ): Promise<AirtableCreateResponse[]> {
     const records = await this.base(tableName).create(recordObjects)
 
-    return records.map((record) => record.fields) as TResponse[]
+    return records.map((record) => {
+      return {
+        id: record.id,
+      }
+    })
   }
 }
