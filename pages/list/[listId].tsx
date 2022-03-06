@@ -31,7 +31,7 @@ export const ListPage: NextPage = () => {
 
   const serviceListHandler = useServiceList(router.query.listId as string)
 
-  const [selectedAddress, setSelectedAddress] = useState<Address>()
+  const [selectedAddress] = useState<Address>()
   const [filteredAddresses, setFilteredAddresses] = useState<Address[]>([])
   const [filteredServices, setFilteredServices] = useState<Service[]>([])
 
@@ -40,7 +40,9 @@ export const ListPage: NextPage = () => {
   const {
     isLoading,
     listName,
+    baseServices,
     services,
+    setServices,
     addressIdToServiceName,
     addresses,
     defaultMapCenter,
@@ -131,8 +133,8 @@ export const ListPage: NextPage = () => {
 
           <HStack w="100%" justifyContent="space-between">
             <SearchBar
-              baseData={services}
-              setData={() => {}}
+              baseData={baseServices}
+              setData={setServices}
               searchFields={['name', 'description']}
               w={{ base: '100%', sm: '60%' }}
               mb="24px"
@@ -141,7 +143,7 @@ export const ListPage: NextPage = () => {
             {/*  https://react-select.com/advanced. Update the styling for this to be more dynamic and fit the provided spacing & make it fully functional  */}
             <Box
               display="flex"
-              flex-flexDirection="row"
+              flexDirection="row"
               justifyContent="center"
               alignItems="center"
             >
@@ -163,8 +165,10 @@ export const ListPage: NextPage = () => {
                   switch (action.action) {
                     case 'remove-value':
                       removeFilter(action.removedValue.value)
+                      break
                     case 'clear':
                       clearFilter()
+                      break
                     default:
                       break
                   }
@@ -186,7 +190,7 @@ export const ListPage: NextPage = () => {
 
             <Box
               display="flex"
-              flex-flexDirection="row"
+              flexDirection="row"
               justifyContent="center"
               alignItems="center"
               pr={16}

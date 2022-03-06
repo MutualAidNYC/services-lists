@@ -15,23 +15,26 @@ export class AirtableClient {
     this.base = new Airtable({ apiKey: apiKey }).base(baseId)
   }
 
-  async getById<T>(tableName: string, id: string): Promise<T> {
+  async find<T>(tableName: string, id: string): Promise<T> {
     const record = await this.base.table(tableName).find(id)
     return record.fields as unknown as T
   }
 
-  async getAll<T extends object>(tableName: string, filter = ''): Promise<T[]> {
+  async selectAll<T extends object>(
+    tableName: string,
+    filterFormula = ''
+  ): Promise<T[]> {
     const records = await this.base
       .table(tableName)
       .select({
-        filterByFormula: filter,
+        filterByFormula: filterFormula,
       })
       .all()
 
     return records.map((record) => record.fields) as T[]
   }
 
-  async createRecords<T>(
+  async create<T>(
     tableName: string,
     recordObjects: AirtableCreateObject<T>[]
   ): Promise<AirtableCreateResponse[]> {

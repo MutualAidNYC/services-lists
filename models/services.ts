@@ -15,7 +15,7 @@ export interface CreateServicesListRequest {
   name: string
   description: string
   Status: Status
-  Services: string[] // Airtable "services" table idss
+  Services: string[] // Airtable "services" table ids
   creator: string
 }
 

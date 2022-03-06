@@ -1,4 +1,4 @@
-import { AirtableClient, AirtableCreateResponse } from './airtable'
+import { AirtableClient, AirtableCreateResponse, AxiosClient } from './clients'
 import {
   Address,
   CreateServicesListRequest,
@@ -7,35 +7,94 @@ import {
   TaxonomyTerm,
 } from 'models'
 
-const ServicesClient = new AirtableClient(
+const ServicesAxiosClient = new AxiosClient('/api')
+
+const ServicesAirtableClient = new AirtableClient(
   process.env.NEXT_PUBLIC_RESOURCES_API_KEY ?? '',
   process.env.NEXT_PUBLIC_RESOURCES_BASE_ID ?? ''
 )
 
-export const getServiceList = (id: string): Promise<ServicesList> => {
-  return ServicesClient.getById<ServicesList>('Services Lists', id)
+// HTTP client functions
+
+export const getAddress = async (id: string): Promise<Address> => {
+  const response = await ServicesAxiosClient.get<Address>(`/addresses/${id}`)
+  return response.data
 }
 
-export const getService = (id: string): Promise<Service> => {
-  return ServicesClient.getById<Service>('services', id)
+export const getService = async (id: string): Promise<Service> => {
+  const response = await ServicesAxiosClient.get<Service>(`/services/${id}`)
+  return response.data
 }
 
-export const getAddress = (id: string): Promise<Address> => {
-  return ServicesClient.getById<Address>('physical_addresses', id)
+export const getAllServices = async (filter = ''): Promise<Service[]> => {
+  const response = await ServicesAxiosClient.get<Service[]>(
+    `/services?filter=${filter}`
+  )
+  return response.data
 }
 
-export const getAllServicesLists = (
-  filter?: string
+export const getServicesList = async (id: string): Promise<ServicesList> => {
+  const response = await ServicesAxiosClient.get<ServicesList>(
+    `/services-lists/${id}`
+  )
+  return response.data
+}
+
+export const getAllServicesLists = async (
+  filter = ''
 ): Promise<ServicesList[]> => {
-  return ServicesClient.getAll<ServicesList>('Services Lists', filter)
+  const response = await ServicesAxiosClient.get<ServicesList[]>(
+    `/services-lists?filter=${filter}`
+  )
+  return response.data
 }
 
-export const getAllTaxonomies = (filter?: string): Promise<TaxonomyTerm[]> => {
-  return ServicesClient.getAll<TaxonomyTerm>('taxonomy_term', filter)
+export const postServicesList = async (
+  data: CreateServicesListRequest[]
+): Promise<AirtableCreateResponse[]> => {
+  const response = await ServicesAxiosClient.post<
+    AirtableCreateResponse[],
+    CreateServicesListRequest[]
+  >('/services-lists', data)
+  return response.data
 }
 
-export const getAllServices = (filter?: string): Promise<Service[]> => {
-  return ServicesClient.getAll<Service>('services', filter)
+export const getAllTaxonomies = async (
+  filter = ''
+): Promise<TaxonomyTerm[]> => {
+  const response = await ServicesAxiosClient.get<TaxonomyTerm[]>(
+    `/taxonomies?filter=${filter}`
+  )
+  return response.data
+}
+
+// Airtable functions
+
+export const findAddress = (id: string): Promise<Address> => {
+  return ServicesAirtableClient.find<Address>('physical_addresses', id)
+}
+
+export const findService = (id: string): Promise<Service> => {
+  return ServicesAirtableClient.find<Service>('services', id)
+}
+
+export const selectAllServices = (
+  filterFormula?: string
+): Promise<Service[]> => {
+  return ServicesAirtableClient.selectAll<Service>('services', filterFormula)
+}
+
+export const findServiceList = (id: string): Promise<ServicesList> => {
+  return ServicesAirtableClient.find<ServicesList>('Services Lists', id)
+}
+
+export const selectAllServicesLists = (
+  filterFormula?: string
+): Promise<ServicesList[]> => {
+  return ServicesAirtableClient.selectAll<ServicesList>(
+    'Services Lists',
+    filterFormula
+  )
 }
 
 export const createServicesLists = (
@@ -47,7 +106,7 @@ export const createServicesLists = (
     })
   }
 
-  return ServicesClient.createRecords<CreateServicesListRequest>(
+  return ServicesAirtableClient.create<CreateServicesListRequest>(
     'Services Lists',
     servicesLists.map((list) => {
       return {
@@ -60,5 +119,14 @@ export const createServicesLists = (
         },
       }
     })
+  )
+}
+
+export const selectAllTaxonomies = (
+  filterFormula?: string
+): Promise<TaxonomyTerm[]> => {
+  return ServicesAirtableClient.selectAll<TaxonomyTerm>(
+    'taxonomy_term',
+    filterFormula
   )
 }

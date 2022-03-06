@@ -1,24 +1,28 @@
-export class Cache<T> {
-  private data?: T
+export class Cache<TData, TInput> {
+  private data?: TData
   private cachedTime?: number
-  private readonly getData: () => Promise<T>
+  private readonly getData: (input?: TInput) => Promise<TData>
   private readonly apiRoute: string
   private readonly timeout: number // milliseconds
 
-  constructor(getData: () => Promise<T>, apiRoute: string, timeout = 6000) {
+  constructor(
+    getData: (input?: TInput) => Promise<TData>,
+    apiRoute: string,
+    timeout = 6000
+  ) {
     this.getData = getData
     this.timeout = timeout
     this.apiRoute = apiRoute
   }
 
-  async getCachedData(): Promise<T> {
+  async getCachedData(input?: TInput): Promise<TData> {
     const currTime = Date.now()
     if (
       this.data === undefined ||
       this.cachedTime === undefined ||
       currTime - this.timeout > this.cachedTime
     ) {
-      this.data = await this.getData()
+      this.data = await this.getData(input)
       this.cachedTime = currTime
 
       console.log('Returning data from API:', this.apiRoute)

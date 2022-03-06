@@ -58,7 +58,7 @@ export const HomePage: NextPage = () => {
           />
           <Box
             display="flex"
-            flex-flexDirection="row"
+            flexDirection="row"
             justifyContent="center"
             alignItems="center"
             pr={16}
@@ -149,10 +149,6 @@ export const HomePage: NextPage = () => {
                   ? ` Showing ${list.length} out of ${servicesLists.length} results.`
                   : ` Showing ${list.length} out of ${servicesLists.length} results.`}{' '}
               </Text>
-              {/* <HStack justifyContent='center' w='100%' cursor='pointer' onClick={() => {maxAmountDisplayed + maxAmountDisplayed > servicesLists.length? setMaxAmountDisplayed(servicesLists.length) : setMaxAmountDisplayed(maxAmountDisplayed + 1 )}}>
-                <Text fontWeight='bold'> Load more</Text>
-                <ChevronDownIcon />
-              </HStack> */}
             </>
           )}
         />
