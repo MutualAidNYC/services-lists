@@ -4,8 +4,8 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 const TAXONOMIES_CACHE_TIMEOUT = 60 * 1000 // 60 Seconds
 
 // Caching to circumvent Airtable API Limits
-const taxonomies_caches_time: number
-const taxonomies_caches_data: any
+const taxonomies_caches_time: number = 0
+const taxonomies_caches_data: any = {}
 
 export default async (_: NextApiRequest, res: NextApiResponse) => {
   const taxonomies = getAllTaxonomiesCached()
