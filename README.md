@@ -46,6 +46,13 @@ As of our most recent design, the major components and technologies are as follo
 - Build docker image from main directory: `docker build -t services-lists-docker . `
 - Run created image: `docker run -p 3000:3000 services-lists-docker`
 
+## Type Checking
+
+[TypeScript's `tsc` CLI command](https://www.typescriptlang.org/docs/handbook/compiler-options.html) is used to compile the code and check for any type errors.
+
+- To run a type check, run `yarn type-check`.
+- The project's TypeScript configuration is specified in the `tsconfig.json` file.
+
 ## Linting
 
 [ESLint](https://eslint.org/) is used to automatically check this project's code for programattic errors (AKA linting).
