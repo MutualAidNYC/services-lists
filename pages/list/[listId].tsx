@@ -31,6 +31,7 @@ export const ListPage: NextPage = () => {
 
   const serviceListHandler = useServiceList(router.query.listId as string)
 
+  const [selectedAddress] = useState<Address>()
   const [filteredAddresses, setFilteredAddresses] = useState<Address[]>([])
   const [filteredServices, setFilteredServices] = useState<Service[]>([])
 
@@ -294,7 +295,7 @@ export const ListPage: NextPage = () => {
                 defaultCenter={defaultMapCenter}
                 addressIdToLabel={addressIdToServiceName}
                 addresses={addresses}
-                // selectedAddress={selectedAddress}
+                selectedAddress={selectedAddress}
                 filteredAddreses={filteredAddresses}
               />
             </Center>
@@ -321,7 +322,7 @@ export const ListPage: NextPage = () => {
               defaultCenter={defaultMapCenter}
               addressIdToLabel={addressIdToServiceName}
               addresses={addresses}
-              // selectedAddress={selectedAddress}
+              selectedAddress={selectedAddress}
               filteredAddreses={filteredAddresses}
             />
           </Center>
