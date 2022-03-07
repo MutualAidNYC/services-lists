@@ -295,7 +295,7 @@ export const ListPage: NextPage = () => {
                 defaultCenter={defaultMapCenter}
                 addressIdToLabel={addressIdToServiceName}
                 addresses={addresses}
-                selectedAddress={selectedAddress}
+                // selectedAddress={selectedAddress}
                 filteredAddreses={filteredAddresses}
               />
             </Center>
@@ -322,7 +322,7 @@ export const ListPage: NextPage = () => {
               defaultCenter={defaultMapCenter}
               addressIdToLabel={addressIdToServiceName}
               addresses={addresses}
-              selectedAddress={selectedAddress}
+              // selectedAddress={selectedAddress}
               filteredAddreses={filteredAddresses}
             />
           </Center>
