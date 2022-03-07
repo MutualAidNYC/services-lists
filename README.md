@@ -20,6 +20,8 @@ As of our most recent design, the major components and technologies are as follo
 - [TypeScript](https://www.typescriptlang.org)
 - [Chakra UI](https://chakra-ui.com)
 - [React Google Maps API](https://react-google-maps-api-docs.netlify.app/)
+- [Airtable.js](https://github.com/airtable/airtable.js/)
+- [Axios](https://axios-http.com/)
 - [React Query](https://react-query.tanstack.com)
 - [React Hook Form](https://react-hook-form.com)
 - [Yup](https://github.com/jquense/yup)
