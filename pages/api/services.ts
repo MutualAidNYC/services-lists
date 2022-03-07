@@ -4,8 +4,8 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 const SERVICES_CACHE_TIMEOUT = 60 * 1000 // 60 Seconds
 
 // Caching to circumvent Airtable API Limits
-const services_caches_time: number
-const services_caches_data: any
+const services_caches_time: number = 0
+const services_caches_data: any = {}
 
 export default async (_: NextApiRequest, res: NextApiResponse) => {
   const services = getAllServicesCached()
