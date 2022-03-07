@@ -1,5 +1,5 @@
 export * from './useAllServicesLists'
 export * from './useCreateList'
 export * from './useHookFormProps'
-export * from './useServiceList'
+export * from './useServicesList'
 export * from './useTaxonomyFilter'

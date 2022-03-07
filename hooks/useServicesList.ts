@@ -1,12 +1,14 @@
-import { createContext, useContext } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { useQueries, useQuery, UseQueryOptions } from 'react-query'
-import { getServiceListById, getServiceById, getAddressById } from 'api'
+import { getServicesList, getService, getAddress } from 'api'
 import { Address, Service, ServicesList } from 'models'
 
 export interface ServiceListHandler {
   isLoading: boolean
   listName: string
+  baseServices: Service[]
   services: Service[]
+  setServices: (services: Service[]) => void
   addressIdToServiceName: Record<string, string>
   addresses: Address[]
   defaultMapCenter: google.maps.LatLngLiteral
@@ -21,7 +23,7 @@ export const useServiceList = (listId: string): ServiceListHandler => {
   const { isLoading: isLoadingServiceList, data: serviceList } = useQuery<
     ServicesList,
     Error
-  >(['serviceList', listId], () => getServiceListById(listId), {
+  >(['serviceList', listId], () => getServicesList(listId), {
     enabled: !!listId,
     retry: false,
     refetchOnWindowFocus: false,
@@ -31,7 +33,7 @@ export const useServiceList = (listId: string): ServiceListHandler => {
     serviceList?.Services?.map((serviceId) => {
       return {
         queryKey: ['service', serviceId],
-        queryFn: () => getServiceById(serviceId),
+        queryFn: () => getService(serviceId),
         config: {
           enabled: !!serviceId,
           retry: false,
@@ -44,11 +46,15 @@ export const useServiceList = (listId: string): ServiceListHandler => {
   const isLoadingServices = serviceQueryResults.some(
     (result) => result.isLoading
   )
-  const services = serviceQueryResults.map((result) => result.data)
+  const baseServices = serviceQueryResults.map((result) => result.data)
+  const [services, setServices] = useState(baseServices)
+  useEffect(() => {
+    if (!isLoadingServices) setServices(baseServices)
+  }, [isLoadingServices])
 
   const addressIdToServiceName: Record<string, string> = {}
   const addressQueryOptions =
-    services
+    baseServices
       .filter((service) => service?.address) // not all services have addresses
       .flatMap((service) => {
         // need to flatten because some services have multiple addresses
@@ -60,7 +66,7 @@ export const useServiceList = (listId: string): ServiceListHandler => {
       .map((addressId) => {
         return {
           queryKey: ['address', addressId],
-          queryFn: () => getAddressById(addressId ?? ''),
+          queryFn: () => getAddress(addressId ?? ''),
           config: {
             enabled: !!addressId,
             retry: false,
@@ -78,9 +84,13 @@ export const useServiceList = (listId: string): ServiceListHandler => {
   return {
     isLoading: isLoadingServiceList || isLoadingServices || isLoadingAddresses,
     listName: serviceList?.name ?? '',
+    baseServices: baseServices.some((service) => !service)
+      ? []
+      : (baseServices as Service[]), // return empty list if any service is undefined
     services: services.some((service) => !service)
       ? []
-      : (services as Service[]), // return empty list if any service is undefined
+      : (services as Service[]),
+    setServices,
     addressIdToServiceName,
     addresses: addresses.some((address) => !address)
       ? []

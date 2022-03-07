@@ -20,6 +20,8 @@ As of our most recent design, the major components and technologies are as follo
 - [TypeScript](https://www.typescriptlang.org)
 - [Chakra UI](https://chakra-ui.com)
 - [React Google Maps API](https://react-google-maps-api-docs.netlify.app/)
+- [Airtable.js](https://github.com/airtable/airtable.js/)
+- [Axios](https://axios-http.com/)
 - [React Query](https://react-query.tanstack.com)
 - [React Hook Form](https://react-hook-form.com)
 - [Yup](https://github.com/jquense/yup)
@@ -43,6 +45,13 @@ As of our most recent design, the major components and technologies are as follo
 
 - Build docker image from main directory: `docker build -t services-lists-docker . `
 - Run created image: `docker run -p 3000:3000 services-lists-docker`
+
+## Type Checking
+
+[TypeScript's `tsc` CLI command](https://www.typescriptlang.org/docs/handbook/compiler-options.html) is used to compile the code and check for any type errors.
+
+- To run a type check, run `yarn type-check`.
+- The project's TypeScript configuration is specified in the `tsconfig.json` file.
 
 ## Linting
 
