@@ -21,7 +21,8 @@
       "hooks": ["./hooks/index"],
       "models": ["./models/index"],
       "utils": ["./utils/index"]
-    }
+    },
+    "incremental": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]

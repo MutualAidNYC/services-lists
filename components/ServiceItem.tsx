@@ -1,4 +1,11 @@
-import { AddIcon, EmailIcon, LinkIcon, PhoneIcon } from '@chakra-ui/icons'
+import {
+  AddIcon,
+  EmailIcon,
+  LinkIcon,
+  MinusIcon,
+  PhoneIcon,
+  Search2Icon,
+} from '@chakra-ui/icons'
 import {
   Box,
   BoxProps,
@@ -13,7 +20,7 @@ import {
   Tooltip,
   Wrap,
 } from '@chakra-ui/react'
-import { Service } from 'models'
+import { Address, Service } from 'models'
 
 interface AddServiceButtonProps {
   onAlertOpen: () => void
@@ -36,9 +43,47 @@ const AddServiceButton = ({
       rightIcon={<AddIcon />}
       onClick={onAlertOpenWrapper}
       lineHeight="none"
+      colorScheme={'teal'}
     >
       Add to list
     </Button>
+  )
+}
+
+interface SearchAddressIconProps {
+  selectedAddress: Address | undefined
+  setSelectedAddress: (address: Address | undefined) => void
+  getAddress: (service: Service) => Address | undefined
+  service: Service
+}
+
+const SearchAddressIcon = ({
+  selectedAddress,
+  setSelectedAddress,
+  getAddress,
+  service,
+}: SearchAddressIconProps): JSX.Element => {
+  const handleClick = () => {
+    const address = getAddress(service)
+    if (address) {
+      if (selectedAddress === address) {
+        setSelectedAddress(undefined)
+      } else {
+        setSelectedAddress(address)
+      }
+    }
+  }
+
+  return (
+    <Box>
+      {selectedAddress &&
+      getAddress(service) &&
+      selectedAddress === getAddress(service) ? (
+        <MinusIcon onClick={() => handleClick()} />
+      ) : (
+        <Search2Icon onClick={() => handleClick()} />
+      )}
+    </Box>
   )
 }
 
@@ -46,23 +91,35 @@ interface ServiceItemProps extends BoxProps {
   service: Service
   onAlertOpen?: () => void
   setSelectedService?: (service: Service) => void
+  selectedAddress?: Address | undefined
+  setSelectedAddress?: (address: Address | undefined) => void
+  getAddress?: (service: Service) => Address | undefined
 }
 
 export const ServiceItem = ({
   service,
   onAlertOpen,
   setSelectedService,
+  selectedAddress,
+  setSelectedAddress,
+  getAddress,
 }: ServiceItemProps): JSX.Element => {
-
   const adjustName = (name: string, length: number) => {
     if (name.length >= length) {
-      return name.substring(0, length - 2).replaceAll(',', '') + "..."
+      return name.substring(0, length - 2).replaceAll(',', '') + '...'
     }
     return name
   }
 
   return (
-    <Box  boxShadow='md' rounded='lg' p='8' _hover={{ boxShadow: 'lg' }}>
+    <Box
+      boxShadow="md"
+      rounded="lg"
+      p="8"
+      _hover={{ boxShadow: 'lg' }}
+      w="100%"
+      minW="100%"
+    >
       <Flex mb="16px" alignItems="center" justifyContent="space-between">
         <LinkBox>
           <HStack spacing="8px">
@@ -103,29 +160,39 @@ export const ServiceItem = ({
           </LinkBox>
         )}
 
-        <Box w='3xl'>
+        <Box
+          w="3xl"
+          display="flex"
+          flexDirection="row"
+          justifyContent="space-between"
+        >
           {service.taxonomyString && (
             <Wrap>
               {service.taxonomyString.map((taxonomy, i) => (
-                <Tooltip label={taxonomy} rounded='xl' key={i}>
-                  <Text textAlign='center' bgColor="lightPink" borderRadius="8px" p="8px">
+                <Tooltip label={taxonomy} rounded="xl" key={i}>
+                  <Text
+                    textAlign="center"
+                    bgColor="lightPink"
+                    borderRadius="8px"
+                    p="8px"
+                  >
                     {adjustName(taxonomy, 18)}
                   </Text>
                 </Tooltip>
               ))}
-              </Wrap>
+            </Wrap>
+          )}
+
+          {service.address && setSelectedAddress && getAddress && (
+            <SearchAddressIcon
+              selectedAddress={selectedAddress}
+              setSelectedAddress={setSelectedAddress}
+              getAddress={getAddress}
+              service={service}
+            />
           )}
         </Box>
-
       </Stack>
     </Box>
   )
 }
-{/* <HStack>
-<Heading fontSize="subheading3">Resource categories:</Heading>
-{service.taxonomyString.map((taxonomy, i) => (
-  <Text key={i} bgColor="lightPink" borderRadius="8px" p="8px">
-    {taxonomy}
-  </Text>
-))}
-</HStack> */}

@@ -13,8 +13,7 @@ interface MapProps extends GoogleMapProps {
   defaultCenter: google.maps.LatLngLiteral
   addressIdToLabel: Record<string, string>
   addresses: Address[]
-  selectedAddress: Address | undefined
-  filteredAddreses: Address[]
+  selectedAddress?: Address
 }
 
 export const Map = ({
@@ -22,8 +21,6 @@ export const Map = ({
   addressIdToLabel,
   addresses,
   selectedAddress,
-  filteredAddreses,
-
   ...props
 }: MapProps): JSX.Element => {
   const { isLoaded, loadError } = useJsApiLoader({
@@ -57,35 +54,16 @@ export const Map = ({
       zoom={11}
       {...props}
     >
-      {filteredAddreses.length > 0
-        ? filteredAddreses.map((address) => (
-            <MapMarker
-              opacity={
-                selectedAddress
-                  ? selectedAddress === address
-                    ? 1.0
-                    : 0.3
-                  : 1.0
-              }
-              key={address.id}
-              label={addressIdToLabel[address.id]}
-              address={address}
-            />
-          ))
-        : addresses.map((address) => (
-            <MapMarker
-              opacity={
-                selectedAddress
-                  ? selectedAddress === address
-                    ? 1.0
-                    : 0.3
-                  : 1.0
-              }
-              key={address.id}
-              label={addressIdToLabel[address.id]}
-              address={address}
-            />
-          ))}
+      {addresses.map((address) => (
+        <MapMarker
+          opacity={
+            selectedAddress ? (selectedAddress === address ? 1.0 : 0.3) : 1.0
+          }
+          key={address.id}
+          label={addressIdToLabel[address.id]}
+          address={address}
+        />
+      ))}
     </GoogleMap>
   ) : (
     <Spinner />
