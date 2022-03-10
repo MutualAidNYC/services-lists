@@ -1,6 +1,10 @@
 import { Box, Button, Heading, HStack, Stack, VStack } from '@chakra-ui/react'
 import { NextPage } from 'next'
-import Select from 'react-select'
+import Select, {
+  CSSObjectWithLabel,
+  GroupBase,
+  StylesConfig,
+} from 'react-select'
 import {
   SearchBar,
   ServiceItem,
@@ -45,17 +49,27 @@ export const CreateListPage: NextPage = () => {
     { value: services.length, label: 'All' },
   ]
 
-  const pageViewStyles = {
-    option: (provided: any) => ({
+  const pageViewStyles: StylesConfig<
+    {
+      value: number
+      label: string
+    },
+    false,
+    GroupBase<{
+      value: number
+      label: string
+    }>
+  > = {
+    option: (provided: CSSObjectWithLabel) => ({
       ...provided,
       minHeight: 36,
     }),
-    control: (provided: any) => ({
+    control: (provided: CSSObjectWithLabel) => ({
       ...provided,
       width: '90px',
       borderRadius: '28px',
     }),
-    singleValue: (provided: any) => {
+    singleValue: (provided: CSSObjectWithLabel) => {
       return { ...provided }
     },
   }

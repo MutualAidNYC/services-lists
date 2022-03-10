@@ -1,2 +1,2 @@
-export * from './airtable'
+export * from './clients'
 export * from './services'

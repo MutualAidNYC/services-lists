@@ -30,7 +30,7 @@ export const SearchBar = <T,>({
       baseData.filter((datum) =>
         searchFields.some((field) =>
           (datum[field as keyof T] as unknown as string)
-            .toLowerCase()
+            ?.toLowerCase()
             .includes(query.toLowerCase())
         )
       )

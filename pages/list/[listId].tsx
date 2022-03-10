@@ -18,7 +18,11 @@ import { Map, SearchBar, ServiceItem } from '../../components'
 import { ServiceListProvider, useServiceList } from '../../hooks'
 import { Address, Service } from '../../models'
 import { PaginatedList } from 'react-paginated-list'
-import Select from 'react-select'
+import Select, {
+  CSSObjectWithLabel,
+  GroupBase,
+  StylesConfig,
+} from 'react-select'
 
 // Import Swiper styles & required modules
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -34,7 +38,9 @@ export const ListPage: NextPage = () => {
   const {
     isLoading,
     listName,
+    baseServices,
     services,
+    setServices,
     addressIdToServiceName,
     addresses,
     defaultMapCenter,
@@ -51,31 +57,51 @@ export const ListPage: NextPage = () => {
     { value: services.length, label: 'All' },
   ]
 
-  const filterStyles = {
-    option: (provided: any) => ({
+  const filterStyles: StylesConfig<
+    {
+      label: string
+      value: string
+    },
+    true,
+    GroupBase<{
+      label: string
+      value: string
+    }>
+  > = {
+    option: (provided: CSSObjectWithLabel) => ({
       ...provided,
       minHeight: 36,
     }),
-    control: (provided: any) => ({
+    control: (provided: CSSObjectWithLabel) => ({
       ...provided,
       width: '180px',
       borderRadius: '28px',
     }),
-    singleValue: (provided: any) => {
+    singleValue: (provided: CSSObjectWithLabel) => {
       return { ...provided }
     },
   }
-  const pageViewStyles = {
-    option: (provided: any) => ({
+  const pageViewStyles: StylesConfig<
+    {
+      value: number
+      label: string
+    },
+    false,
+    GroupBase<{
+      value: number
+      label: string
+    }>
+  > = {
+    option: (provided: CSSObjectWithLabel) => ({
       ...provided,
       minHeight: 36,
     }),
-    control: (provided: any) => ({
+    control: (provided: CSSObjectWithLabel) => ({
       ...provided,
       width: '90px',
       borderRadius: '28px',
     }),
-    singleValue: (provided: any) => {
+    singleValue: (provided: CSSObjectWithLabel) => {
       return { ...provided }
     },
   }
@@ -153,8 +179,11 @@ export const ListPage: NextPage = () => {
               {listName}
             </Heading>
             <LinkBox>
-              <LinkOverlay _hover={{ textDecoration: 'underline' }}>
-                <Button colorScheme="teal" as={'a'} href="../create-list">
+              <LinkOverlay
+                href="/create-list"
+                _hover={{ textDecoration: 'underline' }}
+              >
+                <Button colorScheme="teal">
                   {' '}
                   Create a new List <PlusSquareIcon mx={1} />{' '}
                 </Button>
@@ -162,12 +191,10 @@ export const ListPage: NextPage = () => {
             </LinkBox>
           </HStack>
 
-          <HStack w="100%" justifyContent="left" spacing={4} pr={16}>
+          <HStack w="100%" justifyContent="left" spacing={4}>
             <SearchBar
-              baseData={services}
-              setData={() => {
-                null
-              }}
+              baseData={baseServices}
+              setData={setServices}
               searchFields={['name', 'description']}
               w={{ base: '100%', sm: '60%' }}
               mb="24px"
@@ -257,6 +284,7 @@ export const ListPage: NextPage = () => {
                 }}
               />
               <Text textAlign="center" fontWeight="light">
+                {' '}
                 {` Showing ${
                   maxAmountDisplayed > services.length
                     ? services.length

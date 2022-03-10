@@ -3,21 +3,24 @@ import { SearchBar, ServicesListItem, SortMenu } from 'components'
 import { useAllServicesLists, useTaxonomyFilter } from 'hooks'
 import { ServicesList } from 'models'
 import { NextPage } from 'next'
-import { Key, useState } from 'react'
+import { useCallback, useState } from 'react'
 import Select from 'react-select'
 import { PaginatedList } from 'react-paginated-list'
 
-export const Home: NextPage = () => {
+export const HomePage: NextPage = () => {
   const { baseServicesLists, servicesLists, setServicesLists } =
     useAllServicesLists()
 
-  const filterFunction = (servicesList: ServicesList, filters: string[]) =>
-    servicesList.taxonomies?.some((taxonomy) => filters.includes(taxonomy)) ??
-    false
+  const filterByTaxonomies = useCallback(
+    (servicesList: ServicesList, filters: string[]) =>
+      servicesList.taxonomies?.some((taxonomy) => filters.includes(taxonomy)) ??
+      false,
+    []
+  )
   const { taxonomyOptions, setFilters } = useTaxonomyFilter(
     baseServicesLists,
     setServicesLists,
-    filterFunction
+    filterByTaxonomies
   )
 
   const sortFieldsTextToVal = { Name: 'name', Description: 'description' }
@@ -45,7 +48,12 @@ export const Home: NextPage = () => {
           Services Lists
         </Heading>
 
-        <Stack w="100%" direction={'row'} justifyContent="left">
+        <Stack
+          w="100%"
+          direction={'row'}
+          justifyContent="left"
+          pr={{ base: 4, sm: 16, md: 32 }}
+        >
           <SearchBar
             baseData={baseServicesLists}
             setData={setServicesLists}
@@ -53,31 +61,6 @@ export const Home: NextPage = () => {
             w={{ base: '100%', sm: '60%' }}
             mb="24px"
           />
-          <Box
-            display="flex"
-            flexDirection="row"
-            justifyContent="center"
-            alignItems="center"
-            pr={16}
-          >
-            <Text textAlign="center" px={2}>
-              {' '}
-              Results per page
-            </Text>
-            <Select
-              isSearchable
-              closeMenuOnSelect={true}
-              placeholder={`${maxAmountDisplayed}`}
-              options={displayAmountOptions}
-              onChange={(e) => {
-                e ? setMaxAmountDisplayed(e.value) : null
-              }}
-              theme={(theme) => ({
-                ...theme,
-                borderRadius: 16,
-              })}
-            />
-          </Box>
         </Stack>
 
         <HStack spacing="24px" w="100%" mb="24px" mt={2}>
@@ -86,28 +69,38 @@ export const Home: NextPage = () => {
             setData={setServicesLists}
             sortFieldsTextToVal={sortFieldsTextToVal}
           />
-
-          <Box>
-            <Select
-              isMulti
-              isSearchable
-              closeMenuOnSelect={false}
-              placeholder="Filter By"
-              options={taxonomyOptions}
-              onChange={(e) => {
-                setFilters(e.map((e) => e.value))
-              }}
-              theme={(theme) => ({
-                ...theme,
-                borderRadius: 16,
-                colors: {
-                  ...theme.colors,
-                  primary25: '#B2DFDB',
-                  primary: 'black',
-                },
-              })}
-            />
-          </Box>
+          <Select
+            isMulti
+            isSearchable
+            closeMenuOnSelect={false}
+            placeholder="Filter By"
+            options={taxonomyOptions}
+            onChange={(e) => {
+              setFilters(e.map((e) => e.value))
+            }}
+            theme={(theme) => ({
+              ...theme,
+              borderRadius: 16,
+              colors: {
+                ...theme.colors,
+                primary25: '#B2DFDB',
+                primary: 'black',
+              },
+            })}
+          />
+          <Select
+            isSearchable
+            closeMenuOnSelect={true}
+            placeholder={`${maxAmountDisplayed}`}
+            options={displayAmountOptions}
+            onChange={(e) => {
+              e ? setMaxAmountDisplayed(e.value) : null
+            }}
+            theme={(theme) => ({
+              ...theme,
+              borderRadius: 16,
+            })}
+          />
         </HStack>
       </VStack>
 
@@ -118,7 +111,7 @@ export const Home: NextPage = () => {
           itemsPerPage={maxAmountDisplayed}
           renderList={(list: ServicesList[]) => (
             <>
-              {list.map((item: ServicesList, i: Key | null | undefined) => {
+              {list.map((item, i) => {
                 return (
                   <Stack
                     alignItems="left"
@@ -154,4 +147,4 @@ export const Home: NextPage = () => {
   )
 }
 
-export default Home
+export default HomePage
