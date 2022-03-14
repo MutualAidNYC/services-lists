@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useQuery } from 'react-query'
+import useDeepCompareEffect from 'use-deep-compare-effect'
 import { getAllTaxonomies } from 'api'
 import { TaxonomyTerm } from 'models'
 
@@ -29,7 +30,7 @@ export const useTaxonomyFilter = <T>(
     })
 
   const [filters, setFilters] = useState<string[]>([])
-  useEffect(() => {
+  useDeepCompareEffect(() => {
     if (filters.length === 0) {
       setData(baseData)
       return

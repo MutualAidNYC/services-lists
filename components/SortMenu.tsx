@@ -9,7 +9,8 @@ import {
   MenuList,
   MenuOptionGroup,
 } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import useDeepCompareEffect from 'use-deep-compare-effect'
 
 interface SortMenuProps<T> extends MenuButtonProps {
   data: T[]
@@ -26,7 +27,7 @@ export const SortMenu = <T,>({
   const [order, setOrder] = useState<string | string[]>('asc')
   const [sortFields, setSortFields] = useState<string | string[]>([])
 
-  useEffect(() => {
+  useDeepCompareEffect(() => {
     if (sortFields.length === 0) {
       return
     }

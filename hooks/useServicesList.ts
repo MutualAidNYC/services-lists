@@ -48,9 +48,7 @@ export const useServiceList = (listId: string): ServiceListHandler => {
   )
   const baseServices = serviceQueryResults.map((result) => result.data)
   const [services, setServices] = useState(baseServices)
-  useEffect(() => {
-    if (!isLoadingServices) setServices(baseServices)
-  }, [isLoadingServices])
+  useEffect(() => setServices(baseServices), [isLoadingServices])
 
   const addressIdToServiceName: Record<string, string> = {}
   const addressQueryOptions =
