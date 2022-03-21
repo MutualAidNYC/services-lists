@@ -6,16 +6,12 @@ import {
   LinkOverlay,
   Text,
   Tooltip,
+  Wrap,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import { ServicesList } from 'models'
 import { formatDate } from 'utils'
 
-// import Swiper core required modules & style sheets
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Autoplay } from 'swiper'
-import 'swiper/css'
-import 'swiper/css/pagination'
 
 interface ServicesListItemProps extends LinkBoxProps {
   servicesList: ServicesList
@@ -60,43 +56,23 @@ export const ServicesListItem = ({
         servicesList.createdAt
       )}`}</Text>
 
-      <Swiper
-        breakpoints={{
-          768: {
-            slidesPerView: 3,
-          },
-          1280: {
-            slidesPerView: 4,
-          },
-          320: {
-            slidesPerView: 2,
-          },
-        }}
-        autoplay={{
-          delay: 2500,
-          disableOnInteraction: false,
-        }}
-        modules={[Autoplay]}
-        className="mySwiper"
-      >
+      <Wrap>
         {taxonomies.map((taxonomy, i) => (
-          <SwiperSlide key={i}>
-            <Tooltip label={taxonomy} rounded="xl">
-              <Text
-                mx={2}
-                bgColor="lightPink"
-                borderRadius="15px"
-                p="8px"
-                textAlign="center"
-                maxW="200px"
-                height="fit-content"
-              >
-                {adjustName(taxonomy, 18)}
-              </Text>
-            </Tooltip>
-          </SwiperSlide>
+          <Tooltip label={taxonomy} rounded="xl" key={i}>
+            <Text
+              mx={2}
+              bgColor="lightPink"
+              borderRadius="15px"
+              p="8px"
+              textAlign="center"
+              maxW="240px"
+              height="fit-content"
+            >
+              {adjustName(taxonomy, 18)}
+            </Text>
+          </Tooltip>
         ))}
-      </Swiper>
+      </Wrap>
     </LinkBox>
   )
 }

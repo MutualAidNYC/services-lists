@@ -24,11 +24,6 @@ import Select, {
   StylesConfig,
 } from 'react-select'
 
-// Import Swiper styles & required modules
-import { Swiper, SwiperSlide } from 'swiper/react'
-import 'swiper/css'
-import 'swiper/css/pagination'
-import { EffectCoverflow, Pagination } from 'swiper'
 
 export const ListPage: NextPage = () => {
   const router = useRouter()
@@ -308,84 +303,6 @@ export const ListPage: NextPage = () => {
                 selectedAddress={selectedAddress}
               />
             </Center>
-          </HStack>
-        </Stack>
-
-        {/* Mobile View */}
-        <Stack
-          display={{ base: 'inherit', md: 'none' }}
-          w="100%"
-          minH="calc(100vh - 96px)"
-          h="100%"
-        >
-          {/* <Heading size='md' color='black' pos='absolute' bottom={190} zIndex={1}> {listName} </ Heading> */}
-
-          <Center
-            w="100%"
-            height="calc(100vh - 96px)"
-            bottom="0"
-            left="0"
-            pos="absolute"
-          >
-            <Map
-              defaultCenter={defaultMapCenter}
-              addressIdToLabel={addressIdToServiceName}
-              addresses={addresses}
-            />
-          </Center>
-
-          <HStack w="100%" bottom="2" left="0" pos="absolute" height="180px">
-            <Swiper
-              effect={'coverflow'}
-              grabCursor={true}
-              centeredSlides={true}
-              slidesPerView={2}
-              coverflowEffect={{
-                rotate: 50,
-                stretch: 0,
-                depth: 50,
-                modifier: 1,
-                slideShadows: true,
-              }}
-              // Can set pagination true/false for the dots underneath
-              pagination={false}
-              modules={[EffectCoverflow, Pagination]}
-              className="mySwiper"
-            >
-              {!isLoading &&
-                services.map((service) => (
-                  <SwiperSlide
-                    key={service.id}
-                    // onClick={() => setSelectedAddress(getAddress(service))} onTouchStart={() => { }}
-                  >
-                    <Box
-                      cursor="pointer"
-                      bg="#fafafa"
-                      color="black"
-                      rounded="lg"
-                      h="100%"
-                      maxW={'100%'}
-                    >
-                      <LinkBox>
-                        <LinkOverlay
-                          href={service.url}
-                          _hover={{ textDecoration: 'underline' }}
-                        >
-                          <Text
-                            fontSize="16px"
-                            px={2}
-                            py={2}
-                            textAlign="center"
-                          >
-                            {' '}
-                            {service.name}{' '}
-                          </Text>
-                        </LinkOverlay>
-                      </LinkBox>
-                    </Box>
-                  </SwiperSlide>
-                ))}
-            </Swiper>
           </HStack>
         </Stack>
       </ServiceListProvider>

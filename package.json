@@ -32,7 +32,6 @@
     "react-query": "^3.28.0",
     "react-select": "^5.2.1",
     "styled-components": "^5.3.3",
-    "swiper": "^8.0.3",
     "ts-loader": "^9.2.6",
     "yup": "^0.32.11"
   },
