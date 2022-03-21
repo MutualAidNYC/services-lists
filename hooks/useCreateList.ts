@@ -1,10 +1,4 @@
-import {
-  BaseSyntheticEvent,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from 'react'
+import { BaseSyntheticEvent, createContext, useContext, useState } from 'react'
 import { useMutation, useQuery } from 'react-query'
 import {
   AirtableCreateResponse,
@@ -17,6 +11,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form'
 import * as yup from 'yup'
 import { useRouter } from 'next/router'
+import { SortHandler, useFilters, useSort } from 'hooks'
 
 export interface CreateListForm {
   name: string
@@ -34,9 +29,11 @@ const createListSchema = yup.object({
 
 interface CreateListHandler {
   isLoading: boolean
-  baseServices: Service[]
-  services: Service[]
-  setServices: (services: Service[]) => void
+  visibleServices: Service[]
+  setSearchQuery: (query: string) => void
+  taxonomyOptions: { value: string; label: string }[]
+  setTaxonomyFilters: (filters: string[]) => void
+  sortHandler: SortHandler<Service>
   isAlertOpen: boolean
   onAlertClose: () => void
   onAlertOpen: () => void
@@ -66,8 +63,15 @@ export const useCreateList = (): CreateListHandler => {
     retry: false,
     refetchOnWindowFocus: false,
   })
-  const [services, setServices] = useState(baseServices)
-  useEffect(() => setServices(baseServices), [baseServices])
+
+  const {
+    isLoading: isLoadingFilters,
+    filteredData: filteredServices,
+    setSearchQuery,
+    taxonomyOptions,
+    setTaxonomyFilters,
+  } = useFilters(baseServices ?? [], ['name', 'description'], 'taxonomyString')
+  const sortHandler = useSort(filteredServices)
 
   const {
     isOpen: isAlertOpen,
@@ -126,10 +130,12 @@ export const useCreateList = (): CreateListHandler => {
   }
 
   return {
-    isLoading: isLoadingServices,
-    baseServices: baseServices ?? [],
-    services: services ?? [],
-    setServices,
+    isLoading: isLoadingServices || isLoadingFilters,
+    visibleServices: sortHandler.sortedData,
+    taxonomyOptions,
+    setTaxonomyFilters,
+    setSearchQuery,
+    sortHandler,
     isAlertOpen,
     onAlertClose,
     onAlertOpen,

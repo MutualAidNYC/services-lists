@@ -46,7 +46,7 @@ export const useFilters = <T>(
     }
     if (taxonomyFilters.length > 0) {
       const taxonomyFilterFunction = (datum: T) =>
-        (datum[taxonomyField] as unknown as string[]).some((taxonomy) =>
+        (datum[taxonomyField] as unknown as string[])?.some((taxonomy) =>
           taxonomyFilters.includes(taxonomy)
         )
 
