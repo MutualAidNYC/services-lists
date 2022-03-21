@@ -9,53 +9,20 @@ import {
   MenuList,
   MenuOptionGroup,
 } from '@chakra-ui/react'
-import { useState } from 'react'
+import { SortOrder, useSortContext } from 'hooks'
 
-interface SortMenuProps<T> extends MenuButtonProps {
-  data: T[]
-  setData: (data: T[]) => void
+interface SortMenuProps extends MenuButtonProps {
   sortFieldsTextToVal: Record<string, string>
 }
 
-export const SortMenu = <T,>({
-  data,
-  setData,
+export const SortMenu = ({
   sortFieldsTextToVal,
   ...props
-}: SortMenuProps<T>): JSX.Element => {
-  const [order, setOrder] = useState<string | string[]>('asc')
-  const [sortFields, setSortFields] = useState<string | string[]>([])
-
-  /*
-  useDeepCompareEffect(() => {
-    if (sortFields.length === 0) {
-      return
-    }
-
-    const sortFieldsArray =
-      typeof sortFields === 'string' ? [sortFields] : sortFields
-    if (order === 'asc') {
-      const sortedData = [...data]
-      sortFieldsArray.forEach((field) =>
-        sortedData.sort((a, b) =>
-          a[field as keyof T] > b[field as keyof T] ? 1 : -1
-        )
-      )
-      setData(sortedData)
-    } else {
-      const sortedData = [...data]
-      sortFieldsArray.forEach((field) =>
-        sortedData.sort((a, b) =>
-          a[field as keyof T] < b[field as keyof T] ? 1 : -1
-        )
-      )
-      setData(sortedData)
-    }
-  }, [order, sortFields, data, setData])
-  */
+}: SortMenuProps): JSX.Element => {
+  const { setOrder, setSortField } = useSortContext()
 
   return (
-    <Menu isLazy closeOnSelect={false}>
+    <Menu>
       <MenuButton
         as={Button}
         {...props}
@@ -67,12 +34,12 @@ export const SortMenu = <T,>({
       >
         Sort by <ChevronDownIcon />{' '}
       </MenuButton>
-      <MenuList w="fit-content">
+      <MenuList zIndex={2}>
         <MenuOptionGroup
           title="Order"
           type="radio"
           defaultValue="asc"
-          onChange={(e) => setOrder(e)}
+          onChange={(e) => setOrder(e as SortOrder)}
         >
           <MenuItemOption value="asc">Ascending</MenuItemOption>
           <MenuItemOption value="desc">Descending</MenuItemOption>
@@ -80,8 +47,8 @@ export const SortMenu = <T,>({
         <MenuDivider />
         <MenuOptionGroup
           title="Sort by"
-          type="checkbox"
-          onChange={(e) => setSortFields(e)}
+          type="radio"
+          onChange={(e) => setSortField(e)}
         >
           {Object.keys(sortFieldsTextToVal).map((text, i) => (
             <MenuItemOption key={i} value={sortFieldsTextToVal[text]}>

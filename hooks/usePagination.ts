@@ -12,7 +12,7 @@ export interface PaginationHandler<T> {
   setPageSize: (pageSize: number) => void
 }
 
-const PaginationContext = createContext({} as PaginationHandler<any>)
+const PaginationContext = createContext({} as PaginationHandler<any>) // eslint-disable-line @typescript-eslint/no-explicit-any
 export const PaginationProvider = PaginationContext.Provider
 export const usePaginationContext = <T>(): PaginationHandler<T> =>
   useContext(PaginationContext)

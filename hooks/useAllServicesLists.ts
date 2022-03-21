@@ -2,7 +2,13 @@ import { createContext, useContext } from 'react'
 import { useQuery } from 'react-query'
 import { getAllServicesLists } from 'api'
 import { ServicesList } from 'models'
-import { PaginationHandler, useFilters, usePagination } from 'hooks'
+import {
+  PaginationHandler,
+  SortHandler,
+  useFilters,
+  usePagination,
+  useSort,
+} from 'hooks'
 
 interface AllServicesListsHandler {
   isLoading: boolean
@@ -11,6 +17,7 @@ interface AllServicesListsHandler {
   setSearchQuery: (query: string) => void
   taxonomyOptions: { value: string; label: string }[]
   setTaxonomyFilters: (filters: string[]) => void
+  sortHandler: SortHandler<ServicesList>
   paginationHandler: PaginationHandler<ServicesList>
 }
 
@@ -39,7 +46,8 @@ export const useAllServicesLists = (): AllServicesListsHandler => {
     taxonomyOptions,
     setTaxonomyFilters,
   } = useFilters(baseServicesLists ?? [], ['name', 'description'], 'taxonomies')
-  const paginationHandler = usePagination(filteredServicesLists)
+  const sortHandler = useSort(filteredServicesLists)
+  const paginationHandler = usePagination(sortHandler.sortedData)
 
   return {
     isLoading: isLoadingAllServicesLists || isLoadingFilters,
@@ -48,6 +56,7 @@ export const useAllServicesLists = (): AllServicesListsHandler => {
     setSearchQuery,
     taxonomyOptions,
     setTaxonomyFilters,
+    sortHandler,
     paginationHandler,
   }
 }

@@ -25,11 +25,11 @@ export class Cache<TData, TInput> {
       this.data = await this.getData(input)
       this.cachedTime = currTime
 
-      console.log('Returning data from API:', this.apiRoute)
+      console.log('Returning data from API:', this.apiRoute) // eslint-disable-line no-console
       return this.data
     }
 
-    console.log('Returning cached data:', this.apiRoute)
+    console.log('Returning cached data:', this.apiRoute) // eslint-disable-line no-console
     return this.data
   }
 }

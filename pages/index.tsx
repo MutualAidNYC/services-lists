@@ -5,7 +5,7 @@ import {
   ServicesListItem,
   SortMenu,
 } from 'components'
-import { PaginationProvider, useAllServicesLists } from 'hooks'
+import { PaginationProvider, SortProvider, useAllServicesLists } from 'hooks'
 import { NextPage } from 'next'
 import Select from 'react-select'
 
@@ -16,11 +16,11 @@ export const HomePage: NextPage = () => {
     setSearchQuery,
     taxonomyOptions,
     setTaxonomyFilters,
+    sortHandler,
     paginationHandler,
   } = useAllServicesLists()
-  const { pageSizeOptions, setPageSize } = paginationHandler
 
-  // const sortFieldsTextToVal = { Name: 'name', Description: 'description' }
+  const sortFieldsTextToVal = { Name: 'name', Description: 'description' }
 
   return (
     <Stack spacing="32px" px="96px" py="48px">
@@ -33,9 +33,9 @@ export const HomePage: NextPage = () => {
             isSearchable
             instanceId="pageSizeSelect"
             closeMenuOnSelect={true}
-            options={pageSizeOptions}
+            options={paginationHandler.pageSizeOptions}
             onChange={(e) => {
-              e ? setPageSize(e.value) : null
+              e ? paginationHandler.setPageSize(e.value) : null
             }}
             theme={(theme) => ({
               ...theme,
@@ -47,17 +47,14 @@ export const HomePage: NextPage = () => {
       <PaginationProvider value={paginationHandler}>
         <PaginationSection baseDataLength={numServicesLists} />
       </PaginationProvider>
-      <HStack>
-        {/*
-        <SortMenu
-          data={servicesLists}
-          setData={setServicesLists}
-          sortFieldsTextToVal={sortFieldsTextToVal}
-        />
-        */}
+      <HStack spacing="16px">
+        <SortProvider value={sortHandler}>
+          <SortMenu sortFieldsTextToVal={sortFieldsTextToVal} />
+        </SortProvider>
         <Select
           isMulti
           isSearchable
+          instanceId="taxonomySelect"
           closeMenuOnSelect={false}
           placeholder="Filter By"
           options={taxonomyOptions}
