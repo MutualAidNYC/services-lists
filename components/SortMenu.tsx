@@ -10,7 +10,6 @@ import {
   MenuOptionGroup,
 } from '@chakra-ui/react'
 import { useState } from 'react'
-import useDeepCompareEffect from 'use-deep-compare-effect'
 
 interface SortMenuProps<T> extends MenuButtonProps {
   data: T[]
@@ -27,6 +26,7 @@ export const SortMenu = <T,>({
   const [order, setOrder] = useState<string | string[]>('asc')
   const [sortFields, setSortFields] = useState<string | string[]>([])
 
+  /*
   useDeepCompareEffect(() => {
     if (sortFields.length === 0) {
       return
@@ -52,6 +52,7 @@ export const SortMenu = <T,>({
       setData(sortedData)
     }
   }, [order, sortFields, data, setData])
+  */
 
   return (
     <Menu isLazy closeOnSelect={false}>

@@ -1,13 +1,17 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext } from 'react'
 import { useQuery } from 'react-query'
 import { getAllServicesLists } from 'api'
 import { ServicesList } from 'models'
+import { PaginationHandler, useFilters, usePagination } from 'hooks'
 
 interface AllServicesListsHandler {
   isLoading: boolean
-  baseServicesLists: ServicesList[]
-  servicesLists: ServicesList[]
-  setServicesLists: (servicesLists: ServicesList[]) => void
+  visibleServicesLists: ServicesList[]
+  numServicesLists: number
+  setSearchQuery: (query: string) => void
+  taxonomyOptions: { value: string; label: string }[]
+  setTaxonomyFilters: (filters: string[]) => void
+  paginationHandler: PaginationHandler<ServicesList>
 }
 
 const AllServicesListContext = createContext<AllServicesListsHandler>(
@@ -27,13 +31,23 @@ export const useAllServicesLists = (): AllServicesListsHandler => {
         refetchOnWindowFocus: false,
       }
     )
-  const [servicesLists, setServicesLists] = useState(baseServicesLists)
-  useEffect(() => setServicesLists(baseServicesLists), [baseServicesLists])
+
+  const {
+    isLoading: isLoadingFilters,
+    filteredData: filteredServicesLists,
+    setSearchQuery,
+    taxonomyOptions,
+    setTaxonomyFilters,
+  } = useFilters(baseServicesLists ?? [], ['name', 'description'], 'taxonomies')
+  const paginationHandler = usePagination(filteredServicesLists)
 
   return {
-    isLoading: isLoadingAllServicesLists,
-    baseServicesLists: baseServicesLists ?? [],
-    servicesLists: servicesLists ?? [],
-    setServicesLists,
+    isLoading: isLoadingAllServicesLists || isLoadingFilters,
+    visibleServicesLists: paginationHandler.paginatedData,
+    numServicesLists: baseServicesLists?.length ?? 0,
+    setSearchQuery,
+    taxonomyOptions,
+    setTaxonomyFilters,
+    paginationHandler,
   }
 }

@@ -1,18 +1,17 @@
 import {
-  Badge,
+  Box,
+  BoxProps,
   Heading,
-  LinkBox,
-  LinkBoxProps,
-  LinkOverlay,
+  Link,
+  Stack,
   Text,
   Tooltip,
   Wrap,
 } from '@chakra-ui/react'
-import NextLink from 'next/link'
 import { ServicesList } from 'models'
 import { formatDate } from 'utils'
 
-interface ServicesListItemProps extends LinkBoxProps {
+interface ServicesListItemProps extends BoxProps {
   servicesList: ServicesList
 }
 
@@ -31,65 +30,33 @@ export const ServicesListItem = ({
   }
 
   return (
-    <LinkBox {...props} my={2}>
+    <Box {...props}>
       <Heading fontSize="subheading2" mb="16px">
-        <NextLink
-          href={`/list/${encodeURIComponent(servicesList.id)}`}
-          passHref
-        >
-          <LinkOverlay>{servicesList.name}</LinkOverlay>
-        </NextLink>
-        <Badge
-          mx={4}
-          px={2}
-          py={1}
-          rounded={16}
-          colorScheme={servicesList.Status == 'Published' ? 'green' : 'red'}
-        >
-          {' '}
-          {servicesList.Status}{' '}
-        </Badge>
+        <Link href={`/list/${servicesList.id}`}>{servicesList.name}</Link>
       </Heading>
-      <Text>{servicesList.description}</Text>
-      <Text>{`Created by ${servicesList.creator} on ${formatDate(
-        servicesList.createdAt
-      )}`}</Text>
-
-      {/* Keeping this here in case we want to go back to this version
-      <Wrap  alignContent='center' w='100%' display='flex' flexDirection='row' maxW='3xl' h='100%'>
-
-        {taxonomies.map((taxonomy, i) => (
-          <Text
-            key={i}
-            mx={2}
-            bgColor='lightPink'
-            borderRadius='15px'
-            p='8px'
-            maxW="240px"
-            h="fit-content"
-          >
-            {taxonomy}
-          </Text>
-        ))}
-      </Wrap> */}
-
-      <Wrap>
-        {taxonomies.map((taxonomy, i) => (
-          <Tooltip label={taxonomy} rounded="xl" key={i}>
-            <Text
-              mx={2}
-              bgColor="lightPink"
-              borderRadius="15px"
-              p="8px"
-              textAlign="center"
-              maxW="240px"
-              height="fit-content"
-            >
-              {adjustName(taxonomy, 18)}
-            </Text>
-          </Tooltip>
-        ))}
-      </Wrap>
-    </LinkBox>
+      <Stack spacing="8px">
+        <Text>{servicesList.description}</Text>
+        <Text>{`Created by ${servicesList.creator} on ${formatDate(
+          servicesList.createdAt
+        )}`}</Text>
+        <Wrap>
+          {taxonomies.map((taxonomy, i) => (
+            <Tooltip label={taxonomy} rounded="xl" key={i}>
+              <Text
+                mx={2}
+                bgColor="lightPink"
+                borderRadius="15px"
+                p="8px"
+                textAlign="center"
+                maxW="240px"
+                height="fit-content"
+              >
+                {adjustName(taxonomy, 18)}
+              </Text>
+            </Tooltip>
+          ))}
+        </Wrap>
+      </Stack>
+    </Box>
   )
 }
