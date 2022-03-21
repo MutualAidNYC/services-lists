@@ -1,14 +1,15 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext } from 'react'
 import { useQueries, useQuery, UseQueryOptions } from 'react-query'
 import { getServicesList, getService, getAddress } from 'api'
 import { Address, Service, ServicesList } from 'models'
+import { useFilters } from './useFilters'
 
 export interface ServiceListHandler {
   isLoading: boolean
   listName: string
-  baseServices: Service[]
-  services: Service[]
-  setServices: (services: Service[]) => void
+  visibleServices: Service[]
+  numServices: number
+  setSearchQuery: (query: string) => void
   addressIdToServiceName: Record<string, string>
   addresses: Address[]
   defaultMapCenter: google.maps.LatLngLiteral
@@ -47,8 +48,11 @@ export const useServiceList = (listId: string): ServiceListHandler => {
     (result) => result.isLoading
   )
   const baseServices = serviceQueryResults.map((result) => result.data)
-  const [services, setServices] = useState(baseServices)
-  useEffect(() => setServices(baseServices), [isLoadingServices])
+  const { filteredData: filteredServices, setSearchQuery } = useFilters(
+    isLoadingServices ? [] : (baseServices as Service[]),
+    ['name', 'description'],
+    'taxonomyString'
+  )
 
   const addressIdToServiceName: Record<string, string> = {}
   const addressQueryOptions =
@@ -82,13 +86,9 @@ export const useServiceList = (listId: string): ServiceListHandler => {
   return {
     isLoading: isLoadingServiceList || isLoadingServices || isLoadingAddresses,
     listName: serviceList?.name ?? '',
-    baseServices: baseServices.some((service) => !service)
-      ? []
-      : (baseServices as Service[]), // return empty list if any service is undefined
-    services: services.some((service) => !service)
-      ? []
-      : (services as Service[]),
-    setServices,
+    visibleServices: filteredServices,
+    numServices: baseServices.length,
+    setSearchQuery,
     addressIdToServiceName,
     addresses: addresses.some((address) => !address)
       ? []
