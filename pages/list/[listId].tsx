@@ -1,4 +1,4 @@
-import {  ChevronUpIcon,  PlusSquareIcon } from '@chakra-ui/icons'
+import { ChevronUpIcon, PlusSquareIcon } from '@chakra-ui/icons'
 import {
   Heading,
   Center,
@@ -24,7 +24,6 @@ import Select, {
   GroupBase,
   StylesConfig,
 } from 'react-select'
-
 
 export const ListPage: NextPage = () => {
   const router = useRouter()
@@ -281,10 +280,11 @@ export const ListPage: NextPage = () => {
               />
               <Text textAlign="center" fontWeight="light">
                 {' '}
-                {` Showing ${maxAmountDisplayed > services.length
-                  ? services.length
-                  : maxAmountDisplayed
-                  } out of ${services.length} results.`}{' '}
+                {` Showing ${
+                  maxAmountDisplayed > services.length
+                    ? services.length
+                    : maxAmountDisplayed
+                } out of ${services.length} results.`}{' '}
               </Text>
             </Box>
             <Center
@@ -309,9 +309,9 @@ export const ListPage: NextPage = () => {
         <Stack
           display={{ base: 'inherit', md: 'none' }}
           w="100%"
-          h='100%'
+          h="100%"
           maxH="calc(100vh - 220px)"
-          overflow='hidden'
+          overflow="hidden"
         >
           <Center
             w="100%"
@@ -328,27 +328,26 @@ export const ListPage: NextPage = () => {
           </Center>
 
           <VStack
-            w='100%'
+            w="100%"
             bottom={0}
             left={0}
-            pos='absolute'
+            pos="absolute"
             onClick={onOpen}
-            color='white'
+            color="white"
             spacing={0}
-            bgColor='#283F44'
+            bgColor="#283F44"
             roundedTop={32}
           >
-            <ChevronUpIcon onClick={onOpen}  h={6} w={6} />
-            <Text pb={2} fontSize='xl'> {listName} </Text>
+            <ChevronUpIcon onClick={onOpen} h={6} w={6} />
+            <Text pb={2} fontSize="xl">
+              {' '}
+              {listName}{' '}
+            </Text>
           </VStack>
-          <Drawer
-            isOpen={isOpen}
-            placement='bottom'
-            onClose={onClose}
-          >
+          <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
             <VStack
-              overflowY='scroll'
-              overflowX='hidden'
+              overflowY="scroll"
+              overflowX="hidden"
               css={{
                 '&::-webkit-scrollbar': {
                   width: '2px',
@@ -362,7 +361,7 @@ export const ListPage: NextPage = () => {
                 },
               }}
               bgColor="white"
-              minH='100%'
+              minH="100%"
               maxH="calc(100vh - 300px)"
               w="100%"
             >
@@ -381,8 +380,6 @@ export const ListPage: NextPage = () => {
                 })}
             </VStack>
           </Drawer>
-
-
         </Stack>
       </ServiceListProvider>
     </VStack>
@@ -390,4 +387,3 @@ export const ListPage: NextPage = () => {
 }
 
 export default ListPage
-

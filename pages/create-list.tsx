@@ -1,10 +1,6 @@
-import { Box, Button, Heading, HStack, Stack, VStack } from '@chakra-ui/react'
+import { Button, Heading, HStack, Stack } from '@chakra-ui/react'
 import { NextPage } from 'next'
-import Select, {
-  CSSObjectWithLabel,
-  GroupBase,
-  StylesConfig,
-} from 'react-select'
+import Select from 'react-select'
 import {
   SearchBar,
   ServiceItem,
@@ -15,7 +11,6 @@ import {
 import { CreateListProvider, useCreateList, useTaxonomyFilter } from 'hooks'
 import { Service } from 'models'
 import { useCallback, useState } from 'react'
-import { PaginatedList } from 'react-paginated-list'
 
 export const CreateListPage: NextPage = () => {
   const handler = useCreateList()
@@ -38,108 +33,44 @@ export const CreateListPage: NextPage = () => {
 
   const [selectedService, setSelectedService] = useState<Service>()
 
-  const [maxAmountDisplayed, setMaxAmountDisplayed] = useState(10)
-
-  const displayAmountOptions = [
-    { value: 5, label: '5' },
-    { value: 10, label: '10' },
-    { value: 25, label: '25' },
-    { value: 50, label: '50' },
-    { value: 100, label: '100' },
-    { value: services.length, label: 'All' },
-  ]
-
-  const pageViewStyles: StylesConfig<
-    {
-      value: number
-      label: string
-    },
-    false,
-    GroupBase<{
-      value: number
-      label: string
-    }>
-  > = {
-    option: (provided: CSSObjectWithLabel) => ({
-      ...provided,
-      minHeight: 36,
-    }),
-    control: (provided: CSSObjectWithLabel) => ({
-      ...provided,
-      width: '90px',
-      borderRadius: '28px',
-    }),
-    singleValue: (provided: CSSObjectWithLabel) => {
-      return { ...provided }
-    },
-  }
-
   return (
     <CreateListProvider value={handler}>
-      <Stack spacing="16px" px={24}>
-        <Heading fontSize="heading1" mt={4}>
-          Create a resource list
-        </Heading>
+      <Stack spacing="32px">
+        <Heading fontSize="heading1">Create a resource list</Heading>
         <Stack spacing="16px">
           <SearchBar
             baseData={baseServices}
             setData={setServices}
             searchFields={['name', 'description']}
           />
-          <HStack justifyContent={'space-between'}>
-            <HStack spacing="16px">
-              <SortMenu
-                data={services}
-                setData={setServices}
-                sortFieldsTextToVal={sortFieldsTextToVal}
-              />
-              <Select
-                isMulti
-                isSearchable
-                instanceId="taxonomySelect"
-                closeMenuOnSelect={false}
-                options={taxonomyOptions}
-                placeholder="Filter by resource category"
-                onChange={(e) => setFilters(e.map((e) => e.value))}
-              />
-              <Select
-                isSearchable
-                closeMenuOnSelect={true}
-                placeholder={`${maxAmountDisplayed}`}
-                options={displayAmountOptions}
-                onChange={(e) => {
-                  e ? setMaxAmountDisplayed(e.value) : null
-                }}
-                styles={pageViewStyles}
-              />
-            </HStack>
-            <Button w="fit-content" colorScheme="teal" onClick={onDrawerOpen}>
-              View your list
-            </Button>
+          <HStack spacing="16px">
+            <SortMenu
+              data={services}
+              setData={setServices}
+              sortFieldsTextToVal={sortFieldsTextToVal}
+            />
+            <Select
+              isMulti
+              isSearchable
+              instanceId="taxonomySelect"
+              closeMenuOnSelect={false}
+              options={taxonomyOptions}
+              placeholder="Filter by resource category"
+              onChange={(e) => setFilters(e.map((e) => e.value))}
+            />
           </HStack>
+          <Button w="fit-content" onClick={onDrawerOpen}>
+            View your list
+          </Button>
         </Stack>
-        <PaginatedList
-          list={services}
-          useMinimalControls={true}
-          itemsPerPage={maxAmountDisplayed}
-          renderList={(list: Service[]) => {
-            return (
-              <VStack w="100%">
-                <>
-                  {list.map((service) => (
-                    <ServiceItem
-                      key={service.id}
-                      service={service}
-                      onAlertOpen={onAlertOpen}
-                      setSelectedService={setSelectedService}
-                    />
-                  ))}
-                  <Box pb={8}> {/* Just for styling purposes */} </Box>
-                </>
-              </VStack>
-            )
-          }}
-        />
+        {services.map((service) => (
+          <ServiceItem
+            key={service.id}
+            service={service}
+            onAlertOpen={onAlertOpen}
+            setSelectedService={setSelectedService}
+          />
+        ))}
         <CreateListAlert selectedService={selectedService} />
         <CreateListDrawer />
       </Stack>

@@ -77,8 +77,8 @@ const SearchAddressIcon = ({
   return (
     <Box>
       {selectedAddress &&
-        getAddress(service) &&
-        selectedAddress === getAddress(service) ? (
+      getAddress(service) &&
+      selectedAddress === getAddress(service) ? (
         <MinusIcon onClick={() => handleClick()} />
       ) : (
         <Search2Icon onClick={() => handleClick()} />
@@ -162,7 +162,7 @@ export const ServiceItem = ({
         )}
 
         <Box
-          maxW='100%'
+          maxW="100%"
           w="3xl"
           display="flex"
           flexDirection="row"
