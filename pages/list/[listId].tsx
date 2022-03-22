@@ -1,4 +1,4 @@
-import { PlusSquareIcon } from '@chakra-ui/icons'
+import {  ChevronUpIcon,  PlusSquareIcon } from '@chakra-ui/icons'
 import {
   Heading,
   Center,
@@ -10,11 +10,12 @@ import {
   Box,
   Stack,
   Button,
+  useDisclosure,
 } from '@chakra-ui/react'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { Map, SearchBar, ServiceItem } from '../../components'
+import { Drawer, Map, SearchBar, ServiceItem } from '../../components'
 import { ServiceListProvider, useServiceList } from '../../hooks'
 import { Address, Service } from '../../models'
 import { PaginatedList } from 'react-paginated-list'
@@ -103,6 +104,7 @@ export const ListPage: NextPage = () => {
 
   const [selectedAddress, setSelectedAddress] = useState<Address>()
   const [taxonomyFilters, setTaxonomyFilters] = useState<string[]>([])
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   function getAddress(service: Service): Address | undefined {
     let res = undefined
@@ -240,9 +242,8 @@ export const ListPage: NextPage = () => {
                 renderList={(list: Service[]) => {
                   return (
                     <VStack
-                      maxW="6xl"
                       px={2}
-                      height="calc(100vh - 200px)"
+                      maxHeight="calc(100vh - 200px)"
                       overflowY="scroll"
                       overflowX="hidden"
                       css={{
@@ -280,11 +281,10 @@ export const ListPage: NextPage = () => {
               />
               <Text textAlign="center" fontWeight="light">
                 {' '}
-                {` Showing ${
-                  maxAmountDisplayed > services.length
-                    ? services.length
-                    : maxAmountDisplayed
-                } out of ${services.length} results.`}{' '}
+                {` Showing ${maxAmountDisplayed > services.length
+                  ? services.length
+                  : maxAmountDisplayed
+                  } out of ${services.length} results.`}{' '}
               </Text>
             </Box>
             <Center
@@ -305,9 +305,89 @@ export const ListPage: NextPage = () => {
             </Center>
           </HStack>
         </Stack>
+
+        <Stack
+          display={{ base: 'inherit', md: 'none' }}
+          w="100%"
+          h='100%'
+          maxH="calc(100vh - 220px)"
+          overflow='hidden'
+        >
+          <Center
+            w="100%"
+            height="calc(100vh - 96px)"
+            bottom="0"
+            left="0"
+            pos="absolute"
+          >
+            <Map
+              defaultCenter={defaultMapCenter}
+              addressIdToLabel={addressIdToServiceName}
+              addresses={addresses}
+            />
+          </Center>
+
+          <VStack
+            w='100%'
+            bottom={0}
+            left={0}
+            pos='absolute'
+            onClick={onOpen}
+            color='white'
+            spacing={0}
+            bgColor='#283F44'
+            roundedTop={32}
+          >
+            <ChevronUpIcon onClick={onOpen}  h={6} w={6} />
+            <Text pb={2} fontSize='xl'> {listName} </Text>
+          </VStack>
+          <Drawer
+            isOpen={isOpen}
+            placement='bottom'
+            onClose={onClose}
+          >
+            <VStack
+              overflowY='scroll'
+              overflowX='hidden'
+              css={{
+                '&::-webkit-scrollbar': {
+                  width: '2px',
+                },
+                '&::-webkit-scrollbar-track': {
+                  width: '2px',
+                },
+                '&::-webkit-scrollbar-thumb': {
+                  background: 'grey',
+                  borderRadius: '24px',
+                },
+              }}
+              bgColor="white"
+              minH='100%'
+              maxH="calc(100vh - 300px)"
+              w="100%"
+            >
+              {!isLoading &&
+                services.map((item: Service) => {
+                  return (
+                    <Box w="100%" cursor="pointer" key={item.id}>
+                      <ServiceItem
+                        service={item}
+                        selectedAddress={selectedAddress}
+                        setSelectedAddress={setSelectedAddress}
+                        getAddress={getAddress}
+                      />
+                    </Box>
+                  )
+                })}
+            </VStack>
+          </Drawer>
+
+
+        </Stack>
       </ServiceListProvider>
     </VStack>
   )
 }
 
 export default ListPage
+

@@ -77,8 +77,8 @@ const SearchAddressIcon = ({
   return (
     <Box>
       {selectedAddress &&
-      getAddress(service) &&
-      selectedAddress === getAddress(service) ? (
+        getAddress(service) &&
+        selectedAddress === getAddress(service) ? (
         <MinusIcon onClick={() => handleClick()} />
       ) : (
         <Search2Icon onClick={() => handleClick()} />
@@ -115,7 +115,8 @@ export const ServiceItem = ({
     <Box
       boxShadow="md"
       rounded="lg"
-      p="8"
+      px={2}
+      py={8}
       _hover={{ boxShadow: 'lg' }}
       w="100%"
       minW="100%"
@@ -161,6 +162,7 @@ export const ServiceItem = ({
         )}
 
         <Box
+          maxW='100%'
           w="3xl"
           display="flex"
           flexDirection="row"
