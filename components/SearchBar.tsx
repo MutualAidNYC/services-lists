@@ -13,6 +13,7 @@ interface SearchBarProps extends InputGroupProps {
 
 export const SearchBar = ({
   handleSearch,
+  placeholder,
   ...props
 }: SearchBarProps): JSX.Element => {
   const [query, setQuery] = useState('')
@@ -31,6 +32,7 @@ export const SearchBar = ({
       <Input
         border="2px"
         borderColor="black"
+        placeholder={placeholder}
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={(e) => onEnter(e)}
       />

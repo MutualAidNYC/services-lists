@@ -11,9 +11,15 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form'
 import * as yup from 'yup'
 import { useRouter } from 'next/router'
-import { SortHandler, useFilters, useSort } from 'hooks'
+import {
+  PaginationHandler,
+  SortHandler,
+  useFilters,
+  usePagination,
+  useSort,
+} from 'hooks'
 
-export interface CreateListForm {
+interface CreateListForm {
   name: string
   creator: string
   description: string
@@ -30,10 +36,12 @@ const createListSchema = yup.object({
 interface CreateListHandler {
   isLoading: boolean
   visibleServices: Service[]
+  numServices: number
   setSearchQuery: (query: string) => void
   taxonomyOptions: { value: string; label: string }[]
   setTaxonomyFilters: (filters: string[]) => void
   sortHandler: SortHandler<Service>
+  paginationHandler: PaginationHandler<Service>
   isAlertOpen: boolean
   onAlertClose: () => void
   onAlertOpen: () => void
@@ -72,6 +80,7 @@ export const useCreateList = (): CreateListHandler => {
     setTaxonomyFilters,
   } = useFilters(baseServices ?? [], ['name', 'description'], 'taxonomyString')
   const sortHandler = useSort(filteredServices)
+  const paginationHandler = usePagination(sortHandler.sortedData)
 
   const {
     isOpen: isAlertOpen,
@@ -131,11 +140,13 @@ export const useCreateList = (): CreateListHandler => {
 
   return {
     isLoading: isLoadingServices || isLoadingFilters,
-    visibleServices: sortHandler.sortedData,
+    visibleServices: paginationHandler.paginatedData,
+    numServices: baseServices?.length ?? 0,
     taxonomyOptions,
     setTaxonomyFilters,
     setSearchQuery,
     sortHandler,
+    paginationHandler,
     isAlertOpen,
     onAlertClose,
     onAlertOpen,

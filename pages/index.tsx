@@ -56,7 +56,7 @@ export const HomePage: NextPage = () => {
           isSearchable
           instanceId="taxonomySelect"
           closeMenuOnSelect={false}
-          placeholder="Filter By"
+          placeholder="Filter by resource list categories"
           options={taxonomyOptions}
           onChange={(e) => {
             setTaxonomyFilters(e.map((e) => e.value))
