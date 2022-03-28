@@ -1,4 +1,4 @@
-import { Heading, HStack, Stack, Text, Flex } from '@chakra-ui/react'
+import { Heading, HStack, Stack, Text } from '@chakra-ui/react'
 import {
   PaginationSection,
   SearchBar,
@@ -19,59 +19,58 @@ export const HomePage: NextPage = () => {
     sortHandler,
     paginationHandler,
   } = useAllServicesLists()
+  const { paginatedData } = paginationHandler
 
   const sortFieldsTextToVal = { Name: 'name', Description: 'description' }
 
   return (
-    <Stack spacing="32px" px="96px" py="48px">
-      <Heading>Resource Lists</Heading>
-      <Flex justify="space-between">
-        <SearchBar handleSearch={setSearchQuery} w="60%" />
-        <HStack>
-          <Text>Results per page</Text>
+    <Stack spacing="32px" p={{ base: '48px', md: '64px' }}>
+      <Heading fontSize={{ base: '32px', md: '48px' }}>Resource lists</Heading>
+      <Stack spacing="16px">
+        <Stack
+          direction={{ base: 'column', md: 'row' }}
+          align={{ base: undefined, md: 'center' }}
+          spacing="16px"
+          justify="space-between"
+        >
+          <SearchBar
+            handleSearch={setSearchQuery}
+            placeholder={'Search resources'}
+            w={{ base: '100%', md: '60%' }}
+          />
+          <Text>
+            Showing {paginatedData.length} of {numServicesLists} results.
+          </Text>
+        </Stack>
+        <PaginationProvider value={paginationHandler}>
+          <PaginationSection />
+        </PaginationProvider>
+        <HStack spacing="16px">
+          <SortProvider value={sortHandler}>
+            <SortMenu sortFieldsTextToVal={sortFieldsTextToVal} />
+          </SortProvider>
           <Select
+            isMulti
             isSearchable
-            instanceId="pageSizeSelect"
-            closeMenuOnSelect={true}
-            options={paginationHandler.pageSizeOptions}
+            instanceId="taxonomySelect"
+            closeMenuOnSelect={false}
+            placeholder="Filter by resource list categories"
+            options={taxonomyOptions}
             onChange={(e) => {
-              e ? paginationHandler.setPageSize(e.value) : null
+              setTaxonomyFilters(e.map((e) => e.value))
             }}
             theme={(theme) => ({
               ...theme,
               borderRadius: 16,
+              colors: {
+                ...theme.colors,
+                primary25: '#B2DFDB',
+                primary: 'black',
+              },
             })}
           />
         </HStack>
-      </Flex>
-      <PaginationProvider value={paginationHandler}>
-        <PaginationSection baseDataLength={numServicesLists} />
-      </PaginationProvider>
-      <HStack spacing="16px">
-        <SortProvider value={sortHandler}>
-          <SortMenu sortFieldsTextToVal={sortFieldsTextToVal} />
-        </SortProvider>
-        <Select
-          isMulti
-          isSearchable
-          instanceId="taxonomySelect"
-          closeMenuOnSelect={false}
-          placeholder="Filter by resource list categories"
-          options={taxonomyOptions}
-          onChange={(e) => {
-            setTaxonomyFilters(e.map((e) => e.value))
-          }}
-          theme={(theme) => ({
-            ...theme,
-            borderRadius: 16,
-            colors: {
-              ...theme.colors,
-              primary25: '#B2DFDB',
-              primary: 'black',
-            },
-          })}
-        />
-      </HStack>
+      </Stack>
       {visibleServicesLists.map((servicesList) => (
         <ServicesListItem
           key={servicesList.id}

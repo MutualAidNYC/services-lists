@@ -10,7 +10,6 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
     <QueryClientProvider client={queryClient}>
       <ChakraProvider theme={theme}>
         <Fonts />
-
         <Navbar />
         <Component {...pageProps} />
       </ChakraProvider>

@@ -1,5 +1,6 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
-import { Flex, FlexProps, HStack, IconButton, Text } from '@chakra-ui/react'
+import { HStack, IconButton, Stack, StackProps, Text } from '@chakra-ui/react'
+import Select from 'react-select'
 import { usePaginationContext } from 'hooks'
 
 const pageRangeSize = 10
@@ -21,15 +22,9 @@ const getPageRange = (currPage: number, numPages: number): [number, number] => {
   return [startPage, endPage]
 }
 
-interface PaginationSectionProps extends FlexProps {
-  baseDataLength: number
-}
-
-export const PaginationSection = ({
-  baseDataLength,
-  ...props
-}: PaginationSectionProps): JSX.Element => {
-  const { paginatedData, page, numPages, setPage } = usePaginationContext()
+export const PaginationSection = (props: StackProps): JSX.Element => {
+  const { page, numPages, setPage, pageSizeOptions, setPageSize } =
+    usePaginationContext()
 
   const pageElements: JSX.Element[] = []
   const [startPage, endPage] = getPageRange(page, numPages)
@@ -48,11 +43,29 @@ export const PaginationSection = ({
   }
 
   return (
-    <Flex {...props} justify="space-between">
-      <Text>
-        Showing {paginatedData.length} of {baseDataLength} results.
-      </Text>
-      <HStack spacing="12px">
+    <Stack
+      {...props}
+      direction={{ base: 'column', sm: 'row' }}
+      spacing="16px"
+      justify="space-between"
+    >
+      <HStack justify="space-between">
+        <Text>Results per page</Text>
+        <Select
+          isSearchable
+          instanceId="pageSizeSelect"
+          closeMenuOnSelect={true}
+          options={pageSizeOptions}
+          onChange={(e) => {
+            e ? setPageSize(e.value) : null
+          }}
+          theme={(theme) => ({
+            ...theme,
+            borderRadius: 16,
+          })}
+        />
+      </HStack>
+      <HStack spacing={{ base: '8px', sm: '12px' }}>
         <IconButton
           display={page === 1 ? 'none' : undefined}
           aria-label="Previous page"
@@ -73,6 +86,6 @@ export const PaginationSection = ({
           onClick={() => setPage(page + 1)}
         />
       </HStack>
-    </Flex>
+    </Stack>
   )
 }
