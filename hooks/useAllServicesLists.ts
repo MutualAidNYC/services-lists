@@ -52,7 +52,7 @@ export const useAllServicesLists = (): AllServicesListsHandler => {
   return {
     isLoading: isLoadingAllServicesLists || isLoadingFilters,
     visibleServicesLists: paginationHandler.paginatedData,
-    numServicesLists: baseServicesLists?.length ?? 0,
+    numServicesLists: filteredServicesLists.length,
     setSearchQuery,
     taxonomyOptions,
     setTaxonomyFilters,

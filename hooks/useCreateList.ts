@@ -141,7 +141,7 @@ export const useCreateList = (): CreateListHandler => {
   return {
     isLoading: isLoadingServices || isLoadingFilters,
     visibleServices: paginationHandler.paginatedData,
-    numServices: baseServices?.length ?? 0,
+    numServices: filteredServices.length,
     taxonomyOptions,
     setTaxonomyFilters,
     setSearchQuery,
