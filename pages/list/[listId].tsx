@@ -40,9 +40,9 @@ export const ListPage: NextPage = () => {
   const {
     isLoading,
     listName,
-    baseServices,
-    services,
-    setServices,
+    visibleServices,
+    numServices,
+    setSearchQuery,
     addressIdToServiceName,
     addresses,
     defaultMapCenter,
@@ -56,7 +56,7 @@ export const ListPage: NextPage = () => {
     { value: 25, label: '25' },
     { value: 50, label: '50' },
     { value: 100, label: '100' },
-    { value: services.length, label: 'All' },
+    { value: numServices, label: 'All' },
   ]
 
   function getAddress(service: Service): Address | undefined {
@@ -133,9 +133,7 @@ export const ListPage: NextPage = () => {
 
           <HStack w="100%" justifyContent="space-between">
             <SearchBar
-              baseData={baseServices}
-              setData={setServices}
-              searchFields={['name', 'description']}
+              handleSearch={setSearchQuery}
               w={{ base: '100%', sm: '60%' }}
               mb="24px"
             />
@@ -160,7 +158,10 @@ export const ListPage: NextPage = () => {
                   label: filter.name,
                   value: filter,
                 }))}
-                options={services.map((s) => ({ value: s, label: s.name }))}
+                options={visibleServices.map((s) => ({
+                  value: s,
+                  label: s.name,
+                }))}
                 onChange={(e, action) => {
                   switch (action.action) {
                     case 'remove-value':
@@ -225,7 +226,7 @@ export const ListPage: NextPage = () => {
           >
             <Box w="55%">
               <PaginatedList
-                list={services}
+                list={visibleServices}
                 useMinimalControls={true}
                 itemsPerPage={maxAmountDisplayed}
                 renderList={(list) => {
@@ -276,10 +277,10 @@ export const ListPage: NextPage = () => {
               <Text textAlign="center" fontWeight="light">
                 {' '}
                 {` Showing ${
-                  maxAmountDisplayed > services.length
-                    ? services.length
+                  maxAmountDisplayed > visibleServices.length
+                    ? visibleServices.length
                     : maxAmountDisplayed
-                } out of ${services.length} results.`}{' '}
+                } out of ${visibleServices.length} results.`}{' '}
               </Text>
             </Box>
             <Center
@@ -346,7 +347,7 @@ export const ListPage: NextPage = () => {
               className="mySwiper"
             >
               {!isLoading &&
-                services.map((service) => (
+                visibleServices.map((service) => (
                   <SwiperSlide
                     key={service.id}
                     // onClick={() => setSelectedAddress(getAddress(service))} onTouchStart={() => { }}

@@ -1,4 +1,4 @@
-import { Button, Heading, HStack, Stack } from '@chakra-ui/react'
+import { Button, Heading, HStack, Stack, Text } from '@chakra-ui/react'
 import { NextPage } from 'next'
 import Select from 'react-select'
 import {
@@ -7,74 +7,96 @@ import {
   SortMenu,
   CreateListAlert,
   CreateListDrawer,
+  PaginationSection,
 } from 'components'
-import { CreateListProvider, useCreateList, useTaxonomyFilter } from 'hooks'
+import {
+  CreateListProvider,
+  PaginationProvider,
+  SortProvider,
+  useCreateList,
+} from 'hooks'
 import { Service } from 'models'
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 
 export const CreateListPage: NextPage = () => {
-  const handler = useCreateList()
-  const { baseServices, services, setServices, onAlertOpen, onDrawerOpen } =
-    handler
-
-  const filterByTaxonomies = useCallback(
-    (service: Service, filters: string[]) =>
-      service.taxonomyString?.some((taxonomy) => filters.includes(taxonomy)) ??
-      false,
-    []
-  )
-  const { taxonomyOptions, setFilters } = useTaxonomyFilter(
-    baseServices,
-    setServices,
-    filterByTaxonomies
-  )
+  const createListHandler = useCreateList()
+  const {
+    visibleServices,
+    numServices,
+    setSearchQuery,
+    taxonomyOptions,
+    setTaxonomyFilters,
+    paginationHandler,
+    sortHandler,
+    onAlertOpen,
+    onDrawerOpen,
+  } = createListHandler
+  const { paginatedData } = paginationHandler
 
   const sortFieldsTextToVal = { Name: 'name', Description: 'description' }
 
   const [selectedService, setSelectedService] = useState<Service>()
 
   return (
-    <CreateListProvider value={handler}>
-      <Stack spacing="32px">
-        <Heading fontSize="heading1">Create a resource list</Heading>
-        <Stack spacing="16px">
+    <Stack spacing="32px" p={{ base: '48px', md: '64px' }}>
+      <Stack
+        direction={{ base: 'column', sm: 'row' }}
+        align={{ base: undefined, sm: 'center' }}
+        spacing="16px"
+        justify="space-between"
+      >
+        <Heading fontSize={{ base: '32px', md: '48px' }}>
+          Create a resource list
+        </Heading>
+        <Button onClick={onDrawerOpen}>View your list</Button>
+      </Stack>
+      <Stack spacing="16px">
+        <Stack
+          direction={{ base: 'column', md: 'row' }}
+          align={{ base: undefined, md: 'center' }}
+          spacing="16px"
+          justify="space-between"
+        >
           <SearchBar
-            baseData={baseServices}
-            setData={setServices}
-            searchFields={['name', 'description']}
+            handleSearch={setSearchQuery}
+            placeholder={'Search resources'}
+            w={{ base: '100%', md: '60%' }}
           />
-          <HStack spacing="16px">
-            <SortMenu
-              data={services}
-              setData={setServices}
-              sortFieldsTextToVal={sortFieldsTextToVal}
-            />
-            <Select
-              isMulti
-              isSearchable
-              instanceId="taxonomySelect"
-              closeMenuOnSelect={false}
-              options={taxonomyOptions}
-              placeholder="Filter by resource category"
-              onChange={(e) => setFilters(e.map((e) => e.value))}
-            />
-          </HStack>
-          <Button w="fit-content" onClick={onDrawerOpen}>
-            View your list
-          </Button>
+          <Text>
+            Showing {paginatedData.length} of {numServices} results.
+          </Text>
         </Stack>
-        {services.map((service) => (
-          <ServiceItem
-            key={service.id}
-            service={service}
-            onAlertOpen={onAlertOpen}
-            setSelectedService={setSelectedService}
+        <PaginationProvider value={paginationHandler}>
+          <PaginationSection />
+        </PaginationProvider>
+        <HStack spacing="16px">
+          <SortProvider value={sortHandler}>
+            <SortMenu sortFieldsTextToVal={sortFieldsTextToVal} />
+          </SortProvider>
+          <Select
+            isMulti
+            isSearchable
+            instanceId="taxonomySelect"
+            closeMenuOnSelect={false}
+            options={taxonomyOptions}
+            placeholder="Filter by resource category"
+            onChange={(e) => setTaxonomyFilters(e.map((e) => e.value))}
           />
-        ))}
+        </HStack>
+      </Stack>
+      {visibleServices.map((service) => (
+        <ServiceItem
+          key={service.id}
+          service={service}
+          onAlertOpen={onAlertOpen}
+          setSelectedService={setSelectedService}
+        />
+      ))}
+      <CreateListProvider value={createListHandler}>
         <CreateListAlert selectedService={selectedService} />
         <CreateListDrawer />
-      </Stack>
-    </CreateListProvider>
+      </CreateListProvider>
+    </Stack>
   )
 }
 

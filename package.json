@@ -23,7 +23,7 @@
     "emotion-theming": "^11.0.0",
     "framer-motion": "^4.1.17",
     "geolib": "^3.3.3",
-    "next": "^12.1.0",
+    "next": "^11.1.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.26.0",
@@ -34,6 +34,7 @@
     "styled-components": "^5.3.3",
     "swiper": "^8.0.3",
     "ts-loader": "^9.2.6",
+    "use-deep-compare": "^1.1.0",
     "yup": "^0.32.11"
   },
   "devDependencies": {

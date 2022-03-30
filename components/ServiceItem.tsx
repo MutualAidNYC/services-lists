@@ -3,16 +3,14 @@ import {
   Box,
   BoxProps,
   Button,
-  Flex,
   Heading,
   HStack,
   LinkBox,
   LinkOverlay,
   Stack,
   Text,
-  Tooltip,
-  Wrap,
 } from '@chakra-ui/react'
+import { TaxonomySection } from 'components'
 import { Service } from 'models'
 
 interface AddServiceButtonProps {
@@ -36,6 +34,8 @@ const AddServiceButton = ({
       rightIcon={<AddIcon />}
       onClick={onAlertOpenWrapper}
       lineHeight="none"
+      w={{ base: '100%', sm: 'auto' }}
+      minW="fit-content"
     >
       Add to list
     </Button>
@@ -53,16 +53,14 @@ export const ServiceItem = ({
   onAlertOpen,
   setSelectedService,
 }: ServiceItemProps): JSX.Element => {
-  const adjustName = (name: string, length: number) => {
-    if (name.length >= length) {
-      return name.substring(0, length - 2).replaceAll(',', '') + '...'
-    }
-    return name
-  }
-
   return (
     <Box boxShadow="md" rounded="lg" p="8" _hover={{ boxShadow: 'lg' }}>
-      <Flex mb="16px" alignItems="center" justifyContent="space-between">
+      <Stack
+        direction={{ base: 'column', sm: 'row' }}
+        align="center"
+        justifyContent="space-between"
+        mb="16px"
+      >
         <LinkBox>
           <HStack spacing="8px">
             <LinkIcon />
@@ -78,7 +76,7 @@ export const ServiceItem = ({
             setSelectedService={setSelectedService}
           />
         )}
-      </Flex>
+      </Stack>
       <Stack spacing="8px">
         <Text>{service.description}</Text>
         {service.email && (
@@ -101,25 +99,9 @@ export const ServiceItem = ({
             </HStack>
           </LinkBox>
         )}
-
-        <Box w="3xl">
-          {service.taxonomyString && (
-            <Wrap>
-              {service.taxonomyString.map((taxonomy, i) => (
-                <Tooltip label={taxonomy} rounded="xl" key={i}>
-                  <Text
-                    textAlign="center"
-                    bgColor="lightPink"
-                    borderRadius="8px"
-                    p="8px"
-                  >
-                    {adjustName(taxonomy, 18)}
-                  </Text>
-                </Tooltip>
-              ))}
-            </Wrap>
-          )}
-        </Box>
+        {service.taxonomyString && (
+          <TaxonomySection taxonomies={service.taxonomyString} />
+        )}
       </Stack>
     </Box>
   )
