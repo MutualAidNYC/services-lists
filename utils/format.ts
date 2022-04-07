@@ -11,3 +11,10 @@ export const formatDate = (
     year: yearFormat,
   })
 }
+
+export const trimString = (str: string, maxLen: number): string => {
+  if (str.length <= maxLen) {
+    return str
+  }
+  return str.substring(0, maxLen + 1) + '...'
+}

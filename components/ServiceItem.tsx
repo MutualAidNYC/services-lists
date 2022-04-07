@@ -10,17 +10,15 @@ import {
   Box,
   BoxProps,
   Button,
-  Flex,
   Heading,
   HStack,
   LinkBox,
   LinkOverlay,
   Stack,
   Text,
-  Tooltip,
-  Wrap,
 } from '@chakra-ui/react'
 import { Address, Service } from 'models'
+import { TaxonomySection } from './TaxonomySection'
 
 interface AddServiceButtonProps {
   onAlertOpen: () => void
@@ -43,7 +41,8 @@ const AddServiceButton = ({
       rightIcon={<AddIcon />}
       onClick={onAlertOpenWrapper}
       lineHeight="none"
-      colorScheme={'teal'}
+      w={{ base: '100%', sm: 'auto' }}
+      minW="fit-content"
     >
       Add to list
     </Button>
@@ -104,24 +103,14 @@ export const ServiceItem = ({
   setSelectedAddress,
   getAddress,
 }: ServiceItemProps): JSX.Element => {
-  const adjustName = (name: string, length: number) => {
-    if (name.length >= length) {
-      return name.substring(0, length - 2).replaceAll(',', '') + '...'
-    }
-    return name
-  }
-
   return (
-    <Box
-      boxShadow="md"
-      rounded="lg"
-      px={2}
-      py={8}
-      _hover={{ boxShadow: 'lg' }}
-      w="100%"
-      minW="100%"
-    >
-      <Flex mb="16px" alignItems="center" justifyContent="space-between">
+    <Box boxShadow="md" rounded="lg" p="8" _hover={{ boxShadow: 'lg' }}>
+      <Stack
+        direction={{ base: 'column', sm: 'row' }}
+        align="center"
+        justifyContent="space-between"
+        mb="16px"
+      >
         <LinkBox>
           <HStack spacing="8px">
             <LinkIcon />
@@ -137,7 +126,7 @@ export const ServiceItem = ({
             setSelectedService={setSelectedService}
           />
         )}
-      </Flex>
+      </Stack>
       <Stack spacing="8px">
         <Text>{service.description}</Text>
         {service.email && (
@@ -169,20 +158,7 @@ export const ServiceItem = ({
           justifyContent="space-between"
         >
           {service.taxonomyString && (
-            <Wrap>
-              {service.taxonomyString.map((taxonomy, i) => (
-                <Tooltip label={taxonomy} rounded="xl" key={i}>
-                  <Text
-                    textAlign="center"
-                    bgColor="lightPink"
-                    borderRadius="8px"
-                    p="8px"
-                  >
-                    {adjustName(taxonomy, 18)}
-                  </Text>
-                </Tooltip>
-              ))}
-            </Wrap>
+            <TaxonomySection taxonomies={service.taxonomyString} />
           )}
 
           {service.address && setSelectedAddress && getAddress && (

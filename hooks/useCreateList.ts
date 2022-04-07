@@ -1,10 +1,4 @@
-import {
-  BaseSyntheticEvent,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from 'react'
+import { BaseSyntheticEvent, createContext, useContext, useState } from 'react'
 import { useMutation, useQuery } from 'react-query'
 import {
   AirtableCreateResponse,
@@ -17,8 +11,15 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form'
 import * as yup from 'yup'
 import { useRouter } from 'next/router'
+import {
+  PaginationHandler,
+  SortHandler,
+  useFilters,
+  usePagination,
+  useSort,
+} from 'hooks'
 
-export interface CreateListForm {
+interface CreateListForm {
   name: string
   creator: string
   description: string
@@ -34,9 +35,13 @@ const createListSchema = yup.object({
 
 interface CreateListHandler {
   isLoading: boolean
-  baseServices: Service[]
-  services: Service[]
-  setServices: (services: Service[]) => void
+  visibleServices: Service[]
+  numServices: number
+  setSearchQuery: (query: string) => void
+  taxonomyOptions: { value: string; label: string }[]
+  setTaxonomyFilters: (filters: string[]) => void
+  sortHandler: SortHandler<Service>
+  paginationHandler: PaginationHandler<Service>
   isAlertOpen: boolean
   onAlertClose: () => void
   onAlertOpen: () => void
@@ -66,8 +71,16 @@ export const useCreateList = (): CreateListHandler => {
     retry: false,
     refetchOnWindowFocus: false,
   })
-  const [services, setServices] = useState(baseServices)
-  useEffect(() => setServices(baseServices), [baseServices])
+
+  const {
+    isLoading: isLoadingFilters,
+    filteredData: filteredServices,
+    setSearchQuery,
+    taxonomyOptions,
+    setTaxonomyFilters,
+  } = useFilters(baseServices ?? [], ['name', 'description'], 'taxonomyString')
+  const sortHandler = useSort(filteredServices)
+  const paginationHandler = usePagination(sortHandler.sortedData)
 
   const {
     isOpen: isAlertOpen,
@@ -126,10 +139,14 @@ export const useCreateList = (): CreateListHandler => {
   }
 
   return {
-    isLoading: isLoadingServices,
-    baseServices: baseServices ?? [],
-    services: services ?? [],
-    setServices,
+    isLoading: isLoadingServices || isLoadingFilters,
+    visibleServices: paginationHandler.paginatedData,
+    numServices: filteredServices.length,
+    taxonomyOptions,
+    setTaxonomyFilters,
+    setSearchQuery,
+    sortHandler,
+    paginationHandler,
     isAlertOpen,
     onAlertClose,
     onAlertOpen,

@@ -1,13 +1,24 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext } from 'react'
 import { useQuery } from 'react-query'
 import { getAllServicesLists } from 'api'
 import { ServicesList } from 'models'
+import {
+  PaginationHandler,
+  SortHandler,
+  useFilters,
+  usePagination,
+  useSort,
+} from 'hooks'
 
 interface AllServicesListsHandler {
   isLoading: boolean
-  baseServicesLists: ServicesList[]
-  servicesLists: ServicesList[]
-  setServicesLists: (servicesLists: ServicesList[]) => void
+  visibleServicesLists: ServicesList[]
+  numServicesLists: number
+  setSearchQuery: (query: string) => void
+  taxonomyOptions: { value: string; label: string }[]
+  setTaxonomyFilters: (filters: string[]) => void
+  sortHandler: SortHandler<ServicesList>
+  paginationHandler: PaginationHandler<ServicesList>
 }
 
 const AllServicesListContext = createContext<AllServicesListsHandler>(
@@ -27,13 +38,25 @@ export const useAllServicesLists = (): AllServicesListsHandler => {
         refetchOnWindowFocus: false,
       }
     )
-  const [servicesLists, setServicesLists] = useState(baseServicesLists)
-  useEffect(() => setServicesLists(baseServicesLists), [baseServicesLists])
+
+  const {
+    isLoading: isLoadingFilters,
+    filteredData: filteredServicesLists,
+    setSearchQuery,
+    taxonomyOptions,
+    setTaxonomyFilters,
+  } = useFilters(baseServicesLists ?? [], ['name', 'description'], 'taxonomies')
+  const sortHandler = useSort(filteredServicesLists)
+  const paginationHandler = usePagination(sortHandler.sortedData)
 
   return {
-    isLoading: isLoadingAllServicesLists,
-    baseServicesLists: baseServicesLists ?? [],
-    servicesLists: servicesLists ?? [],
-    setServicesLists,
+    isLoading: isLoadingAllServicesLists || isLoadingFilters,
+    visibleServicesLists: paginationHandler.paginatedData,
+    numServicesLists: filteredServicesLists.length,
+    setSearchQuery,
+    taxonomyOptions,
+    setTaxonomyFilters,
+    sortHandler,
+    paginationHandler,
   }
 }

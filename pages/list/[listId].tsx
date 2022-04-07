@@ -33,9 +33,9 @@ export const ListPage: NextPage = () => {
   const {
     isLoading,
     listName,
-    baseServices,
-    services,
-    setServices,
+    visibleServices,
+    numServices,
+    setSearchQuery,
     addressIdToServiceName,
     addresses,
     defaultMapCenter,
@@ -49,7 +49,7 @@ export const ListPage: NextPage = () => {
     { value: 25, label: '25' },
     { value: 50, label: '50' },
     { value: 100, label: '100' },
-    { value: services.length, label: 'All' },
+    { value: numServices, label: 'All' },
   ]
 
   const filterStyles: StylesConfig<
@@ -119,8 +119,8 @@ export const ListPage: NextPage = () => {
 
   const getAllUniqueTaxonomies = (): string[] => {
     const taxonomies: string[] = []
-    for (let i = 0; i < services.length; i++) {
-      const serviceTaxonomies = services[i].taxonomyString
+    for (let i = 0; i < visibleServices.length; i++) {
+      const serviceTaxonomies = visibleServices[i].taxonomyString
       if (serviceTaxonomies) {
         for (let n = 0; n < serviceTaxonomies.length; n++) {
           if (!taxonomies.includes(serviceTaxonomies[n])) {
@@ -189,9 +189,7 @@ export const ListPage: NextPage = () => {
 
           <HStack w="100%" justifyContent="left" spacing={4}>
             <SearchBar
-              baseData={baseServices}
-              setData={setServices}
-              searchFields={['name', 'description']}
+              handleSearch={setSearchQuery}
               w={{ base: '100%', sm: '60%' }}
               mb="24px"
             />
@@ -235,7 +233,7 @@ export const ListPage: NextPage = () => {
           >
             <Box w="55%">
               <PaginatedList
-                list={getFilteredList(services)}
+                list={visibleServices}
                 useMinimalControls={true}
                 itemsPerPage={maxAmountDisplayed}
                 renderList={(list: Service[]) => {
@@ -281,10 +279,10 @@ export const ListPage: NextPage = () => {
               <Text textAlign="center" fontWeight="light">
                 {' '}
                 {` Showing ${
-                  maxAmountDisplayed > services.length
-                    ? services.length
+                  maxAmountDisplayed > visibleServices.length
+                    ? visibleServices.length
                     : maxAmountDisplayed
-                } out of ${services.length} results.`}{' '}
+                } out of ${visibleServices.length} results.`}{' '}
               </Text>
             </Box>
             <Center
@@ -299,7 +297,9 @@ export const ListPage: NextPage = () => {
               <Map
                 defaultCenter={defaultMapCenter}
                 addressIdToLabel={addressIdToServiceName}
-                addresses={getFilteredAddressList(getFilteredList(services))}
+                addresses={getFilteredAddressList(
+                  getFilteredList(visibleServices)
+                )}
                 selectedAddress={selectedAddress}
               />
             </Center>
@@ -333,13 +333,12 @@ export const ListPage: NextPage = () => {
             left={0}
             pos="absolute"
             onClick={onOpen}
-            color="white"
             spacing={0}
-            bgColor="#283F44"
+            bgColor="white"
             roundedTop={32}
           >
             <ChevronUpIcon onClick={onOpen} h={6} w={6} />
-            <Text pb={2} fontSize="xl">
+            <Text pb={2} fontSize="xl" fontWeight={'semibold'}>
               {' '}
               {listName}{' '}
             </Text>
@@ -366,7 +365,7 @@ export const ListPage: NextPage = () => {
               w="100%"
             >
               {!isLoading &&
-                services.map((item: Service) => {
+                visibleServices.map((item: Service) => {
                   return (
                     <Box w="100%" cursor="pointer" key={item.id}>
                       <ServiceItem

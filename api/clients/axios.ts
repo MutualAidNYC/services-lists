@@ -9,14 +9,14 @@ export class AxiosClient {
     })
   }
 
-  get<T = any, D = any, R = AxiosResponse<T, D>>(
+  get<T = any, D = any, R = AxiosResponse<T, D>>( // eslint-disable-line @typescript-eslint/no-explicit-any
     url: string,
     config?: AxiosRequestConfig<D>
   ): Promise<R> {
     return this.instance.get(url, config)
   }
 
-  post<T = any, D = any, R = AxiosResponse<T, D>>(
+  post<T = any, D = any, R = AxiosResponse<T, D>>( // eslint-disable-line @typescript-eslint/no-explicit-any
     url: string,
     data: D,
     config?: AxiosRequestConfig<D>

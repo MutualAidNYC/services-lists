@@ -20,4 +20,17 @@ export const theme = extendTheme({
     subheading2: '20px',
     subheading3: '16px',
   },
+  components: {
+    Text: {
+      variants: {
+        clickable: {
+          cursor: 'pointer',
+          _hover: {
+            fontWeight: 'bold',
+            textDecoration: 'underline',
+          },
+        },
+      },
+    },
+  },
 })
