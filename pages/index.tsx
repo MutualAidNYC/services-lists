@@ -73,6 +73,7 @@ export const HomePage: NextPage = () => {
       </Stack>
       {visibleServicesLists.map((servicesList) => (
         <ServicesListItem
+          p={{ base: 2, md: 4 }}
           key={servicesList.id}
           servicesList={servicesList}
           _hover={{

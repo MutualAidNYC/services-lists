@@ -1,4 +1,11 @@
-import { AddIcon, EmailIcon, LinkIcon, PhoneIcon } from '@chakra-ui/icons'
+import {
+  AddIcon,
+  EmailIcon,
+  LinkIcon,
+  MinusIcon,
+  PhoneIcon,
+  Search2Icon,
+} from '@chakra-ui/icons'
 import {
   Box,
   BoxProps,
@@ -10,8 +17,8 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { TaxonomySection } from 'components'
-import { Service } from 'models'
+import { Address, Service } from 'models'
+import { TaxonomySection } from './TaxonomySection'
 
 interface AddServiceButtonProps {
   onAlertOpen: () => void
@@ -42,16 +49,59 @@ const AddServiceButton = ({
   )
 }
 
+interface SearchAddressIconProps {
+  selectedAddress: Address | undefined
+  setSelectedAddress: (address: Address | undefined) => void
+  getAddress: (service: Service) => Address | undefined
+  service: Service
+}
+
+const SearchAddressIcon = ({
+  selectedAddress,
+  setSelectedAddress,
+  getAddress,
+  service,
+}: SearchAddressIconProps): JSX.Element => {
+  const handleClick = () => {
+    const address = getAddress(service)
+    if (address) {
+      if (selectedAddress === address) {
+        setSelectedAddress(undefined)
+      } else {
+        setSelectedAddress(address)
+      }
+    }
+  }
+
+  return (
+    <Box>
+      {selectedAddress &&
+      getAddress(service) &&
+      selectedAddress === getAddress(service) ? (
+        <MinusIcon onClick={() => handleClick()} />
+      ) : (
+        <Search2Icon onClick={() => handleClick()} />
+      )}
+    </Box>
+  )
+}
+
 interface ServiceItemProps extends BoxProps {
   service: Service
   onAlertOpen?: () => void
   setSelectedService?: (service: Service) => void
+  selectedAddress?: Address | undefined
+  setSelectedAddress?: (address: Address | undefined) => void
+  getAddress?: (service: Service) => Address | undefined
 }
 
 export const ServiceItem = ({
   service,
   onAlertOpen,
   setSelectedService,
+  selectedAddress,
+  setSelectedAddress,
+  getAddress,
 }: ServiceItemProps): JSX.Element => {
   return (
     <Box boxShadow="md" rounded="lg" p="8" _hover={{ boxShadow: 'lg' }}>
@@ -99,9 +149,27 @@ export const ServiceItem = ({
             </HStack>
           </LinkBox>
         )}
-        {service.taxonomyString && (
-          <TaxonomySection taxonomies={service.taxonomyString} />
-        )}
+
+        <Box
+          maxW="100%"
+          w="3xl"
+          display="flex"
+          flexDirection="row"
+          justifyContent="space-between"
+        >
+          {service.taxonomyString && (
+            <TaxonomySection taxonomies={service.taxonomyString} />
+          )}
+
+          {service.address && setSelectedAddress && getAddress && (
+            <SearchAddressIcon
+              selectedAddress={selectedAddress}
+              setSelectedAddress={setSelectedAddress}
+              getAddress={getAddress}
+              service={service}
+            />
+          )}
+        </Box>
       </Stack>
     </Box>
   )
