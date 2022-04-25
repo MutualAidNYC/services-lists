@@ -49,7 +49,7 @@ export const Map = ({
         overflow: 'hidden',
       }}
       center={
-        center ? { lat: center['y-latitutude'], lng: center['y-longitude'] } : defaultCenter
+        center ? { lat: center.latitude, lng: center.longitude } : defaultCenter
       }
       zoom={11}
       {...props}
