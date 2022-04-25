@@ -36,6 +36,6 @@ export interface Address {
   city: string
   state_province: string
   postal_code: string
-  latitude?: string
-  longitude?: string
+  'y-latitutude'?: string
+  'y-longitude'?: string
 }
