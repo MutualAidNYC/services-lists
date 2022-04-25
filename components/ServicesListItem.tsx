@@ -27,10 +27,10 @@ export const ServicesListItem = ({
     <Box {...props}>
       <HStack justifyContent={'space-between'} w="100%">
         <Heading fontSize="subheading2" mb="16px">
-          <Link href={`/list/${servicesList.id}`}>{servicesList.name}</Link>
+          <Link href={`list/${servicesList.id}`}>{servicesList.name}</Link>
         </Heading>
         <ShareLink
-          resourceURL={`${window.location.href}/list/${servicesList.id}`}
+          resourceURL={`${window.location.href}list/${servicesList.id}`}
           title={servicesList.name}
           text={servicesList.description}
         />
