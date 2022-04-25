@@ -1,6 +1,8 @@
 import { extendTheme } from '@chakra-ui/react'
 
 export const theme = extendTheme({
+  initialColorMode: 'light',
+  useSystemColorMode: false,
   colors: {
     darkTeal: '#283F44',
     darkPurple: '#3C113C',

@@ -169,11 +169,10 @@ export const ListPage: NextPage = () => {
 
   return (
     <VStack w="100%" minH="calc(100vh - 96px)" h="100%" spacing={0} px={24}>
-       <Head>
+      <Head>
         <title>{listName}</title>
         <meta name="description" content={listName} />
-        <meta name="" content={listName} />
-        <meta name="" content='/manyc_logo.png' />
+        <meta name="image" content="/manyc_logo.png" />
         <link rel="icon" href="/icon.ico" />
       </Head>
       <ServiceListProvider value={serviceListHandler}>

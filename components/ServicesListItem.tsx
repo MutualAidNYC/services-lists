@@ -25,7 +25,7 @@ export const ServicesListItem = ({
 
   return (
     <Box {...props}>
-      <HStack justifyContent={'space-between'} w='100%'>
+      <HStack justifyContent={'space-between'} w="100%">
         <Heading fontSize="subheading2" mb="16px">
           <Link href={`/list/${servicesList.id}`}>{servicesList.name}</Link>
         </Heading>

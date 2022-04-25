@@ -1,4 +1,4 @@
-import { CopyIcon, HamburgerIcon } from '@chakra-ui/icons'
+import { CopyIcon } from '@chakra-ui/icons'
 import {
   Box,
   BoxProps,
@@ -39,9 +39,10 @@ export const ShareLink = ({
     return 'desktop'
   }
 
+  const facebookAppID = process.env.NEXT_PUBLIC_FACEBOOK_APP_ID ?? ''
+
   useEffect(() => {
     setDeviceType(getDeviceType())
-    console.log(title)
   }, [])
 
   return (
@@ -85,24 +86,14 @@ export const ShareLink = ({
                 window.open(
                   'https://www.facebook.com/dialog/share?href=' +
                     encodeURI(resourceURL) +
-                    '&dialog=popup' +
-                    '_blank'
+                    '&dialog=popup&app_id=' +
+                    facebookAppID,
+                  '_blank'
                 )
               }
               justifyContent="left"
             >
               <FacebookIcon mr={2} />
-              {/* <iframe
-                src={
-                  'https://www.facebook.com/plugins/share_button.php?href=' +
-                  encodeURI(resourceURL) +
-                  '&layout=button&size=large&width=77&height=28&appId'
-                }
-                width="77"
-                height="28"
-                scrolling="no"
-                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-              ></iframe> */}
               Share on Facebook
             </MenuItem>
             <MenuItem
