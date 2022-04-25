@@ -7,6 +7,7 @@ import {
 } from 'components'
 import { PaginationProvider, SortProvider, useAllServicesLists } from 'hooks'
 import { NextPage } from 'next'
+import Head from 'next/head'
 import Select from 'react-select'
 
 export const HomePage: NextPage = () => {
@@ -25,6 +26,17 @@ export const HomePage: NextPage = () => {
 
   return (
     <Stack spacing="32px" p={{ base: '48px', md: '64px' }}>
+      <Head>
+        <title>Resource Lists</title>
+        <meta
+          name="description"
+          content={
+            'A directory of lists of resources available for New Yorkers.'
+          }
+        />
+        <meta name="image" content="/manyc_logo.png" />
+        <link rel="icon" href="/icon.ico" />
+      </Head>
       <Heading fontSize={{ base: '32px', md: '48px' }}>Resource lists</Heading>
       <Stack spacing="16px">
         <Stack

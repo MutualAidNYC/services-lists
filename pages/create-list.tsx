@@ -17,6 +17,7 @@ import {
 } from 'hooks'
 import { Service } from 'models'
 import { useState } from 'react'
+import Head from 'next/head'
 
 export const CreateListPage: NextPage = () => {
   const createListHandler = useCreateList()
@@ -39,6 +40,15 @@ export const CreateListPage: NextPage = () => {
 
   return (
     <Stack spacing="32px" p={{ base: '48px', md: '64px' }}>
+      <Head>
+        <title>{'Create A List'}</title>
+        <meta
+          name="description"
+          content={'Create a customized list of resources that you can share.'}
+        />
+        <meta name="image" content="/manyc_logo.png" />
+        <link rel="icon" href="/icon.ico" />
+      </Head>
       <Stack
         direction={{ base: 'column', sm: 'row' }}
         align={{ base: undefined, sm: 'center' }}

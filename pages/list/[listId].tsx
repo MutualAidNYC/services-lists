@@ -13,6 +13,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { NextPage } from 'next'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { Drawer, Map, SearchBar, ServiceItem } from '../../components'
@@ -168,6 +169,12 @@ export const ListPage: NextPage = () => {
 
   return (
     <VStack w="100%" minH="calc(100vh - 96px)" h="100%" spacing={0} px={24}>
+      <Head>
+        <title>{listName}</title>
+        <meta name="description" content={listName} />
+        <meta name="image" content="/manyc_logo.png" />
+        <link rel="icon" href="/icon.ico" />
+      </Head>
       <ServiceListProvider value={serviceListHandler}>
         <Stack w="100%" height="100%" display={{ base: 'none', md: 'inherit' }}>
           <HStack pt={16} pb={8} justifyContent="space-between" w="100%">
