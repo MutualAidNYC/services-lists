@@ -29,10 +29,10 @@ export const Map = ({
 
   const coords: GeolibInputCoordinates[] = []
   addresses.forEach((address) => {
-    if (address.latitude && address.longitude) {
+    if (address['y-latitutude'] && address['y-longitude']) {
       coords.push({
-        lat: address.latitude,
-        lng: address.longitude,
+        lat: address['y-latitutude'],
+        lng: address['y-longitude'],
       })
     }
   })
@@ -49,7 +49,7 @@ export const Map = ({
         overflow: 'hidden',
       }}
       center={
-        center ? { lat: center.latitude, lng: center.longitude } : defaultCenter
+        center ? { lat: center['y-latitutude'], lng: center['y-longitude'] } : defaultCenter
       }
       zoom={11}
       {...props}

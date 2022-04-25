@@ -15,8 +15,8 @@ export const MapMarker = ({
   opacity,
 }: MapMarkerProps): JSX.Element => {
   const position = {
-    lat: Number(address.latitude),
-    lng: Number(address.longitude),
+    lat: Number(address['y-latitutude']),
+    lng: Number(address['y-longitude']),
   }
 
   const marker = new google.maps.Marker()
