@@ -33,8 +33,9 @@ export const Navbar = (): JSX.Element => {
         display={{ base: 'none', md: 'inherit' }}
       >
         <Link href="/">Resource lists</Link>
-        <Link href="https://resources.mutualaid.nyc/">Resource directory</Link>
+        <Link href="https://resources.mutualaid.nyc/">Resource library</Link>
         <Link href="/create-list">Create new list</Link>
+        <Link href="https://mutualaid.nyc/submit-a-resource/">Submit a resource</Link>
         <Link href="https://mutualaid.nyc/">About Mutual Aid NYC</Link>
       </HStack>
       <Menu>
