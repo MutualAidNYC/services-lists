@@ -314,7 +314,9 @@ export const ListPage: NextPage = () => {
                           })}
                         {isLoading && (
                           <Spinner
-                            size="xl"
+                            mt={16}
+                            mb={8}
+                            boxSize="75px"
                             color="teal"
                             thickness="4px"
                             speed="0.65s"
@@ -393,72 +395,11 @@ export const ListPage: NextPage = () => {
                   height={`${
                     typeof window != 'undefined'
                       ? window.screen.height * 0.55
-                      : 400
+                      : 350
                   }px`}
                 />
               </Center>
             </VStack>
-            {/* <Center
-              w={{ base: '100%', md: '44%' }}
-              height="100%"
-              borderRadius={36}
-              display="flex"
-              flexDirection={'column'}
-              overflow="hidden"
-              ref={mapElement}
-            >
-              <HStack w="100%" alignContent={'left'} justifyContent="right">
-                {!isLoading && (
-                  <Select
-                    isMulti
-                    isSearchable
-                    placeholder="Filter By"
-                    closeMenuOnSelect={true}
-                    options={getAllUniqueTaxonomies().map((option) => ({
-                      label: option,
-                      value: option,
-                    }))}
-                    onChange={(e) => {
-                      setTaxonomyFilters(e.map((e) => e.value))
-                    }}
-                    styles={filterStyles}
-                  />
-                )}
-
-                <Select
-                  isSearchable
-                  closeMenuOnSelect={true}
-                  placeholder={`${maxAmountDisplayed}`}
-                  options={displayAmountOptions}
-                  onChange={(e) => {
-                    e ? setMaxAmountDisplayed(e.value) : null
-                  }}
-                  styles={pageViewStyles}
-                />
-
-                <ArrowDownIcon
-                  alignItems={'left'}
-                  ml={'16px'}
-                  onClick={() => scrollToMap()}
-                />
-              </HStack>
-              <Map
-                defaultCenter={defaultMapCenter}
-                addressIdToLabel={addressIdToServiceName}
-                addresses={getFilteredAddressList(
-                  getFilteredList(visibleServices)
-                )}
-                selectedAddress={selectedAddress}
-                width={`${
-                  typeof window != 'undefined' ? window.screen.width * 45 : 300
-                }px`}
-                height={`${
-                  typeof window != 'undefined'
-                    ? window.screen.height * 0.55
-                    : 400
-                }px`}
-              />
-            </Center> */}
           </Stack>
         </Stack>
       </ServiceListProvider>
