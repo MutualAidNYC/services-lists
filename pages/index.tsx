@@ -47,7 +47,7 @@ export const HomePage: NextPage = () => {
         >
           <SearchBar
             handleSearch={setSearchQuery}
-            placeholder={'Search resources'}
+            placeholder={'Search lists'}
             w={{ base: '100%', md: '60%' }}
           />
           <Text>
