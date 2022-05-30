@@ -1,4 +1,4 @@
-import { Button, Center, Flex, Heading, Stack } from '@chakra-ui/react'
+import { Button, Center, Flex, Heading, HStack, Stack } from '@chakra-ui/react'
 import { Drawer, Input, Textarea } from 'components'
 import { useCreateListContext, useHookFormProps } from 'hooks'
 import { CreateListItem } from './CreateListItem'
@@ -35,7 +35,7 @@ export const CreateListDrawer = (): JSX.Element => {
             <Input
               isRequired
               id="name"
-              label="Name"
+              label="List name"
               {...useHookFormProps('name', form)}
             />
             <Input
@@ -59,14 +59,27 @@ export const CreateListDrawer = (): JSX.Element => {
             </Center>
           )}
         </Flex>
-        <Button
-          type="submit"
-          w="fit-content"
-          disabled={!isValid || createListItems.length === 0}
-          isLoading={isCreatingServicesList}
+        <HStack
+          spacing={{ base: '16px', lg: '32px' }}
+          display={{ base: 'none', md: 'inherit' }}
         >
-          Submit
-        </Button>
+          <Button
+            w="fit-content"
+            onClick={onDrawerClose}
+          >
+            Add more resources
+          </Button>
+
+          <Button
+            type="submit"
+            w="fit-content"
+            disabled={!isValid || createListItems.length === 0}
+            isLoading={isCreatingServicesList}
+          >
+            Submit
+          </Button>
+
+        </HStack>
       </Flex>
     </Drawer>
   )

@@ -38,6 +38,7 @@ export const HomePage: NextPage = () => {
         <link rel="icon" href="/icon.ico" />
       </Head>
       <Heading fontSize={{ base: '32px', md: '48px' }}>Resource lists</Heading>
+      <Text fontSize={{ base: '15px', md: '22.5px' }}>Where you can view curated lists of resources or create your own!</Text>
       <Stack spacing="16px">
         <Stack
           direction={{ base: 'column', md: 'row' }}
