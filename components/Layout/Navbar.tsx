@@ -30,24 +30,26 @@ export const Navbar = (): JSX.Element => {
       </Link>
       <HStack
         spacing={{ base: '16px', lg: '32px' }}
-        display={{ base: 'none', md: 'inherit' }}
+        display={{ base: 'none', lg: 'inherit' }}
       >
         <Link href="/">Resource lists</Link>
         <Link href="https://resources.mutualaid.nyc/">Resource library</Link>
         <Link href="/create-list">Create new list</Link>
-        <Link href="https://mutualaid.nyc/submit-a-resource/">Submit a resource</Link>
+        <Link href="https://mutualaid.nyc/submit-a-resource/">
+          Submit a resource
+        </Link>
         <Link href="https://mutualaid.nyc/">About Mutual Aid NYC</Link>
       </HStack>
       <Menu>
         <MenuButton
-          display={{ base: 'inherit', md: 'none' }}
+          display={{ base: 'inherit', lg: 'none' }}
           as={IconButton}
           aria-label="Navbar menu"
-          icon={<HamburgerIcon />}
+          icon={<HamburgerIcon boxSize="40px" />}
           bgColor="darkTeal"
         />
         <MenuList
-          display={{ base: 'inherit', md: 'none' }}
+          display={{ base: 'inherit', lg: 'none' }}
           bgColor="darkPurple"
         >
           <MenuItem
