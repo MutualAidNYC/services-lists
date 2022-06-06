@@ -59,11 +59,16 @@ export const Navbar = (): JSX.Element => {
           </MenuItem>
           <MenuItem>
             <Link href="https://resources.mutualaid.nyc/">
-              Resource directory
+              Resource library
             </Link>
           </MenuItem>
           <MenuItem>
             <Link href="/create-list">Create new list</Link>
+          </MenuItem>
+          <MenuItem>
+            <Link href="https://mutualaid.nyc/submit-a-resource/">
+              Submit a resource
+            </Link>
           </MenuItem>
           <MenuItem>
             <Link href="https://mutualaid.nyc/">About Mutual Aid NYC</Link>
