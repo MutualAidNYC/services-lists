@@ -2,7 +2,6 @@ import { EmailIcon } from '@chakra-ui/icons'
 import {
   Flex,
   HStack,
-  Link,
   LinkBox,
   LinkOverlay,
   Text,
