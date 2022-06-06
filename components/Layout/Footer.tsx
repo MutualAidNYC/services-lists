@@ -19,12 +19,10 @@ export const Footer = (): JSX.Element => {
       w="100%"
       justify="space-between"
     >
-      <Link href="/">
         <HStack>
           <Text letterSpacing={1.4}> © 2022 </Text>
           <Text> Mutual Aid NYC</Text>
         </HStack>
-      </Link>
       <HStack
         spacing={{ base: '16px', lg: '32px' }}
         px={{ base: '16px', lg: '32px' }}
