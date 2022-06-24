@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "type-check": "tsc --noEmit",
+    "type-check": "tsc",
     "lint": "eslint .",
     "format": "prettier --write ."
   },
@@ -37,6 +37,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@types/gtag.js": "^0.0.10",
     "@types/node": "^16.7.10",
     "@types/react": "^17.0.19",
     "@typescript-eslint/eslint-plugin": "^5.10.1",

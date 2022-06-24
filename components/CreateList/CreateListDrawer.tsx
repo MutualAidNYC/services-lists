@@ -1,4 +1,4 @@
-import { Button, Center, Flex, Heading, HStack, Stack } from '@chakra-ui/react'
+import { Button, Center, Flex, Heading, Stack } from '@chakra-ui/react'
 import { Drawer, Input, Textarea } from 'components'
 import { useCreateListContext, useHookFormProps } from 'hooks'
 import { CreateListItem } from './CreateListItem'
@@ -28,7 +28,7 @@ export const CreateListDrawer = (): JSX.Element => {
       onClose={onDrawerClose}
       size="lg"
     >
-      <Flex as="form" direction="column" onSubmit={onSubmit} height="100%">
+      <Flex as="form" direction="column" onSubmit={onSubmit} minH="100%">
         <Heading mb="32px">Your resource list</Heading>
         <Flex direction="column" flexGrow={1} mb="32px">
           <Stack spacing="16px" mb="32px">
@@ -59,27 +59,16 @@ export const CreateListDrawer = (): JSX.Element => {
             </Center>
           )}
         </Flex>
-        <HStack
-          spacing={{ base: '16px', lg: '32px' }}
-          display={{ base: 'none', md: 'inherit' }}
-        >
-          <Button
-            w="fit-content"
-            onClick={onDrawerClose}
-          >
-            Add more resources
-          </Button>
-
+        <Stack direction={{ base: 'column', sm: 'row' }} spacing="16px">
+          <Button onClick={onDrawerClose}>Add more resources</Button>
           <Button
             type="submit"
-            w="fit-content"
             disabled={!isValid || createListItems.length === 0}
             isLoading={isCreatingServicesList}
           >
             Submit
           </Button>
-
-        </HStack>
+        </Stack>
       </Flex>
     </Drawer>
   )
