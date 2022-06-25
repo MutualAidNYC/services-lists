@@ -2,11 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "downlevelIteration": true,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -20,30 +16,14 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "api": [
-        "./api/index"
-      ],
-      "components": [
-        "./components/index"
-      ],
-      "hooks": [
-        "./hooks/index"
-      ],
-      "models": [
-        "./models/index"
-      ],
-      "utils": [
-        "./utils/index"
-      ]
+      "api": ["./api/index"],
+      "components": ["./components/index"],
+      "hooks": ["./hooks/index"],
+      "models": ["./models/index"],
+      "utils": ["./utils/index"]
     },
     "incremental": true
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }

@@ -1,5 +1,6 @@
 import { act, renderHook } from '@testing-library/react-hooks/dom'
 import { useFilters } from 'hooks'
+import { createQueryClientWrapper } from '../queryClient'
 
 const testData = [
   {
@@ -24,15 +25,15 @@ const testData = [
 
 describe('useFilters', () => {
   it('filter by search query, no results', () => {
-    const { result } = renderHook(() =>
-      useFilters(testData, ['field1', 'field2', 'field3'], 'taxonomy')
+    const { result } = renderHook(
+      () => useFilters(testData, ['field1', 'field2', 'field3'], 'taxonomy'),
+      { wrapper: createQueryClientWrapper() }
     )
-    /*
+
     act(() => {
       result.current.setSearchQuery('c')
     })
 
     expect(result.current.filteredData).toEqual([])
-    */
   })
 })

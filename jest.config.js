@@ -7,4 +7,5 @@ module.exports = {
     '^hooks': '<rootDir>/hooks/index',
   },
   globalSetup: '<rootDir>/tests/globalSetup.ts',
+  setupFiles: ['<rootDir>/tests/setup.ts'],
 }
