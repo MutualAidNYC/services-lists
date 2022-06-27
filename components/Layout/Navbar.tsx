@@ -15,9 +15,9 @@ export const Navbar = (): JSX.Element => {
   return (
     <Flex
       alignItems="center"
-      bgColor="darkTeal"
+      bgColor="#204045"
       color="white"
-      p="32px"
+      p="20px"
       justify="space-between"
     >
       <Link href="/">
@@ -45,8 +45,8 @@ export const Navbar = (): JSX.Element => {
           display={{ base: 'inherit', lg: 'none' }}
           as={IconButton}
           aria-label="Navbar menu"
-          icon={<HamburgerIcon boxSize="40px" />}
-          bgColor="darkTeal"
+          icon={<HamburgerIcon />}
+          bgColor="#204045"
         />
         <MenuList
           display={{ base: 'inherit', lg: 'none' }}

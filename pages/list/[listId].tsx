@@ -1,4 +1,4 @@
-import { ChevronUpIcon, PlusSquareIcon } from '@chakra-ui/icons'
+import { ArrowDownIcon, PlusSquareIcon } from '@chakra-ui/icons'
 import {
   Heading,
   Center,
@@ -10,13 +10,12 @@ import {
   Box,
   Stack,
   Button,
-  useDisclosure,
 } from '@chakra-ui/react'
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
-import { Drawer, Map, SearchBar, ServiceItem } from '../../components'
+import React, { useRef, useState } from 'react'
+import { Map, SearchBar, ServiceItem } from '../../components'
 import { ServiceListProvider, useServiceList } from '../../hooks'
 import { Address, Service } from '../../models'
 import { PaginatedList } from 'react-paginated-list'
@@ -25,6 +24,7 @@ import Select, {
   GroupBase,
   StylesConfig,
 } from 'react-select'
+import { Spinner } from '@chakra-ui/react'
 
 export const ListPage: NextPage = () => {
   const router = useRouter()
@@ -41,6 +41,12 @@ export const ListPage: NextPage = () => {
     addresses,
     defaultMapCenter,
   } = serviceListHandler
+
+  const mapElement = useRef<HTMLDivElement>(null)
+
+  const scrollToMap = () => {
+    mapElement.current?.scrollIntoView()
+  }
 
   const [maxAmountDisplayed, setMaxAmountDisplayed] = useState(5)
 
@@ -104,7 +110,6 @@ export const ListPage: NextPage = () => {
 
   const [selectedAddress, setSelectedAddress] = useState<Address>()
   const [taxonomyFilters, setTaxonomyFilters] = useState<string[]>([])
-  const { isOpen, onOpen, onClose } = useDisclosure()
 
   function getAddress(service: Service): Address | undefined {
     let res = undefined
@@ -168,7 +173,13 @@ export const ListPage: NextPage = () => {
   }
 
   return (
-    <VStack w="100%" minH="calc(100vh - 96px)" h="100%" spacing={0} px={24}>
+    <VStack
+      w="100%"
+      minH="calc(100vh - 96px)"
+      h="100%"
+      spacing={0}
+      px={{ base: 2, md: 24 }}
+    >
       <Head>
         <title>{listName}</title>
         <meta name="description" content={listName} />
@@ -176,12 +187,18 @@ export const ListPage: NextPage = () => {
         <link rel="icon" href="/icon.ico" />
       </Head>
       <ServiceListProvider value={serviceListHandler}>
-        <Stack w="100%" height="100%" display={{ base: 'none', md: 'inherit' }}>
-          <HStack pt={16} pb={8} justifyContent="space-between" w="100%">
+        <Stack w="100%" height="100%">
+          <Stack
+            pt={16}
+            pb={8}
+            w="100%"
+            justifyContent="space-between"
+            direction={{ base: 'column', md: 'row' }}
+          >
             <Heading size="2xl" textAlign="center">
               {listName}
             </Heading>
-            <LinkBox>
+            <LinkBox display="flex" justifyContent="center">
               <LinkOverlay
                 href="/create-list"
                 _hover={{ textDecoration: 'underline' }}
@@ -192,53 +209,71 @@ export const ListPage: NextPage = () => {
                 </Button>
               </LinkOverlay>
             </LinkBox>
-          </HStack>
+          </Stack>
 
-          <HStack w="100%" justifyContent="left" spacing={4}>
+          <Stack
+            direction={{ base: 'column', md: 'row' }}
+            display={{ base: 'inherit', md: 'none' }}
+            w={{ base: '100%', md: '55%' }}
+            justifyContent="center"
+            spacing={4}
+          >
             <SearchBar
               handleSearch={setSearchQuery}
               w={{ base: '100%', sm: '60%' }}
-              mb="24px"
             />
+            <HStack>
+              {!isLoading && (
+                <Select
+                  isMulti
+                  isSearchable
+                  placeholder="Filter By"
+                  closeMenuOnSelect={true}
+                  options={getAllUniqueTaxonomies().map((option) => ({
+                    label: option,
+                    value: option,
+                  }))}
+                  onChange={(e) => {
+                    setTaxonomyFilters(e.map((e) => e.value))
+                  }}
+                  styles={filterStyles}
+                />
+              )}
 
-            {!isLoading && (
               <Select
-                isMulti
                 isSearchable
-                placeholder="Filter By"
                 closeMenuOnSelect={true}
-                options={getAllUniqueTaxonomies().map((option) => ({
-                  label: option,
-                  value: option,
-                }))}
+                placeholder={`${maxAmountDisplayed}`}
+                options={displayAmountOptions}
                 onChange={(e) => {
-                  setTaxonomyFilters(e.map((e) => e.value))
+                  e ? setMaxAmountDisplayed(e.value) : null
                 }}
-                styles={filterStyles}
+                styles={pageViewStyles}
               />
-            )}
 
-            <Select
-              isSearchable
-              closeMenuOnSelect={true}
-              placeholder={`${maxAmountDisplayed}`}
-              options={displayAmountOptions}
-              onChange={(e) => {
-                e ? setMaxAmountDisplayed(e.value) : null
-              }}
-              styles={pageViewStyles}
-            />
-          </HStack>
+              <ArrowDownIcon
+                alignItems={'left'}
+                ml={'16px'}
+                onClick={() => scrollToMap()}
+              />
+            </HStack>
+          </Stack>
 
-          <HStack
-            display={{ base: 'none', md: 'inherit' }}
+          <Stack
+            direction={{ base: 'column', md: 'row' }}
             w="100%"
             minH="calc(100vh - 96px)"
             h="100%"
             justifyContent="space-between"
             position="relative"
           >
-            <Box w="55%">
+            <Box w={{ base: '100%', md: '55%' }}>
+              <SearchBar
+                handleSearch={setSearchQuery}
+                w="100%"
+                display={{ base: 'none', md: 'inherit' }}
+                px={'2'}
+              />
               <PaginatedList
                 list={visibleServices}
                 useMinimalControls={true}
@@ -277,6 +312,17 @@ export const ListPage: NextPage = () => {
                               </Box>
                             )
                           })}
+                        {isLoading && (
+                          <Spinner
+                            mt={16}
+                            mb={8}
+                            boxSize="75px"
+                            color="teal"
+                            thickness="4px"
+                            speed="0.65s"
+                            emptyColor="gray.200"
+                          />
+                        )}
                         <Box pb={8}> {/* Just for styling purposes */} </Box>
                       </>
                     </VStack>
@@ -292,100 +338,69 @@ export const ListPage: NextPage = () => {
                 } out of ${visibleServices.length} results.`}{' '}
               </Text>
             </Box>
-            <Center
-              w="44%"
-              height="100%"
-              maxHeight="2xl"
-              pos="absolute"
-              right={0}
-              borderRadius={36}
-              overflow="hidden"
-            >
-              <Map
-                defaultCenter={defaultMapCenter}
-                addressIdToLabel={addressIdToServiceName}
-                addresses={getFilteredAddressList(
-                  getFilteredList(visibleServices)
+
+            <VStack w={{ base: '100%', md: '44%' }} height="100%">
+              <HStack
+                w="100%"
+                justifyContent="left"
+                display={{ base: 'none', md: 'inherit' }}
+              >
+                {!isLoading && (
+                  <Select
+                    isMulti
+                    isSearchable
+                    placeholder="Filter By"
+                    closeMenuOnSelect={true}
+                    options={getAllUniqueTaxonomies().map((option) => ({
+                      label: option,
+                      value: option,
+                    }))}
+                    onChange={(e) => {
+                      setTaxonomyFilters(e.map((e) => e.value))
+                    }}
+                    styles={filterStyles}
+                  />
                 )}
-                selectedAddress={selectedAddress}
-              />
-            </Center>
-          </HStack>
-        </Stack>
 
-        <Stack
-          display={{ base: 'inherit', md: 'none' }}
-          w="100%"
-          h="100%"
-          maxH="calc(100vh - 220px)"
-          overflow="hidden"
-        >
-          <Center
-            w="100%"
-            height="calc(100vh - 96px)"
-            bottom="0"
-            left="0"
-            pos="absolute"
-          >
-            <Map
-              defaultCenter={defaultMapCenter}
-              addressIdToLabel={addressIdToServiceName}
-              addresses={addresses}
-            />
-          </Center>
-
-          <VStack
-            w="100%"
-            bottom={0}
-            left={0}
-            pos="absolute"
-            onClick={onOpen}
-            spacing={0}
-            bgColor="white"
-            roundedTop={32}
-          >
-            <ChevronUpIcon onClick={onOpen} h={6} w={6} />
-            <Text pb={2} fontSize="xl" fontWeight={'semibold'}>
-              {' '}
-              {listName}{' '}
-            </Text>
-          </VStack>
-          <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
-            <VStack
-              overflowY="scroll"
-              overflowX="hidden"
-              css={{
-                '&::-webkit-scrollbar': {
-                  width: '2px',
-                },
-                '&::-webkit-scrollbar-track': {
-                  width: '2px',
-                },
-                '&::-webkit-scrollbar-thumb': {
-                  background: 'grey',
-                  borderRadius: '24px',
-                },
-              }}
-              bgColor="white"
-              minH="100%"
-              maxH="calc(100vh - 300px)"
-              w="100%"
-            >
-              {!isLoading &&
-                visibleServices.map((item: Service) => {
-                  return (
-                    <Box w="100%" cursor="pointer" key={item.id}>
-                      <ServiceItem
-                        service={item}
-                        selectedAddress={selectedAddress}
-                        setSelectedAddress={setSelectedAddress}
-                        getAddress={getAddress}
-                      />
-                    </Box>
-                  )
-                })}
+                <Select
+                  isSearchable
+                  closeMenuOnSelect={true}
+                  placeholder={`${maxAmountDisplayed}`}
+                  options={displayAmountOptions}
+                  onChange={(e) => {
+                    e ? setMaxAmountDisplayed(e.value) : null
+                  }}
+                  styles={pageViewStyles}
+                />
+              </HStack>
+              <Center
+                w="100%"
+                height="100%"
+                borderRadius={36}
+                overflow="hidden"
+                ref={mapElement}
+              >
+                <Map
+                  defaultCenter={defaultMapCenter}
+                  addressIdToLabel={addressIdToServiceName}
+                  addresses={getFilteredAddressList(
+                    getFilteredList(visibleServices)
+                  )}
+                  selectedAddress={selectedAddress}
+                  width={`${
+                    typeof window != 'undefined'
+                      ? window.screen.width * 45
+                      : 300
+                  }px`}
+                  height={`${
+                    typeof window != 'undefined'
+                      ? window.screen.height * 0.55
+                      : 350
+                  }px`}
+                />
+              </Center>
             </VStack>
-          </Drawer>
+          </Stack>
         </Stack>
       </ServiceListProvider>
     </VStack>

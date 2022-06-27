@@ -2,9 +2,9 @@ import {
   AddIcon,
   EmailIcon,
   LinkIcon,
-  MinusIcon,
   PhoneIcon,
-  Search2Icon,
+  ViewIcon,
+  ViewOffIcon,
 } from '@chakra-ui/icons'
 import {
   Box,
@@ -79,9 +79,9 @@ const SearchAddressIcon = ({
       {selectedAddress &&
       getAddress(service) &&
       selectedAddress === getAddress(service) ? (
-        <MinusIcon onClick={() => handleClick()} />
+        <ViewOffIcon onClick={() => handleClick()} />
       ) : (
-        <Search2Icon onClick={() => handleClick()} />
+        <ViewIcon onClick={() => handleClick()} />
       )}
     </Box>
   )

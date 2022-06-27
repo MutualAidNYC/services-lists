@@ -1,5 +1,6 @@
 import { ChakraProvider } from '@chakra-ui/react'
 import { Fonts, Navbar, theme } from 'components/Layout'
+import { Footer } from 'components/Layout/Footer'
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
@@ -49,6 +50,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
           <Fonts />
           <Navbar />
           <Component {...pageProps} />
+          <Footer />
         </ChakraProvider>
       </QueryClientProvider>
     </>

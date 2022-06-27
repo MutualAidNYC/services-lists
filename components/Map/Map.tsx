@@ -14,6 +14,8 @@ interface MapProps extends GoogleMapProps {
   addressIdToLabel: Record<string, string>
   addresses: Address[]
   selectedAddress?: Address
+  width: string
+  height: string
 }
 
 export const Map = ({
@@ -21,6 +23,8 @@ export const Map = ({
   addressIdToLabel,
   addresses,
   selectedAddress,
+  width,
+  height,
   ...props
 }: MapProps): JSX.Element => {
   const { isLoaded, loadError } = useJsApiLoader({
@@ -41,12 +45,14 @@ export const Map = ({
   return loadError ? (
     <Text>{loadError}</Text>
   ) : isLoaded ? (
+    // For some reason  doesn't work with % width & height you need to use pixel numbers unless pos is absolute
     <GoogleMap
       mapContainerStyle={{
-        minHeight: '100%',
-        height: '100%',
-        width: '100%',
+        minHeight: height,
+        height: height,
+        width: width,
         overflow: 'hidden',
+        
       }}
       center={
         center ? { lat: center.latitude, lng: center.longitude } : defaultCenter
