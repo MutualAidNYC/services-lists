@@ -9,6 +9,8 @@ export interface Service {
   address?: string[] // Airtable "physical_addresses" table ids
   phoneNumbers?: string[]
   taxonomyString?: string[]
+  organizationNames?: string[]
+  organizationUrls?: string[]
 }
 
 export interface CreateServicesListRequest {

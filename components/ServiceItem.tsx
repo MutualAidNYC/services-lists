@@ -12,6 +12,7 @@ import {
   Button,
   Heading,
   HStack,
+  Link,
   LinkBox,
   LinkOverlay,
   Stack,
@@ -104,12 +105,17 @@ export const ServiceItem = ({
   getAddress,
 }: ServiceItemProps): JSX.Element => {
   return (
-    <Box boxShadow="md" rounded="lg" p="8" _hover={{ boxShadow: 'lg' }}>
+    <Stack
+      spacing="8px"
+      boxShadow="md"
+      rounded="lg"
+      p="8"
+      _hover={{ boxShadow: 'lg' }}
+    >
       <Stack
         direction={{ base: 'column', sm: 'row' }}
         align="center"
         justifyContent="space-between"
-        mb="16px"
       >
         <LinkBox>
           <HStack spacing="8px">
@@ -127,50 +133,54 @@ export const ServiceItem = ({
           />
         )}
       </Stack>
-      <Stack spacing="8px">
-        <Text>{service.description}</Text>
-        {service.email && (
-          <LinkBox>
-            <HStack spacing="8px">
-              <EmailIcon />
-              <LinkOverlay href={`mailto:${service.email}`}>
-                {service.email}
-              </LinkOverlay>
-            </HStack>
-          </LinkBox>
+      {service.organizationNames && service.organizationUrls && (
+        <Text>
+          Group:{' '}
+          <Link href={service.organizationUrls[0]} textDecor="underline">
+            {service.organizationNames[0]}
+          </Link>
+        </Text>
+      )}
+      <Text>{service.description}</Text>
+      {service.email && (
+        <LinkBox>
+          <HStack spacing="8px">
+            <EmailIcon />
+            <LinkOverlay href={`mailto:${service.email}`}>
+              {service.email}
+            </LinkOverlay>
+          </HStack>
+        </LinkBox>
+      )}
+      {service.phoneNumbers && (
+        <LinkBox>
+          <HStack spacing="8px">
+            <PhoneIcon />
+            <LinkOverlay href={`tel:${service.phoneNumbers[0]}`}>
+              {service.phoneNumbers[0]}
+            </LinkOverlay>
+          </HStack>
+        </LinkBox>
+      )}
+      <Box
+        maxW="100%"
+        w="3xl"
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
+      >
+        {service.taxonomyString && (
+          <TaxonomySection taxonomies={service.taxonomyString} />
         )}
-        {service.phoneNumbers && (
-          <LinkBox>
-            <HStack spacing="8px">
-              <PhoneIcon />
-              <LinkOverlay href={`tel:${service.phoneNumbers[0]}`}>
-                {service.phoneNumbers[0]}
-              </LinkOverlay>
-            </HStack>
-          </LinkBox>
+        {service.address && setSelectedAddress && getAddress && (
+          <SearchAddressIcon
+            selectedAddress={selectedAddress}
+            setSelectedAddress={setSelectedAddress}
+            getAddress={getAddress}
+            service={service}
+          />
         )}
-
-        <Box
-          maxW="100%"
-          w="3xl"
-          display="flex"
-          flexDirection="row"
-          justifyContent="space-between"
-        >
-          {service.taxonomyString && (
-            <TaxonomySection taxonomies={service.taxonomyString} />
-          )}
-
-          {service.address && setSelectedAddress && getAddress && (
-            <SearchAddressIcon
-              selectedAddress={selectedAddress}
-              setSelectedAddress={setSelectedAddress}
-              getAddress={getAddress}
-              service={service}
-            />
-          )}
-        </Box>
-      </Stack>
-    </Box>
+      </Box>
+    </Stack>
   )
 }

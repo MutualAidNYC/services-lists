@@ -37,8 +37,14 @@ export const HomePage: NextPage = () => {
         <meta name="image" content="/manyc_logo.png" />
         <link rel="icon" href="/icon.ico" />
       </Head>
-      <Heading fontSize={{ base: '32px', md: '48px' }}>Resource lists</Heading>
-      <Text fontSize={{ base: '15px', md: '22.5px' }}>Where you can view curated lists of resources or create your own!</Text>
+      <Stack spacing="16px">
+        <Heading fontSize={{ base: '32px', md: '48px' }}>
+          Resource lists
+        </Heading>
+        <Text fontSize={{ base: '16px', md: '24px' }}>
+          Where you can view curated lists of resources or create your own!
+        </Text>
+      </Stack>
       <Stack spacing="16px">
         <Stack
           direction={{ base: 'column', md: 'row' }}
@@ -48,7 +54,7 @@ export const HomePage: NextPage = () => {
         >
           <SearchBar
             handleSearch={setSearchQuery}
-            placeholder={'Search lists'}
+            placeholder="Search resource lists"
             w={{ base: '100%', md: '60%' }}
           />
           <Text>
