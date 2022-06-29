@@ -9,11 +9,12 @@ export const createQueryClientWrapper = () => {
     defaultOptions: {
       queries: {
         retry: false,
-      }
-    }
+      },
+    },
   })
 
-  return ({ children }: QueryClientWrapperProps) => (
+  const queryClientWrapper = ({ children }: QueryClientWrapperProps) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   )
+  return queryClientWrapper
 }
