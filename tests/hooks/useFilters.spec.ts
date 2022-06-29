@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react-hooks/dom'
 import { useFilters } from 'hooks'
-import { createQueryClientWrapper } from '../queryClient'
+import { createUseQueryWrapper } from '../useQueryWrapper'
 
 interface TestDatum {
   field1: string
@@ -30,11 +30,12 @@ const testData: TestDatum[] = [
   },
 ]
 
+// useFilters calls useQuery so renderHook has to be called with a wrapper that has a QueryClientProvider
 describe('useFilters', () => {
   it('filter by search query, no results', () => {
     const { result } = renderHook(
       () => useFilters(testData, ['field1', 'field2', 'field3'], 'taxonomy'),
-      { wrapper: createQueryClientWrapper() }
+      { wrapper: createUseQueryWrapper() }
     )
 
     act(() => {
@@ -46,7 +47,7 @@ describe('useFilters', () => {
   it('filter by search query, one lowercase result', () => {
     const { result } = renderHook(
       () => useFilters(testData, ['field1', 'field2', 'field3'], 'taxonomy'),
-      { wrapper: createQueryClientWrapper() }
+      { wrapper: createUseQueryWrapper() }
     )
 
     act(() => {
@@ -65,7 +66,7 @@ describe('useFilters', () => {
   it('filter by search query, one lowercase and one uppercase result', () => {
     const { result } = renderHook(
       () => useFilters(testData, ['field1', 'field2', 'field3'], 'taxonomy'),
-      { wrapper: createQueryClientWrapper() }
+      { wrapper: createUseQueryWrapper() }
     )
 
     act(() => {
@@ -90,7 +91,7 @@ describe('useFilters', () => {
   it('filter by one taxonomy, no results', () => {
     const { result } = renderHook(
       () => useFilters(testData, ['field1', 'field2', 'field3'], 'taxonomy'),
-      { wrapper: createQueryClientWrapper() }
+      { wrapper: createUseQueryWrapper() }
     )
 
     act(() => {
@@ -102,7 +103,7 @@ describe('useFilters', () => {
   it('filter by one taxonomy, one result with one taxonomy', () => {
     const { result } = renderHook(
       () => useFilters(testData, ['field1', 'field2', 'field3'], 'taxonomy'),
-      { wrapper: createQueryClientWrapper() }
+      { wrapper: createUseQueryWrapper() }
     )
 
     act(() => {
@@ -121,7 +122,7 @@ describe('useFilters', () => {
   it('filter by one taxonomy, one result with multiple taxonomies', () => {
     const { result } = renderHook(
       () => useFilters(testData, ['field1', 'field2', 'field3'], 'taxonomy'),
-      { wrapper: createQueryClientWrapper() }
+      { wrapper: createUseQueryWrapper() }
     )
 
     act(() => {
@@ -140,7 +141,7 @@ describe('useFilters', () => {
   it('filter by one taxonomy, multiple results', () => {
     const { result } = renderHook(
       () => useFilters(testData, ['field1', 'field2', 'field3'], 'taxonomy'),
-      { wrapper: createQueryClientWrapper() }
+      { wrapper: createUseQueryWrapper() }
     )
 
     act(() => {
@@ -165,7 +166,7 @@ describe('useFilters', () => {
   it('filter by multiple taxonomies, multiple results', () => {
     const { result } = renderHook(
       () => useFilters(testData, ['field1', 'field2', 'field3'], 'taxonomy'),
-      { wrapper: createQueryClientWrapper() }
+      { wrapper: createUseQueryWrapper() }
     )
 
     act(() => {

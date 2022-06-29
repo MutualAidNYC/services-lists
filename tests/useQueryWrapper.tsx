@@ -4,7 +4,7 @@ interface QueryClientWrapperProps {
   children?: React.ReactNode
 }
 
-export const createQueryClientWrapper = () => {
+export const createUseQueryWrapper = () => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -13,8 +13,8 @@ export const createQueryClientWrapper = () => {
     },
   })
 
-  const queryClientWrapper = ({ children }: QueryClientWrapperProps) => (
+  const useQueryWrapper = ({ children }: QueryClientWrapperProps) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   )
-  return queryClientWrapper
+  return useQueryWrapper
 }
