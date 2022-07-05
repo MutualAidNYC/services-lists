@@ -1,6 +1,6 @@
 # Mutual Aid NYC Services Lists
 
-A [Next.js](https://nextjs.org) website for displaying and creating NYC health, human and social services lists in the [Open Referral](https://openreferral.org) data format managed. Data is stored in [Airtable](https://airtable.com) and managed by the Mutual Aid NYC research team.
+A [Next.js](https://nextjs.org) website for displaying and creating NYC health, human and social services lists in the [Open Referral](https://openreferral.org) data format. Data is stored in [Airtable](https://airtable.com) and managed by the Mutual Aid NYC research team.
 
 ## Technical Overview
 
