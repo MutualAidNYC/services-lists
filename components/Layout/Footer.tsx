@@ -1,11 +1,5 @@
 import { EmailIcon } from '@chakra-ui/icons'
-import {
-  Flex,
-  HStack,
-  LinkBox,
-  LinkOverlay,
-  Text,
-} from '@chakra-ui/react'
+import { Flex, HStack, LinkBox, LinkOverlay, Text } from '@chakra-ui/react'
 
 export const Footer = (): JSX.Element => {
   return (
@@ -18,10 +12,10 @@ export const Footer = (): JSX.Element => {
       w="100%"
       justify="space-between"
     >
-        <HStack>
-          <Text letterSpacing={1.4}> © 2022 </Text>
-          <Text> Mutual Aid NYC</Text>
-        </HStack>
+      <HStack>
+        <Text letterSpacing={1.4}> © 2022 </Text>
+        <Text> Mutual Aid NYC</Text>
+      </HStack>
       <HStack
         spacing={{ base: '16px', lg: '32px' }}
         px={{ base: '16px', lg: '32px' }}
