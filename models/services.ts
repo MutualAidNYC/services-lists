@@ -9,6 +9,8 @@ export interface Service {
   address?: string[] // Airtable "physical_addresses" table ids
   phoneNumbers?: string[]
   taxonomyString?: string[]
+  organizationNames?: string[]
+  organizationUrls?: string[]
 }
 
 export interface CreateServicesListRequest {
@@ -36,6 +38,6 @@ export interface Address {
   city: string
   state_province: string
   postal_code: string
-  latitude?: string
-  longitude?: string
+  'y-latitutude'?: string
+  'y-longitude'?: string
 }

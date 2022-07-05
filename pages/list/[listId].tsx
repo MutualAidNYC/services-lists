@@ -1,4 +1,4 @@
-import { PlusSquareIcon } from '@chakra-ui/icons'
+import { ArrowDownIcon, PlusSquareIcon } from '@chakra-ui/icons'
 import {
   Heading,
   Center,
@@ -12,30 +12,24 @@ import {
   Button,
 } from '@chakra-ui/react'
 import { NextPage } from 'next'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Map, SearchBar, ServiceItem } from '../../components'
 import { ServiceListProvider, useServiceList } from '../../hooks'
 import { Address, Service } from '../../models'
 import { PaginatedList } from 'react-paginated-list'
-import Select from 'react-select'
-
-// Import Swiper styles & required modules
-import { Swiper, SwiperSlide } from 'swiper/react'
-import 'swiper/css'
-import 'swiper/css/pagination'
-import { EffectCoverflow, Pagination } from 'swiper'
+import Select, {
+  CSSObjectWithLabel,
+  GroupBase,
+  StylesConfig,
+} from 'react-select'
+import { Spinner } from '@chakra-ui/react'
 
 export const ListPage: NextPage = () => {
   const router = useRouter()
 
   const serviceListHandler = useServiceList(router.query.listId as string)
-
-  const [selectedAddress] = useState<Address>()
-  const [filteredAddresses, setFilteredAddresses] = useState<Address[]>([])
-  const [filteredServices, setFilteredServices] = useState<Service[]>([])
-
-  const [selectFilterValues, setSelectFilterValues] = useState<Service[]>([])
 
   const {
     isLoading,
@@ -48,6 +42,12 @@ export const ListPage: NextPage = () => {
     defaultMapCenter,
   } = serviceListHandler
 
+  const mapElement = useRef<HTMLDivElement>(null)
+
+  const scrollToMap = () => {
+    mapElement.current?.scrollIntoView()
+  }
+
   const [maxAmountDisplayed, setMaxAmountDisplayed] = useState(5)
 
   const displayAmountOptions = [
@@ -58,6 +58,58 @@ export const ListPage: NextPage = () => {
     { value: 100, label: '100' },
     { value: numServices, label: 'All' },
   ]
+
+  const filterStyles: StylesConfig<
+    {
+      label: string
+      value: string
+    },
+    true,
+    GroupBase<{
+      label: string
+      value: string
+    }>
+  > = {
+    option: (provided: CSSObjectWithLabel) => ({
+      ...provided,
+      minHeight: 36,
+    }),
+    control: (provided: CSSObjectWithLabel) => ({
+      ...provided,
+      width: '180px',
+      borderRadius: '28px',
+    }),
+    singleValue: (provided: CSSObjectWithLabel) => {
+      return { ...provided }
+    },
+  }
+  const pageViewStyles: StylesConfig<
+    {
+      value: number
+      label: string
+    },
+    false,
+    GroupBase<{
+      value: number
+      label: string
+    }>
+  > = {
+    option: (provided: CSSObjectWithLabel) => ({
+      ...provided,
+      minHeight: 36,
+    }),
+    control: (provided: CSSObjectWithLabel) => ({
+      ...provided,
+      width: '90px',
+      borderRadius: '28px',
+    }),
+    singleValue: (provided: CSSObjectWithLabel) => {
+      return { ...provided }
+    },
+  }
+
+  const [selectedAddress, setSelectedAddress] = useState<Address>()
+  const [taxonomyFilters, setTaxonomyFilters] = useState<string[]>([])
 
   function getAddress(service: Service): Address | undefined {
     let res = undefined
@@ -71,54 +123,82 @@ export const ListPage: NextPage = () => {
     return res
   }
 
-  useEffect(() => {
-    clearFilter()
-  }, [])
-
-  const clearFilter = () => {
-    const updatedFilter: Address[] = []
-    for (let i = 0; i < filteredServices.length; i++) {
-      const temp = getAddress(filteredServices[i])
-      if (temp) {
-        updatedFilter.push(temp)
+  const getAllUniqueTaxonomies = (): string[] => {
+    const taxonomies: string[] = []
+    for (let i = 0; i < visibleServices.length; i++) {
+      const serviceTaxonomies = visibleServices[i].taxonomyString
+      if (serviceTaxonomies) {
+        for (let n = 0; n < serviceTaxonomies.length; n++) {
+          if (!taxonomies.includes(serviceTaxonomies[n])) {
+            taxonomies.push(serviceTaxonomies[n])
+          }
+        }
       }
     }
-    setFilteredAddresses(updatedFilter)
-    setSelectFilterValues([])
+    return taxonomies
   }
 
-  const updateFilters = (serviceToAdd: Service) => {
-    let exists = false
-    for (let i = 0; i < filteredServices.length; i++) {
-      if (filteredServices[i].id === serviceToAdd.id) {
-        exists = true
-        break
+  const getFilteredList = (list: Service[]): Service[] => {
+    if (taxonomyFilters.length > 0) {
+      const filteredList: Service[] = []
+      for (let i = 0; i < list.length; i++) {
+        const taxonomies = list[i].taxonomyString
+        if (taxonomies) {
+          for (let n = 0; n < taxonomyFilters.length; n++) {
+            if (taxonomies.includes(taxonomyFilters[n])) {
+              filteredList.push(list[i])
+              break
+            }
+          }
+        }
       }
+      return filteredList
     }
-    if (!exists) {
-      setFilteredServices([...filteredServices, serviceToAdd])
-      setSelectFilterValues([...selectFilterValues, serviceToAdd])
-    }
+    return list
   }
 
-  const removeFilter = (serviceToRemove: Service) => {
-    setFilteredServices(
-      filteredServices.filter((service) => service.id !== serviceToRemove.id)
-    )
-    setSelectFilterValues(
-      selectFilterValues.filter((service) => service.id !== service.id)
-    )
+  const getFilteredAddressList = (list: Service[]): Address[] => {
+    if (taxonomyFilters.length > 0) {
+      const addressArr: Address[] = []
+      for (let i = 0; i < list.length; i++) {
+        const address = getAddress(list[i])
+        if (address) {
+          addressArr.push(address)
+        }
+      }
+      return addressArr
+    } else {
+      return addresses ? addresses : []
+    }
   }
 
   return (
-    <VStack w="100%" minH="calc(100vh - 96px)" h="100%" spacing={0} px={24}>
+    <VStack
+      w="100%"
+      minH="calc(100vh - 96px)"
+      h="100%"
+      spacing={0}
+      px={{ base: 2, md: 24 }}
+    >
+      <Head>
+        <title>{listName}</title>
+        <meta name="description" content={listName} />
+        <meta name="image" content="/manyc_logo.png" />
+        <link rel="icon" href="/icon.ico" />
+      </Head>
       <ServiceListProvider value={serviceListHandler}>
-        <Stack w="100%" height="100%" display={{ base: 'none', md: 'inherit' }}>
-          <HStack pt={16} pb={8} justifyContent="space-between" w="100%">
+        <Stack w="100%" height="100%">
+          <Stack
+            pt={16}
+            pb={8}
+            w="100%"
+            justifyContent="space-between"
+            direction={{ base: 'column', md: 'row' }}
+          >
             <Heading size="2xl" textAlign="center">
               {listName}
             </Heading>
-            <LinkBox>
+            <LinkBox display="flex" justifyContent="center">
               <LinkOverlay
                 href="/create-list"
                 _hover={{ textDecoration: 'underline' }}
@@ -129,77 +209,37 @@ export const ListPage: NextPage = () => {
                 </Button>
               </LinkOverlay>
             </LinkBox>
-          </HStack>
+          </Stack>
 
-          <HStack w="100%" justifyContent="space-between">
+          <Stack
+            direction={{ base: 'column', md: 'row' }}
+            display={{ base: 'inherit', md: 'none' }}
+            w={{ base: '100%', md: '55%' }}
+            justifyContent="center"
+            spacing={4}
+          >
             <SearchBar
               handleSearch={setSearchQuery}
               w={{ base: '100%', sm: '60%' }}
-              mb="24px"
             />
+            <HStack>
+              {!isLoading && (
+                <Select
+                  isMulti
+                  isSearchable
+                  placeholder="Filter By"
+                  closeMenuOnSelect={true}
+                  options={getAllUniqueTaxonomies().map((option) => ({
+                    label: option,
+                    value: option,
+                  }))}
+                  onChange={(e) => {
+                    setTaxonomyFilters(e.map((e) => e.value))
+                  }}
+                  styles={filterStyles}
+                />
+              )}
 
-            {/*  https://react-select.com/advanced. Update the styling for this to be more dynamic and fit the provided spacing & make it fully functional  */}
-            <Box
-              display="flex"
-              flexDirection="row"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Text textAlign="center" px={2}>
-                {' '}
-                Filters
-              </Text>
-              <Select
-                isMulti
-                isSearchable
-                closeMenuOnSelect={true}
-                placeholder=""
-                value={selectFilterValues.map((filter) => ({
-                  label: filter.name,
-                  value: filter,
-                }))}
-                options={visibleServices.map((s) => ({
-                  value: s,
-                  label: s.name,
-                }))}
-                onChange={(e, action) => {
-                  switch (action.action) {
-                    case 'remove-value':
-                      removeFilter(action.removedValue.value)
-                      break
-                    case 'clear':
-                      clearFilter()
-                      break
-                    default:
-                      break
-                  }
-                  e
-                    ? e.map((e) => {
-                        updateFilters(e.value)
-                      })
-                    : null
-                }}
-                // onChange={(e) => { e ? e.map(e => { updateSelectFilter(e.value) }) : null }}
-                menuPlacement="auto"
-                menuPosition="fixed"
-                theme={(theme) => ({
-                  ...theme,
-                  borderRadius: 16,
-                })}
-              />
-            </Box>
-
-            <Box
-              display="flex"
-              flexDirection="row"
-              justifyContent="center"
-              alignItems="center"
-              pr={16}
-            >
-              <Text textAlign="center" px={2}>
-                {' '}
-                Results per page
-              </Text>
               <Select
                 isSearchable
                 closeMenuOnSelect={true}
@@ -208,33 +248,41 @@ export const ListPage: NextPage = () => {
                 onChange={(e) => {
                   e ? setMaxAmountDisplayed(e.value) : null
                 }}
-                theme={(theme) => ({
-                  ...theme,
-                  borderRadius: 16,
-                })}
+                styles={pageViewStyles}
               />
-            </Box>
-          </HStack>
 
-          <HStack
-            display={{ base: 'none', md: 'inherit' }}
+              <ArrowDownIcon
+                alignItems={'left'}
+                ml={'16px'}
+                onClick={() => scrollToMap()}
+              />
+            </HStack>
+          </Stack>
+
+          <Stack
+            direction={{ base: 'column', md: 'row' }}
             w="100%"
             minH="calc(100vh - 96px)"
             h="100%"
             justifyContent="space-between"
             position="relative"
           >
-            <Box w="55%">
+            <Box w={{ base: '100%', md: '55%' }}>
+              <SearchBar
+                handleSearch={setSearchQuery}
+                w="100%"
+                display={{ base: 'none', md: 'inherit' }}
+                px={'2'}
+              />
               <PaginatedList
                 list={visibleServices}
                 useMinimalControls={true}
                 itemsPerPage={maxAmountDisplayed}
-                renderList={(list) => {
+                renderList={(list: Service[]) => {
                   return (
                     <VStack
-                      maxW="6xl"
                       px={2}
-                      height="calc(100vh - 200px)"
+                      maxHeight="calc(100vh - 200px)"
                       overflowY="scroll"
                       overflowX="hidden"
                       css={{
@@ -252,22 +300,29 @@ export const ListPage: NextPage = () => {
                     >
                       <>
                         {!isLoading &&
-                          list.map((item) => {
+                          list.map((item: Service) => {
                             return (
-                              <Box
-                                // onMouseOver={() => setSelectedAddress(getAddress(item))}  hover over highlights a specific marker
-                                // clicking on the service updates what services are visible on the map and the react-select component for filters
-                                onClick={() => {
-                                  updateFilters(item)
-                                }}
-                                w="100%"
-                                cursor="pointer"
-                                key={item.id}
-                              >
-                                <ServiceItem service={item} />
+                              <Box w="100%" cursor="pointer" key={item.id}>
+                                <ServiceItem
+                                  service={item}
+                                  selectedAddress={selectedAddress}
+                                  setSelectedAddress={setSelectedAddress}
+                                  getAddress={getAddress}
+                                />
                               </Box>
                             )
                           })}
+                        {isLoading && (
+                          <Spinner
+                            mt={16}
+                            mb={8}
+                            boxSize="75px"
+                            color="teal"
+                            thickness="4px"
+                            speed="0.65s"
+                            emptyColor="gray.200"
+                          />
+                        )}
                         <Box pb={8}> {/* Just for styling purposes */} </Box>
                       </>
                     </VStack>
@@ -283,104 +338,69 @@ export const ListPage: NextPage = () => {
                 } out of ${visibleServices.length} results.`}{' '}
               </Text>
             </Box>
-            <Center
-              w="40%"
-              height="100%"
-              maxHeight="2xl"
-              pos="absolute"
-              right={0}
-              borderRadius={36}
-              overflow="hidden"
-            >
-              <Map
-                defaultCenter={defaultMapCenter}
-                addressIdToLabel={addressIdToServiceName}
-                addresses={addresses}
-                selectedAddress={selectedAddress}
-                filteredAddreses={filteredAddresses}
-              />
-            </Center>
-          </HStack>
-        </Stack>
 
-        {/* Mobile View */}
-        <Stack
-          display={{ base: 'inherit', md: 'none' }}
-          w="100%"
-          minH="calc(100vh - 96px)"
-          h="100%"
-        >
-          {/* <Heading size='md' color='black' pos='absolute' bottom={190} zIndex={1}> {listName} </ Heading> */}
+            <VStack w={{ base: '100%', md: '44%' }} height="100%">
+              <HStack
+                w="100%"
+                justifyContent="left"
+                display={{ base: 'none', md: 'inherit' }}
+              >
+                {!isLoading && (
+                  <Select
+                    isMulti
+                    isSearchable
+                    placeholder="Filter By"
+                    closeMenuOnSelect={true}
+                    options={getAllUniqueTaxonomies().map((option) => ({
+                      label: option,
+                      value: option,
+                    }))}
+                    onChange={(e) => {
+                      setTaxonomyFilters(e.map((e) => e.value))
+                    }}
+                    styles={filterStyles}
+                  />
+                )}
 
-          <Center
-            w="100%"
-            height="calc(100vh - 96px)"
-            bottom="0"
-            left="0"
-            pos="absolute"
-          >
-            <Map
-              defaultCenter={defaultMapCenter}
-              addressIdToLabel={addressIdToServiceName}
-              addresses={addresses}
-              selectedAddress={selectedAddress}
-              filteredAddreses={filteredAddresses}
-            />
-          </Center>
-
-          <HStack w="100%" bottom="2" left="0" pos="absolute" height="180px">
-            <Swiper
-              effect={'coverflow'}
-              grabCursor={true}
-              centeredSlides={true}
-              slidesPerView={2}
-              coverflowEffect={{
-                rotate: 50,
-                stretch: 0,
-                depth: 50,
-                modifier: 1,
-                slideShadows: true,
-              }}
-              // Can set pagination true/false for the dots underneath
-              pagination={false}
-              modules={[EffectCoverflow, Pagination]}
-              className="mySwiper"
-            >
-              {!isLoading &&
-                visibleServices.map((service) => (
-                  <SwiperSlide
-                    key={service.id}
-                    // onClick={() => setSelectedAddress(getAddress(service))} onTouchStart={() => { }}
-                  >
-                    <Box
-                      cursor="pointer"
-                      bg="#fafafa"
-                      color="black"
-                      rounded="lg"
-                      h="100%"
-                      maxW={'100%'}
-                    >
-                      <LinkBox>
-                        <LinkOverlay
-                          href={service.url}
-                          _hover={{ textDecoration: 'underline' }}
-                        >
-                          <Text
-                            fontSize="16px"
-                            px={2}
-                            py={2}
-                            textAlign="center"
-                          >
-                            {' '}
-                            {service.name}{' '}
-                          </Text>
-                        </LinkOverlay>
-                      </LinkBox>
-                    </Box>
-                  </SwiperSlide>
-                ))}
-            </Swiper>
-          </HStack>
+                <Select
+                  isSearchable
+                  closeMenuOnSelect={true}
+                  placeholder={`${maxAmountDisplayed}`}
+                  options={displayAmountOptions}
+                  onChange={(e) => {
+                    e ? setMaxAmountDisplayed(e.value) : null
+                  }}
+                  styles={pageViewStyles}
+                />
+              </HStack>
+              <Center
+                w="100%"
+                height="100%"
+                borderRadius={36}
+                overflow="hidden"
+                ref={mapElement}
+              >
+                <Map
+                  defaultCenter={defaultMapCenter}
+                  addressIdToLabel={addressIdToServiceName}
+                  addresses={getFilteredAddressList(
+                    getFilteredList(visibleServices)
+                  )}
+                  selectedAddress={selectedAddress}
+                  width={`${
+                    typeof window != 'undefined'
+                      ? window.screen.width * 45
+                      : 300
+                  }px`}
+                  height={`${
+                    typeof window != 'undefined'
+                      ? window.screen.height * 0.55
+                      : 350
+                  }px`}
+                />
+              </Center>
+            </VStack>
+          </Stack>
         </Stack>
       </ServiceListProvider>
     </VStack>

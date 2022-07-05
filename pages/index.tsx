@@ -7,6 +7,7 @@ import {
 } from 'components'
 import { PaginationProvider, SortProvider, useAllServicesLists } from 'hooks'
 import { NextPage } from 'next'
+import Head from 'next/head'
 import Select from 'react-select'
 
 export const HomePage: NextPage = () => {
@@ -25,7 +26,25 @@ export const HomePage: NextPage = () => {
 
   return (
     <Stack spacing="32px" p={{ base: '48px', md: '64px' }}>
-      <Heading fontSize={{ base: '32px', md: '48px' }}>Resource lists</Heading>
+      <Head>
+        <title>Resource Lists</title>
+        <meta
+          name="description"
+          content={
+            'A directory of lists of resources available for New Yorkers.'
+          }
+        />
+        <meta name="image" content="/manyc_logo.png" />
+        <link rel="icon" href="/icon.ico" />
+      </Head>
+      <Stack spacing="16px">
+        <Heading fontSize={{ base: '32px', md: '48px' }}>
+          Resource lists
+        </Heading>
+        <Text fontSize={{ base: '16px', md: '24px' }}>
+          Where you can view curated lists of resources or create your own!
+        </Text>
+      </Stack>
       <Stack spacing="16px">
         <Stack
           direction={{ base: 'column', md: 'row' }}
@@ -35,7 +54,7 @@ export const HomePage: NextPage = () => {
         >
           <SearchBar
             handleSearch={setSearchQuery}
-            placeholder={'Search resources'}
+            placeholder="Search resource lists"
             w={{ base: '100%', md: '60%' }}
           />
           <Text>
@@ -73,6 +92,7 @@ export const HomePage: NextPage = () => {
       </Stack>
       {visibleServicesLists.map((servicesList) => (
         <ServicesListItem
+          p={{ base: 2, md: 4 }}
           key={servicesList.id}
           servicesList={servicesList}
           _hover={{

@@ -28,14 +28,14 @@ export const CreateListDrawer = (): JSX.Element => {
       onClose={onDrawerClose}
       size="lg"
     >
-      <Flex as="form" direction="column" onSubmit={onSubmit} height="100%">
+      <Flex as="form" direction="column" onSubmit={onSubmit} minH="100%">
         <Heading mb="32px">Your resource list</Heading>
         <Flex direction="column" flexGrow={1} mb="32px">
           <Stack spacing="16px" mb="32px">
             <Input
               isRequired
               id="name"
-              label="Name"
+              label="List name"
               {...useHookFormProps('name', form)}
             />
             <Input
@@ -59,14 +59,16 @@ export const CreateListDrawer = (): JSX.Element => {
             </Center>
           )}
         </Flex>
-        <Button
-          type="submit"
-          w="fit-content"
-          disabled={!isValid || createListItems.length === 0}
-          isLoading={isCreatingServicesList}
-        >
-          Submit
-        </Button>
+        <Stack direction={{ base: 'column', sm: 'row' }} spacing="16px">
+          <Button onClick={onDrawerClose}>Add more resources</Button>
+          <Button
+            type="submit"
+            disabled={!isValid || createListItems.length === 0}
+            isLoading={isCreatingServicesList}
+          >
+            Submit
+          </Button>
+        </Stack>
       </Flex>
     </Drawer>
   )
