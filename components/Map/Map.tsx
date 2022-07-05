@@ -52,7 +52,6 @@ export const Map = ({
         height: height,
         width: width,
         overflow: 'hidden',
-        
       }}
       center={
         center ? { lat: center.latitude, lng: center.longitude } : defaultCenter
