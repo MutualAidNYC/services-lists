@@ -7,5 +7,10 @@ module.exports = {
     '^hooks': '<rootDir>/hooks/index',
   },
   globalSetup: '<rootDir>/tests/globalSetup.ts',
-  setupFiles: ['<rootDir>/tests/setup.ts'],
+  setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
+  globals: {
+    'ts-jest': {
+      tsconfig: 'tsconfig.test.json',
+    },
+  },
 }
