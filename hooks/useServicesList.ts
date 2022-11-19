@@ -1,17 +1,15 @@
 import { createContext, useContext } from 'react'
 import { useQueries, useQuery, UseQueryOptions } from 'react-query'
-import { getServicesList, getService, getAddress } from 'api'
-import { Address, Service, ServicesList } from 'models'
+import { getServicesList, getService } from 'api'
+import { Resource, ServicesList } from 'models'
 import { useFilters } from './useFilters'
 
 export interface ServiceListHandler {
   isLoading: boolean
   listName: string
-  visibleServices: Service[]
+  visibleServices: Resource[]
   numServices: number
   setSearchQuery: (query: string) => void
-  addressIdToServiceName: Record<string, string>
-  addresses: Address[]
   defaultMapCenter: google.maps.LatLngLiteral
 }
 
@@ -43,56 +41,23 @@ export const useServiceList = (listId: string): ServiceListHandler => {
       }
     }) ?? [] // cannot be undefined or useQueries throws an error
   const serviceQueryResults =
-    useQueries<UseQueryOptions<Service, Error>[]>(servicesQueryOptions)
+    useQueries<UseQueryOptions<Resource, Error>[]>(servicesQueryOptions)
   const isLoadingServices = serviceQueryResults.some(
     (result) => result.isLoading
   )
   const baseServices = serviceQueryResults.map((result) => result.data)
   const { filteredData: filteredServices, setSearchQuery } = useFilters(
-    isLoadingServices ? [] : (baseServices as Service[]),
-    ['name', 'description'],
-    'taxonomyString'
+    isLoadingServices ? [] : (baseServices as Resource[]),
+    ['title', 'details'],
+    'needs'
   )
-
-  const addressIdToServiceName: Record<string, string> = {}
-  const addressQueryOptions =
-    baseServices
-      .filter((service) => service?.address) // not all services have addresses
-      .flatMap((service) => {
-        // need to flatten because some services have multiple addresses
-        service?.address?.forEach(
-          (addressId) => (addressIdToServiceName[addressId] = service.name)
-        )
-        return service?.address
-      })
-      .map((addressId) => {
-        return {
-          queryKey: ['address', addressId],
-          queryFn: () => getAddress(addressId ?? ''),
-          config: {
-            enabled: !!addressId,
-            retry: false,
-            refetchOnWindowFocus: false,
-          },
-        }
-      }) ?? [] // cannot be undefined or useQueries throws an error
-  const addressQueryResults =
-    useQueries<UseQueryOptions<Address, Error>[]>(addressQueryOptions)
-  const isLoadingAddresses = addressQueryResults.some(
-    (result) => result.isLoading
-  )
-  const addresses = addressQueryResults.map((result) => result.data)
 
   return {
-    isLoading: isLoadingServiceList || isLoadingServices || isLoadingAddresses,
+    isLoading: isLoadingServiceList || isLoadingServices,
     listName: serviceList?.name ?? '',
     visibleServices: filteredServices,
     numServices: baseServices.length,
     setSearchQuery,
-    addressIdToServiceName,
-    addresses: addresses.some((address) => !address)
-      ? []
-      : (addresses as Address[]), // return empty list if any address is undefined
     defaultMapCenter: { lat: 40.73061, lng: -73.935242 }, // NYC lat, lng
   }
 }

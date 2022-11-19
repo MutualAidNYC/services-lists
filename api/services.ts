@@ -2,7 +2,7 @@ import { AirtableClient, AirtableCreateResponse, AxiosClient } from './clients'
 import {
   Address,
   CreateServicesListRequest,
-  Service,
+  Resource,
   ServicesList,
   TaxonomyTerm,
 } from 'models'
@@ -21,13 +21,13 @@ export const getAddress = async (id: string): Promise<Address> => {
   return response.data
 }
 
-export const getService = async (id: string): Promise<Service> => {
-  const response = await ServicesAxiosClient.get<Service>(`/services/${id}`)
+export const getService = async (id: string): Promise<Resource> => {
+  const response = await ServicesAxiosClient.get<Resource>(`/services/${id}`)
   return response.data
 }
 
-export const getAllServices = async (filter = ''): Promise<Service[]> => {
-  const response = await ServicesAxiosClient.get<Service[]>(
+export const getAllServices = async (filter = ''): Promise<Resource[]> => {
+  const response = await ServicesAxiosClient.get<Resource[]>(
     `/services?filter=${filter}`
   )
   return response.data
@@ -74,14 +74,14 @@ export const findAddress = (id: string): Promise<Address> => {
   return ServicesAirtableClient.find<Address>('physical_addresses', id)
 }
 
-export const findService = (id: string): Promise<Service> => {
-  return ServicesAirtableClient.find<Service>('services', id)
+export const findService = (id: string): Promise<Resource> => {
+  return ServicesAirtableClient.find<Resource>('services', id)
 }
 
 export const selectAllServices = (
   filterFormula?: string
-): Promise<Service[]> => {
-  return ServicesAirtableClient.selectAll<Service>('services', filterFormula)
+): Promise<Resource[]> => {
+  return ServicesAirtableClient.selectAll<Resource>('services', filterFormula)
 }
 
 export const findServiceList = (id: string): Promise<ServicesList> => {

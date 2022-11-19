@@ -12,19 +12,18 @@ import {
   Button,
   Heading,
   HStack,
-  Link,
   LinkBox,
   LinkOverlay,
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { Address, Service } from 'models'
+import { Address, Resource } from 'models'
 import { TaxonomySection } from './TaxonomySection'
 
 interface AddServiceButtonProps {
   onAlertOpen: () => void
-  service: Service
-  setSelectedService: (service: Service) => void
+  service: Resource
+  setSelectedService: (service: Resource) => void
 }
 
 const AddServiceButton = ({
@@ -53,8 +52,8 @@ const AddServiceButton = ({
 interface SearchAddressIconProps {
   selectedAddress: Address | undefined
   setSelectedAddress: (address: Address | undefined) => void
-  getAddress: (service: Service) => Address | undefined
-  service: Service
+  getAddress: (service: Resource) => Address | undefined
+  service: Resource
 }
 
 const SearchAddressIcon = ({
@@ -88,12 +87,12 @@ const SearchAddressIcon = ({
 }
 
 interface ServiceItemProps extends BoxProps {
-  service: Service
+  service: Resource
   onAlertOpen?: () => void
-  setSelectedService?: (service: Service) => void
+  setSelectedService?: (service: Resource) => void
   selectedAddress?: Address | undefined
   setSelectedAddress?: (address: Address | undefined) => void
-  getAddress?: (service: Service) => Address | undefined
+  getAddress?: (service: Resource) => Address | undefined
 }
 
 export const ServiceItem = ({
@@ -104,6 +103,8 @@ export const ServiceItem = ({
   setSelectedAddress,
   getAddress,
 }: ServiceItemProps): JSX.Element => {
+  const needs = service.needs.split(',')
+
   return (
     <Stack
       spacing="8px"
@@ -120,8 +121,8 @@ export const ServiceItem = ({
         <LinkBox>
           <HStack spacing="8px">
             <LinkIcon />
-            <LinkOverlay href={service.url}>
-              <Heading fontSize="subheading2">{service.name}</Heading>
+            <LinkOverlay href={service.link}>
+              <Heading fontSize="subheading2">{service.title}</Heading>
             </LinkOverlay>
           </HStack>
         </LinkBox>
@@ -133,15 +134,8 @@ export const ServiceItem = ({
           />
         )}
       </Stack>
-      {service.organizationNames && service.organizationUrls && (
-        <Text>
-          Group:{' '}
-          <Link href={service.organizationUrls[0]} textDecor="underline">
-            {service.organizationNames[0]}
-          </Link>
-        </Text>
-      )}
-      <Text>{service.description}</Text>
+      <Text>Group: {service.group}</Text>
+      <Text>{service.details}</Text>
       {service.email && (
         <LinkBox>
           <HStack spacing="8px">
@@ -152,12 +146,12 @@ export const ServiceItem = ({
           </HStack>
         </LinkBox>
       )}
-      {service.phoneNumbers && (
+      {service.phone && (
         <LinkBox>
           <HStack spacing="8px">
             <PhoneIcon />
-            <LinkOverlay href={`tel:${service.phoneNumbers[0]}`}>
-              {service.phoneNumbers[0]}
+            <LinkOverlay href={`tel:${service.phone}`}>
+              {service.phone}
             </LinkOverlay>
           </HStack>
         </LinkBox>
@@ -169,9 +163,7 @@ export const ServiceItem = ({
         flexDirection="row"
         justifyContent="space-between"
       >
-        {service.taxonomyString && (
-          <TaxonomySection taxonomies={service.taxonomyString} />
-        )}
+        {service.needs && <TaxonomySection taxonomies={needs} />}
         {service.address && setSelectedAddress && getAddress && (
           <SearchAddressIcon
             selectedAddress={selectedAddress}

@@ -6,21 +6,19 @@ import {
 } from '@react-google-maps/api'
 import { getCenter } from 'geolib'
 import { GeolibInputCoordinates } from 'geolib/es/types'
-import { Address } from 'models'
+import { AddressWithLabel } from 'models'
 import { MapMarker } from './MapMarker'
 
 interface MapProps extends GoogleMapProps {
   defaultCenter: google.maps.LatLngLiteral
-  addressIdToLabel: Record<string, string>
-  addresses: Address[]
-  selectedAddress?: Address
+  addresses: AddressWithLabel[]
+  selectedAddress?: AddressWithLabel
   width: string
   height: string
 }
 
 export const Map = ({
   defaultCenter,
-  addressIdToLabel,
   addresses,
   selectedAddress,
   width,
@@ -33,10 +31,10 @@ export const Map = ({
 
   const coords: GeolibInputCoordinates[] = []
   addresses.forEach((address) => {
-    if (address['y-latitutude'] && address['y-longitude']) {
+    if (address.latitude && address.longitude) {
       coords.push({
-        lat: address['y-latitutude'],
-        lng: address['y-longitude'],
+        lat: address.latitude,
+        lng: address.longitude,
       })
     }
   })
@@ -65,7 +63,7 @@ export const Map = ({
             selectedAddress ? (selectedAddress === address ? 1.0 : 0.3) : 1.0
           }
           key={address.id}
-          label={addressIdToLabel[address.id]}
+          label={address.label}
           address={address}
         />
       ))}
