@@ -1,4 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react'
+import AuthProvider from 'components/AuthProvider'
 import { Fonts, Navbar, theme } from 'components/Layout'
 import { Footer } from 'components/Layout/Footer'
 import { AppProps } from 'next/app'
@@ -47,10 +48,12 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
       />
       <QueryClientProvider client={queryClient}>
         <ChakraProvider theme={theme}>
-          <Fonts />
-          <Navbar />
-          <Component {...pageProps} />
-          <Footer />
+          <AuthProvider>
+            <Fonts />
+            <Navbar />
+            <Component {...pageProps} />
+            <Footer />
+          </AuthProvider>
         </ChakraProvider>
       </QueryClientProvider>
     </>

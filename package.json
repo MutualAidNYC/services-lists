@@ -22,6 +22,7 @@
     "airtable": "^0.11.3",
     "axios": "^0.26.0",
     "emotion-theming": "^11.0.0",
+    "firebase": "^9.10.0",
     "framer-motion": "^4.1.17",
     "geolib": "^3.3.3",
     "next": "^11.1.4",
