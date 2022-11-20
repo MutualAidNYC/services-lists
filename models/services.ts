@@ -26,7 +26,7 @@ export type Resource = {
   email?: string
   /** Comma-separated string of needs */
   needs: string
-  // Partial because not all resources have addresses
+  // Not all resources have addresses
 } & Partial<Address>
 
 export type CreateServicesListRequest = {

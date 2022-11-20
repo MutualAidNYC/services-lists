@@ -12,7 +12,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react'
-import { Address, AddressWithLabel, Resource } from 'models'
+import { AddressWithLabel, Resource } from 'models'
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -122,7 +122,7 @@ export const ListPage: NextPage = () => {
     },
   }
 
-  const [selectedAddress, setSelectedAddress] = useState<Address>()
+  const [selectedAddress, setSelectedAddress] = useState<AddressWithLabel>()
   const [taxonomyFilters, setTaxonomyFilters] = useState<string[]>([])
 
   const getAllUniqueTaxonomies = (): string[] => {
@@ -159,8 +159,10 @@ export const ListPage: NextPage = () => {
     return list
   }
 
-  const getFilteredAddressList = (resources: Resource[]): Address[] => {
-    const addressArr: Address[] = []
+  const getFilteredAddressList = (
+    resources: Resource[]
+  ): AddressWithLabel[] => {
+    const addressArr = []
     for (let i = 0; i < resources.length; i++) {
       const address = getAddressWithLabel(resources[i])
       if (address) {
@@ -305,7 +307,7 @@ export const ListPage: NextPage = () => {
                                   service={item}
                                   selectedAddress={selectedAddress}
                                   setSelectedAddress={setSelectedAddress}
-                                  getAddress={getAddressWithLabel}
+                                  getAddressWithLabel={getAddressWithLabel}
                                 />
                               </Box>
                             )

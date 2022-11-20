@@ -43,7 +43,7 @@ export const Map = ({
   return loadError ? (
     <Text>{loadError}</Text>
   ) : isLoaded ? (
-    // For some reason  doesn't work with % width & height you need to use pixel numbers unless pos is absolute
+    // For some reason doesn't work with % width & height you need to use pixel numbers unless pos is absolute
     <GoogleMap
       mapContainerStyle={{
         minHeight: height,
@@ -62,7 +62,7 @@ export const Map = ({
           opacity={
             selectedAddress ? (selectedAddress === address ? 1.0 : 0.3) : 1.0
           }
-          key={address.id}
+          key={address.label}
           label={address.label}
           address={address}
         />
