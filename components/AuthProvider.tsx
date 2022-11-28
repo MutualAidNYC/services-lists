@@ -10,7 +10,7 @@ import React, {
 } from 'react'
 import { auth, userRef } from 'utils/firebase'
 
-const authContext = createContext<{
+const AuthContext = createContext<{
   user: User | null
   userLoading: boolean
   userData: UserDoc | null
@@ -23,17 +23,17 @@ const authContext = createContext<{
 })
 
 export const useUser = () => {
-  return useContext(authContext)
+  return useContext(AuthContext)
 }
 
 //There is a distinction between user and userData
 //User is the data used by Firebase to distinguish different user accounts
-//userData is the data we use to handle list ownership
+//userDoc is the data we use to handle list ownership
 
 const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null)
   const [userLoading, setLoading] = useState(true)
-  const [userData, setUserData] = useState<UserDoc | null>(null)
+  const [userDoc, setUserDoc] = useState<UserDoc | null>(null)
   const [userDataLoading, setUserDataLoading] = useState(true)
 
   useEffect(() => {
@@ -41,13 +41,13 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     if (user) {
       const unsub = onSnapshot(doc(userRef, user.uid), (doc) => {
         const data = doc.data() as UserDoc
-        setUserData(data)
+        setUserDoc(data)
         setUserDataLoading(false)
       })
 
       return unsub
     } else {
-      setUserData(null)
+      setUserDoc(null)
       setUserDataLoading(false)
     }
   }, [user])
@@ -64,11 +64,11 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   }, [])
 
   return (
-    <authContext.Provider
-      value={{ user, userLoading, userData, userDataLoading }}
+    <AuthContext.Provider
+      value={{ user, userLoading, userData: userDoc, userDataLoading }}
     >
       {children}
-    </authContext.Provider>
+    </AuthContext.Provider>
   )
 }
 

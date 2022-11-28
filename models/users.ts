@@ -4,3 +4,8 @@ export interface UserDoc {
     id: string,
     lists: string[] //Array of list ids
 }
+
+export interface PasswordAuthResponse {
+    code: number;
+    message: string;
+}

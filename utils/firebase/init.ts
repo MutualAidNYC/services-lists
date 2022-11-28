@@ -10,17 +10,15 @@ const appID = process.env.NEXT_PUBLIC_FIREBASE_APP_ID;
 const measurementID = process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID;
 
 
-const firebaseConfig = {
+
+
+export const app = initializeApp({
     apiKey: apiKey,
     authDomain: authDomain,
     projectId: projectID,
     appId: appID,
     measurementId: measurementID
-};
-
-
-
-export const app = initializeApp(firebaseConfig);
+});
 export const analytics = isSupported().then(supported => supported ? getAnalytics(app) : null);
 
 export const auth = getAuth(app);
