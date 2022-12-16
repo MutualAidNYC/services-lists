@@ -15,7 +15,7 @@ import {
   SortProvider,
   useCreateList,
 } from 'hooks'
-import { Resource } from 'models'
+import { Service } from 'models'
 import { useState } from 'react'
 import Head from 'next/head'
 
@@ -36,7 +36,7 @@ export const CreateListPage: NextPage = () => {
 
   const sortFieldsTextToVal = { Name: 'name', Description: 'description' }
 
-  const [selectedService, setSelectedService] = useState<Resource>()
+  const [selectedService, setSelectedService] = useState<Service>()
 
   return (
     <Stack spacing="32px" p={{ base: '48px', md: '64px' }}>

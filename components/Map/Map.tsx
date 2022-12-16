@@ -6,19 +6,21 @@ import {
 } from '@react-google-maps/api'
 import { getCenter } from 'geolib'
 import { GeolibInputCoordinates } from 'geolib/es/types'
-import { AddressWithLabel } from 'models'
+import { Address } from 'models'
 import { MapMarker } from './MapMarker'
 
 interface MapProps extends GoogleMapProps {
   defaultCenter: google.maps.LatLngLiteral
-  addresses: AddressWithLabel[]
-  selectedAddress?: AddressWithLabel
+  addressIdToLabel: Record<string, string>
+  addresses: Address[]
+  selectedAddress?: Address
   width: string
   height: string
 }
 
 export const Map = ({
   defaultCenter,
+  addressIdToLabel,
   addresses,
   selectedAddress,
   width,
@@ -31,10 +33,10 @@ export const Map = ({
 
   const coords: GeolibInputCoordinates[] = []
   addresses.forEach((address) => {
-    if (address.latitude && address.longitude) {
+    if (address['y-latitutude'] && address['y-longitude']) {
       coords.push({
-        lat: address.latitude,
-        lng: address.longitude,
+        lat: address['y-latitutude'],
+        lng: address['y-longitude'],
       })
     }
   })
@@ -43,7 +45,7 @@ export const Map = ({
   return loadError ? (
     <Text>{loadError}</Text>
   ) : isLoaded ? (
-    // For some reason doesn't work with % width & height you need to use pixel numbers unless pos is absolute
+    // For some reason  doesn't work with % width & height you need to use pixel numbers unless pos is absolute
     <GoogleMap
       mapContainerStyle={{
         minHeight: height,
@@ -62,8 +64,8 @@ export const Map = ({
           opacity={
             selectedAddress ? (selectedAddress === address ? 1.0 : 0.3) : 1.0
           }
-          key={address.label}
-          label={address.label}
+          key={address.id}
+          label={addressIdToLabel[address.id]}
           address={address}
         />
       ))}

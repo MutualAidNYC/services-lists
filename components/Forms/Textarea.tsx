@@ -36,7 +36,7 @@ export const Textarea = forwardRef<TextareaProps, 'textarea'>(
       >
         {label && <FormLabel htmlFor={id}>{label}</FormLabel>}
         <ChakraTextarea ref={ref} {...props} />
-        {error && <FormErrorMessage>{error}</FormErrorMessage>}
+        <FormErrorMessage>{error}</FormErrorMessage>
       </FormControl>
     )
   }

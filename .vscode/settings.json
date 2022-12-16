@@ -1,7 +1,0 @@
-{
-  "editor.codeActionsOnSave": {
-    "source.sortImports": true
-  },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true
-}
