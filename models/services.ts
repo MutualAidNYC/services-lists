@@ -1,4 +1,4 @@
-export type Status = 'Draft' | 'Published'
+export type ResourceListStatus = 'Draft' | 'Published'
 
 export type ResourceStatus =
   | 'Needs Review'
@@ -32,7 +32,7 @@ export type Resource = {
 export type CreateServicesListRequest = {
   name: string
   description: string
-  Status: Status
+  Status: ResourceListStatus
   Services: string[] // Airtable "services" table ids
   creator: string
 }
@@ -42,8 +42,4 @@ export type ServicesList = CreateServicesListRequest & {
   ServicesNames: string[]
   taxonomies?: string[]
   createdAt: string
-}
-
-export type TaxonomyTerm = {
-  term: string
 }

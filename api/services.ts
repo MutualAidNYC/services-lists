@@ -1,11 +1,11 @@
-import { AirtableClient, AirtableCreateResponse, AxiosClient } from './clients'
 import {
   Address,
   CreateServicesListRequest,
+  Need,
   Resource,
   ServicesList,
-  TaxonomyTerm,
 } from 'models'
+import { AirtableClient, AirtableCreateResponse, AxiosClient } from './clients'
 
 const ServicesAxiosClient = new AxiosClient('/api')
 
@@ -59,20 +59,14 @@ export const postServicesList = async (
   return response.data
 }
 
-export const getAllTaxonomies = async (
-  filter = ''
-): Promise<TaxonomyTerm[]> => {
-  const response = await ServicesAxiosClient.get<TaxonomyTerm[]>(
+export const getAllNeeds = async (filter = ''): Promise<Need[]> => {
+  const response = await ServicesAxiosClient.get<Need[]>(
     `/taxonomies?filter=${filter}`
   )
   return response.data
 }
 
 // Airtable functions
-
-export const findAddress = (id: string): Promise<Address> => {
-  return ServicesAirtableClient.find<Address>('physical_addresses', id)
-}
 
 export const findService = (id: string): Promise<Resource> => {
   return ServicesAirtableClient.find<Resource>('services', id)
@@ -122,11 +116,6 @@ export const createServicesLists = (
   )
 }
 
-export const selectAllTaxonomies = (
-  filterFormula?: string
-): Promise<TaxonomyTerm[]> => {
-  return ServicesAirtableClient.selectAll<TaxonomyTerm>(
-    'taxonomy_term',
-    filterFormula
-  )
+export const selectAllNeeds = (filterFormula?: string): Promise<Need[]> => {
+  return ServicesAirtableClient.selectAll<Need>('Ref - Need', filterFormula)
 }
