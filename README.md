@@ -59,7 +59,7 @@ As of our most recent design, the major components of the project are as follows
 
 [TypeScript's `tsc` CLI command](https://www.typescriptlang.org/docs/handbook/compiler-options.html) is used to compile the code and check for any type errors.
 
-- To run a type check, run `yarn typecheck`.
+- To run a type check, run `yarn type-check`.
 - The project's TypeScript configuration is specified in the `tsconfig.json` file.
 
 ## Linting

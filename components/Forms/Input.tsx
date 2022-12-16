@@ -36,7 +36,7 @@ export const Input = forwardRef<InputProps, 'input'>(
       >
         {label && <FormLabel htmlFor={id}>{label}</FormLabel>}
         <ChakraInput ref={ref} {...props} />
-        {error && <FormErrorMessage>{error}</FormErrorMessage>}
+        <FormErrorMessage>{error}</FormErrorMessage>
       </FormControl>
     )
   }

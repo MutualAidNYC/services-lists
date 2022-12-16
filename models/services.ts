@@ -1,45 +1,43 @@
-export type ResourceListStatus = 'Draft' | 'Published'
+export type Status = 'Draft' | 'Published'
 
-export type ResourceStatus =
-  | 'Needs Review'
-  | 'Revisit'
-  | 'Published'
-  | 'Do Not Publish'
-
-export type Address = {
-  streetAddress: string
-  city: string
-  state: string
-  zip: string
-  latitude: number
-  longitude: number
-}
-
-export type Resource = {
+export interface Service {
   id: string
-  title: string
-  status: ResourceStatus
-  group: string[]
-  details: string
-  link?: string
-  phone?: string
-  email?: string
-  /** Comma-separated string of needs */
-  needs: string
-  // Not all resources have addresses
-} & Partial<Address>
-
-export type CreateServicesListRequest = {
   name: string
   description: string
-  Status: ResourceListStatus
+  url: string
+  email?: string
+  address?: string[] // Airtable "physical_addresses" table ids
+  phoneNumbers?: string[]
+  taxonomyString?: string[]
+  organizationNames?: string[]
+  organizationUrls?: string[]
+}
+
+export interface CreateServicesListRequest {
+  name: string
+  description: string
+  Status: Status
   Services: string[] // Airtable "services" table ids
   creator: string
 }
 
-export type ServicesList = CreateServicesListRequest & {
+export interface ServicesList extends CreateServicesListRequest {
   id: string
   ServicesNames: string[]
   taxonomies?: string[]
   createdAt: string
+}
+
+export interface TaxonomyTerm {
+  term: string
+}
+
+export interface Address {
+  id: string
+  address_1: string
+  city: string
+  state_province: string
+  postal_code: string
+  'y-latitutude'?: string
+  'y-longitude'?: string
 }

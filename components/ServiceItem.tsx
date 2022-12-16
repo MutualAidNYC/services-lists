@@ -12,18 +12,19 @@ import {
   Button,
   Heading,
   HStack,
+  Link,
   LinkBox,
   LinkOverlay,
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { AddressWithLabel, Resource } from 'models'
+import { Address, Service } from 'models'
 import { TaxonomySection } from './TaxonomySection'
 
 interface AddServiceButtonProps {
   onAlertOpen: () => void
-  service: Resource
-  setSelectedService: (service: Resource) => void
+  service: Service
+  setSelectedService: (service: Service) => void
 }
 
 const AddServiceButton = ({
@@ -50,25 +51,25 @@ const AddServiceButton = ({
 }
 
 interface SearchAddressIconProps {
-  selectedAddress: AddressWithLabel | undefined
-  setSelectedAddressWithLabel: (address: AddressWithLabel | undefined) => void
-  getAddressWithLabel: (service: Resource) => AddressWithLabel | undefined
-  service: Resource
+  selectedAddress: Address | undefined
+  setSelectedAddress: (address: Address | undefined) => void
+  getAddress: (service: Service) => Address | undefined
+  service: Service
 }
 
 const SearchAddressIcon = ({
   selectedAddress,
-  setSelectedAddressWithLabel,
-  getAddressWithLabel,
+  setSelectedAddress,
+  getAddress,
   service,
 }: SearchAddressIconProps): JSX.Element => {
   const handleClick = () => {
-    const address = getAddressWithLabel(service)
+    const address = getAddress(service)
     if (address) {
       if (selectedAddress === address) {
-        setSelectedAddressWithLabel(undefined)
+        setSelectedAddress(undefined)
       } else {
-        setSelectedAddressWithLabel(address)
+        setSelectedAddress(address)
       }
     }
   }
@@ -76,8 +77,8 @@ const SearchAddressIcon = ({
   return (
     <Box>
       {selectedAddress &&
-      getAddressWithLabel(service) &&
-      selectedAddress === getAddressWithLabel(service) ? (
+      getAddress(service) &&
+      selectedAddress === getAddress(service) ? (
         <ViewOffIcon onClick={() => handleClick()} />
       ) : (
         <ViewIcon onClick={() => handleClick()} />
@@ -87,12 +88,12 @@ const SearchAddressIcon = ({
 }
 
 interface ServiceItemProps extends BoxProps {
-  service: Resource
+  service: Service
   onAlertOpen?: () => void
-  setSelectedService?: (service: Resource) => void
-  selectedAddress?: AddressWithLabel | undefined
-  setSelectedAddress?: (address: AddressWithLabel | undefined) => void
-  getAddressWithLabel?: (service: Resource) => AddressWithLabel | undefined
+  setSelectedService?: (service: Service) => void
+  selectedAddress?: Address | undefined
+  setSelectedAddress?: (address: Address | undefined) => void
+  getAddress?: (service: Service) => Address | undefined
 }
 
 export const ServiceItem = ({
@@ -101,10 +102,8 @@ export const ServiceItem = ({
   setSelectedService,
   selectedAddress,
   setSelectedAddress,
-  getAddressWithLabel,
+  getAddress,
 }: ServiceItemProps): JSX.Element => {
-  const needs = service.needs.split(',')
-
   return (
     <Stack
       spacing="8px"
@@ -121,8 +120,8 @@ export const ServiceItem = ({
         <LinkBox>
           <HStack spacing="8px">
             <LinkIcon />
-            <LinkOverlay href={service.link}>
-              <Heading fontSize="subheading2">{service.title}</Heading>
+            <LinkOverlay href={service.url}>
+              <Heading fontSize="subheading2">{service.name}</Heading>
             </LinkOverlay>
           </HStack>
         </LinkBox>
@@ -134,8 +133,15 @@ export const ServiceItem = ({
           />
         )}
       </Stack>
-      <Text>Group: {service.group}</Text>
-      <Text>{service.details}</Text>
+      {service.organizationNames && service.organizationUrls && (
+        <Text>
+          Group:{' '}
+          <Link href={service.organizationUrls[0]} textDecor="underline">
+            {service.organizationNames[0]}
+          </Link>
+        </Text>
+      )}
+      <Text>{service.description}</Text>
       {service.email && (
         <LinkBox>
           <HStack spacing="8px">
@@ -146,12 +152,12 @@ export const ServiceItem = ({
           </HStack>
         </LinkBox>
       )}
-      {service.phone && (
+      {service.phoneNumbers && (
         <LinkBox>
           <HStack spacing="8px">
             <PhoneIcon />
-            <LinkOverlay href={`tel:${service.phone}`}>
-              {service.phone}
+            <LinkOverlay href={`tel:${service.phoneNumbers[0]}`}>
+              {service.phoneNumbers[0]}
             </LinkOverlay>
           </HStack>
         </LinkBox>
@@ -163,12 +169,14 @@ export const ServiceItem = ({
         flexDirection="row"
         justifyContent="space-between"
       >
-        {service.needs && <TaxonomySection taxonomies={needs} />}
-        {service.streetAddress && setSelectedAddress && getAddressWithLabel && (
+        {service.taxonomyString && (
+          <TaxonomySection taxonomies={service.taxonomyString} />
+        )}
+        {service.address && setSelectedAddress && getAddress && (
           <SearchAddressIcon
             selectedAddress={selectedAddress}
-            setSelectedAddressWithLabel={setSelectedAddress}
-            getAddressWithLabel={getAddressWithLabel}
+            setSelectedAddress={setSelectedAddress}
+            getAddress={getAddress}
             service={service}
           />
         )}
