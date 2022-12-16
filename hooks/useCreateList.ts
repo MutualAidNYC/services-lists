@@ -5,7 +5,7 @@ import {
   createServicesLists,
   getAllServices,
 } from 'api'
-import { CreateServicesListRequest, Service } from 'models'
+import { CreateServicesListRequest, Resource } from 'models'
 import { useDisclosure } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form'
@@ -35,21 +35,21 @@ const createListSchema = yup.object({
 
 interface CreateListHandler {
   isLoading: boolean
-  visibleServices: Service[]
+  visibleServices: Resource[]
   numServices: number
   setSearchQuery: (query: string) => void
   taxonomyOptions: { value: string; label: string }[]
   setTaxonomyFilters: (filters: string[]) => void
-  sortHandler: SortHandler<Service>
-  paginationHandler: PaginationHandler<Service>
+  sortHandler: SortHandler<Resource>
+  paginationHandler: PaginationHandler<Resource>
   isAlertOpen: boolean
   onAlertClose: () => void
   onAlertOpen: () => void
   isDrawerOpen: boolean
   onDrawerClose: () => void
   onDrawerOpen: () => void
-  selectedServices: Map<string, Service>
-  addServiceToList: (service: Service) => void
+  selectedServices: Map<string, Resource>
+  addServiceToList: (service: Resource) => void
   removeServiceFromList: (serviceId: string) => void
   form: UseFormReturn<CreateListForm>
   onSubmit: (e?: BaseSyntheticEvent) => Promise<void>
@@ -65,7 +65,7 @@ export const CreateListProvider = CreateListContext.Provider
 
 export const useCreateList = (): CreateListHandler => {
   const { isLoading: isLoadingServices, data: baseServices } = useQuery<
-    Service[],
+    Resource[],
     Error
   >(['allServices'], () => getAllServices(), {
     retry: false,
@@ -78,7 +78,7 @@ export const useCreateList = (): CreateListHandler => {
     setSearchQuery,
     taxonomyOptions,
     setTaxonomyFilters,
-  } = useFilters(baseServices ?? [], ['name', 'description'], 'taxonomyString')
+  } = useFilters(baseServices ?? [], ['title', 'details'], 'needs')
   const sortHandler = useSort(filteredServices)
   const paginationHandler = usePagination(sortHandler.sortedData)
 
@@ -128,9 +128,9 @@ export const useCreateList = (): CreateListHandler => {
   const onSubmit = handleSubmit(submitHandler)
 
   const [selectedServices, setSelectedServices] = useState(
-    new Map<string, Service>()
+    new Map<string, Resource>()
   )
-  const addServiceToList = (service: Service) => {
+  const addServiceToList = (service: Resource) => {
     setSelectedServices(selectedServices.set(service.id, service))
   }
   const removeServiceFromList = (serviceId: string) => {

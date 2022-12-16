@@ -1,11 +1,11 @@
 import { Button, chakra, Heading, HStack, Stack, Text } from '@chakra-ui/react'
 import { Alert } from 'components'
 import { useCreateListContext } from 'hooks'
-import { Service } from 'models'
+import { Resource } from 'models'
 import { useRef, useState } from 'react'
 
 interface CreateListAlertProps {
-  selectedService?: Service
+  selectedService?: Resource
 }
 
 export const CreateListAlert = ({
@@ -56,7 +56,7 @@ export const CreateListAlert = ({
         {triedToAddDuplicateService ? (
           <Text>
             <chakra.span fontWeight="semibold">{`"${
-              selectedService?.name ?? 'This resource'
+              selectedService?.title ?? 'This resource'
             }"`}</chakra.span>{' '}
             is already in your list.
           </Text>
@@ -64,7 +64,7 @@ export const CreateListAlert = ({
           <Text>
             Are you sure you want to add{' '}
             <chakra.span fontWeight="semibold">{`"${
-              selectedService?.name ?? 'this'
+              selectedService?.title ?? 'this'
             }"`}</chakra.span>{' '}
             to your resource list?
           </Text>
