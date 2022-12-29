@@ -1,8 +1,8 @@
+import { getAllNeeds } from 'api'
+import { Need } from 'models'
 import { useState } from 'react'
 import { useQuery } from 'react-query'
 import { useDeepCompareMemo } from 'use-deep-compare'
-import { getAllTaxonomies } from 'api'
-import { TaxonomyTerm } from 'models'
 
 export interface FiltersHandler<T> {
   isLoading: boolean
@@ -17,7 +17,7 @@ export const useFilters = <T>(
   searchFields: (keyof T)[],
   taxonomyField: keyof T
 ): FiltersHandler<T> => {
-  const { isLoading, data: taxonomyTerms } = useQuery<TaxonomyTerm[], Error>(
+  const { isLoading, data: taxonomyTerms } = useQuery<Need[], Error>(
     ['taxonomies'],
     () => getAllNeeds("AND(Need != '-Not Listed',Resources)"),
     {
@@ -26,7 +26,7 @@ export const useFilters = <T>(
     }
   )
   const taxonomyOptions = taxonomyTerms?.map((term) => {
-    return { value: term.term, label: term.term }
+    return { value: term.Need, label: term.Need }
   })
 
   const [searchQuery, setSearchQuery] = useState('')
