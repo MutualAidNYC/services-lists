@@ -19,13 +19,13 @@ export type Resource = {
   id: string
   title: string
   status: ResourceStatus
-  group: string[]
+  groupName?: string
   details: string
   link?: string
   phone?: string
   email?: string
   /** Comma-separated string of needs */
-  needs: string
+  Needs?: string
   // Not all resources have addresses
 } & Partial<Address>
 

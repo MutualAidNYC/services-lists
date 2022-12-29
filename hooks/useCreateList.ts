@@ -1,16 +1,10 @@
-import { BaseSyntheticEvent, createContext, useContext, useState } from 'react'
-import { useMutation, useQuery } from 'react-query'
+import { useDisclosure } from '@chakra-ui/react'
+import { yupResolver } from '@hookform/resolvers/yup'
 import {
   AirtableCreateResponse,
   createServicesLists,
   getAllServices,
 } from 'api'
-import { CreateServicesListRequest, Resource } from 'models'
-import { useDisclosure } from '@chakra-ui/react'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form'
-import * as yup from 'yup'
-import { useRouter } from 'next/router'
 import {
   PaginationHandler,
   SortHandler,
@@ -18,6 +12,12 @@ import {
   usePagination,
   useSort,
 } from 'hooks'
+import { CreateServicesListRequest, Resource } from 'models'
+import { useRouter } from 'next/router'
+import { BaseSyntheticEvent, createContext, useContext, useState } from 'react'
+import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form'
+import { useMutation, useQuery } from 'react-query'
+import * as yup from 'yup'
 
 interface CreateListForm {
   name: string
@@ -78,7 +78,7 @@ export const useCreateList = (): CreateListHandler => {
     setSearchQuery,
     taxonomyOptions,
     setTaxonomyFilters,
-  } = useFilters(baseServices ?? [], ['title', 'details'], 'needs')
+  } = useFilters(baseServices ?? [], ['title', 'details'], 'Needs')
   const sortHandler = useSort(filteredServices)
   const paginationHandler = usePagination(sortHandler.sortedData)
 

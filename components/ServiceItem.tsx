@@ -103,7 +103,7 @@ export const ServiceItem = ({
   setSelectedAddress,
   getAddressWithLabel,
 }: ServiceItemProps): JSX.Element => {
-  const needs = service.needs.split(',')
+  const needs = service.Needs?.split(',')
 
   return (
     <Stack
@@ -134,7 +134,9 @@ export const ServiceItem = ({
           />
         )}
       </Stack>
-      <Text>Group: {service.group}</Text>
+      {service.groupName && service.groupName != '-No Associated Group' && (
+        <Text>Group: {service.groupName}</Text>
+      )}
       <Text>{service.details}</Text>
       {service.email && (
         <LinkBox>
@@ -163,7 +165,7 @@ export const ServiceItem = ({
         flexDirection="row"
         justifyContent="space-between"
       >
-        {service.needs && <TaxonomySection taxonomies={needs} />}
+        {needs && <TaxonomySection taxonomies={needs} />}
         {service.streetAddress && setSelectedAddress && getAddressWithLabel && (
           <SearchAddressIcon
             selectedAddress={selectedAddress}

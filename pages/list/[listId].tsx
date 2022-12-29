@@ -128,7 +128,7 @@ export const ListPage: NextPage = () => {
   const getAllUniqueTaxonomies = (): string[] => {
     const taxonomies: string[] = []
     for (let i = 0; i < visibleServices.length; i++) {
-      const serviceTaxonomies = visibleServices[i].needs
+      const serviceTaxonomies = visibleServices[i].Needs
       if (serviceTaxonomies) {
         for (let n = 0; n < serviceTaxonomies.length; n++) {
           if (!taxonomies.includes(serviceTaxonomies[n])) {
@@ -144,7 +144,7 @@ export const ListPage: NextPage = () => {
     if (taxonomyFilters.length > 0) {
       const filteredList: Resource[] = []
       for (let i = 0; i < list.length; i++) {
-        const taxonomies = list[i].needs
+        const taxonomies = list[i].Needs
         if (taxonomies) {
           for (let n = 0; n < taxonomyFilters.length; n++) {
             if (taxonomies.includes(taxonomyFilters[n])) {
