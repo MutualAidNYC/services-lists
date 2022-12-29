@@ -19,7 +19,7 @@ export const useFilters = <T>(
 ): FiltersHandler<T> => {
   const { isLoading, data: taxonomyTerms } = useQuery<Need[], Error>(
     ['taxonomies'],
-    () => getAllNeeds("AND(term != '-Not Listed',services)"),
+    () => getAllNeeds("AND(Need != '-Not Listed',Resources)"),
     {
       retry: false,
       refetchOnWindowFocus: false,
