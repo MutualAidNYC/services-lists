@@ -1,13 +1,19 @@
-import { Button, Heading, HStack, Stack, Text } from '@chakra-ui/react'
-import { NextPage } from 'next'
-import Select from 'react-select'
 import {
-  SearchBar,
-  ServiceItem,
-  SortMenu,
+  Button,
+  Grid,
+  GridItem,
+  Heading,
+  HStack,
+  Stack,
+  Text,
+} from '@chakra-ui/react'
+import {
   CreateListAlert,
   CreateListDrawer,
   PaginationSection,
+  ResourceCard,
+  SearchBar,
+  SortMenu,
 } from 'components'
 import {
   CreateListProvider,
@@ -16,8 +22,10 @@ import {
   useCreateList,
 } from 'hooks'
 import { Resource } from 'models'
-import { useState } from 'react'
+import { NextPage } from 'next'
 import Head from 'next/head'
+import { useState } from 'react'
+import Select from 'react-select'
 
 export const CreateListPage: NextPage = () => {
   const createListHandler = useCreateList()
@@ -94,14 +102,13 @@ export const CreateListPage: NextPage = () => {
           />
         </HStack>
       </Stack>
-      {visibleServices.map((service) => (
-        <ServiceItem
-          key={service.id}
-          service={service}
-          onAlertOpen={onAlertOpen}
-          setSelectedService={setSelectedService}
-        />
-      ))}
+      <Grid templateColumns="repeat(3, 1fr)" gap="16px">
+        {visibleServices.map((service) => (
+          <GridItem key={service.id} border="1px" borderRadius="8px">
+            <ResourceCard resource={service} />
+          </GridItem>
+        ))}
+      </Grid>
       <CreateListProvider value={createListHandler}>
         <CreateListAlert selectedService={selectedService} />
         <CreateListDrawer />
