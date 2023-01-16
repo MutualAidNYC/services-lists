@@ -27,7 +27,7 @@ export type Resource = {
   phone?: string
   email?: string
   /** Comma-separated string of needs */
-  Needs?: string
+  Needs?: string[]
   // Not all resources have addresses
 } & Partial<Address>
 
@@ -35,7 +35,8 @@ export type CreateServicesListRequest = {
   name: string
   description: string
   Status: ResourceListStatus
-  Services: string[] // Airtable "services" table ids
+  /** `Resources` table IDs */
+  Resources: string[]
   creator: string
 }
 

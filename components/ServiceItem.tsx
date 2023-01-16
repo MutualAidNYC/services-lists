@@ -103,8 +103,6 @@ export const ServiceItem = ({
   setSelectedAddress,
   getAddressWithLabel,
 }: ServiceItemProps): JSX.Element => {
-  const needs = service.Needs?.split(',')
-
   return (
     <Stack
       spacing="8px"
@@ -165,7 +163,7 @@ export const ServiceItem = ({
         flexDirection="row"
         justifyContent="space-between"
       >
-        {needs && <TaxonomySection taxonomies={needs} />}
+        {service.Needs && <TaxonomySection taxonomies={service.Needs} />}
         {service.streetAddress && setSelectedAddress && getAddressWithLabel && (
           <SearchAddressIcon
             selectedAddress={selectedAddress}
