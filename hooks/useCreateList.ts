@@ -121,7 +121,7 @@ export const useCreateList = (): CreateListHandler => {
         description: data.description,
         creator: data.creator,
         Status: 'Draft',
-        Services: [...selectedServices.keys()],
+        Resources: [...selectedServices.keys()],
       },
     ])
   }

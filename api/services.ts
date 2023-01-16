@@ -97,7 +97,7 @@ export const createServicesLists = (
           name: list.name,
           description: list.description,
           Status: list.Status,
-          Services: list.Services,
+          Services: list.Resources,
           creator: list.creator,
         },
       }

@@ -29,7 +29,7 @@ export const useServiceList = (listId: string): ServiceListHandler => {
   })
 
   const servicesQueryOptions =
-    serviceList?.Services?.map((serviceId) => {
+    serviceList?.Resources?.map((serviceId) => {
       return {
         queryKey: ['service', serviceId],
         queryFn: () => getService(serviceId),
