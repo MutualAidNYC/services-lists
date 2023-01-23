@@ -1,12 +1,4 @@
-import {
-  Button,
-  Grid,
-  GridItem,
-  Heading,
-  HStack,
-  Stack,
-  Text,
-} from '@chakra-ui/react'
+import { Button, Grid, Heading, HStack, Stack, Text } from '@chakra-ui/react'
 import {
   CreateListAlert,
   CreateListDrawer,
@@ -45,6 +37,10 @@ export const CreateListPage: NextPage = () => {
   const sortFieldsTextToVal = { Name: 'name', Description: 'description' }
 
   const [selectedService, setSelectedService] = useState<Resource>()
+  const saveResource = (resource: Resource) => {
+    setSelectedService(resource)
+    onAlertOpen()
+  }
 
   return (
     <Stack spacing="32px" p={{ base: '48px', md: '64px' }}>
@@ -104,9 +100,11 @@ export const CreateListPage: NextPage = () => {
       </Stack>
       <Grid templateColumns="repeat(3, 1fr)" gap="16px">
         {visibleServices.map((service) => (
-          <GridItem key={service.id} border="1px" borderRadius="8px">
-            <ResourceCard resource={service} />
-          </GridItem>
+          <ResourceCard
+            key={service.id}
+            resource={service}
+            saveResource={() => saveResource(service)}
+          />
         ))}
       </Grid>
       <CreateListProvider value={createListHandler}>
