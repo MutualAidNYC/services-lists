@@ -1,13 +1,11 @@
 import { Button, Heading, HStack, Stack, Text } from '@chakra-ui/react'
-import { NextPage } from 'next'
-import Select from 'react-select'
 import {
-  SearchBar,
-  ServiceItem,
-  SortMenu,
   CreateListAlert,
   CreateListDrawer,
   PaginationSection,
+  SearchBar,
+  ServiceItem,
+  SortMenu,
 } from 'components'
 import {
   CreateListProvider,
@@ -16,8 +14,10 @@ import {
   useCreateList,
 } from 'hooks'
 import { Service } from 'models'
-import { useState } from 'react'
+import { NextPage } from 'next'
 import Head from 'next/head'
+import { useState } from 'react'
+import Select from 'react-select'
 
 export const CreateListPage: NextPage = () => {
   const createListHandler = useCreateList()
