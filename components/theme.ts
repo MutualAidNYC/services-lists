@@ -10,6 +10,17 @@ export const theme = extendTheme({
     lightGray: '#F1F1F1',
     black: '#000000',
     white: '#FFFFFF',
+    Primary: {
+      50: '#E3FCF5',
+      500: '#20A1A8',
+      600: '#178090',
+      700: '#106178',
+      800: '#0A4761',
+    },
+    Gray: {
+      500: '#667085',
+      900: '#101828',
+    },
   },
   fonts: {
     body: 'Neue Haas Grotesk Display Pro',
@@ -22,6 +33,13 @@ export const theme = extendTheme({
     subheading2: '20px',
     subheading3: '16px',
   },
+  styles: {
+    global: {
+      body: {
+        color: 'Gray.500',
+      },
+    },
+  },
   components: {
     Text: {
       variants: {
@@ -32,6 +50,11 @@ export const theme = extendTheme({
             textDecoration: 'underline',
           },
         },
+      },
+    },
+    Heading: {
+      baseStyle: {
+        color: 'Gray.900',
       },
     },
   },
