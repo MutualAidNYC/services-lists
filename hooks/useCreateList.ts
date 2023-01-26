@@ -82,7 +82,7 @@ export const useCreateList = (): CreateListHandler => {
   const sortHandler = useSort(filteredServices)
   const paginationHandler = usePagination(
     sortHandler.sortedData,
-    [6, 18, 24, 48]
+    [6, 12, 24, 48]
   )
 
   const {

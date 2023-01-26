@@ -36,9 +36,9 @@ export const CreateListPage: NextPage = () => {
 
   const sortFieldsTextToVal = { Name: 'name', Description: 'description' }
 
-  const [selectedService, setSelectedService] = useState<Resource>()
+  const [selectedResource, setSelectedResource] = useState<Resource>()
   const saveResource = (resource: Resource) => {
-    setSelectedService(resource)
+    setSelectedResource(resource)
     onAlertOpen()
   }
 
@@ -98,7 +98,7 @@ export const CreateListPage: NextPage = () => {
           />
         </HStack>
       </Stack>
-      <Grid templateColumns="repeat(3, 1fr)" gap="16px">
+      <Grid templateColumns="repeat(3, 1fr)" gap="32px">
         {visibleServices.map((service) => (
           <ResourceCard
             key={service.id}
@@ -108,7 +108,7 @@ export const CreateListPage: NextPage = () => {
         ))}
       </Grid>
       <CreateListProvider value={createListHandler}>
-        <CreateListAlert selectedService={selectedService} />
+        <CreateListAlert selectedService={selectedResource} />
         <CreateListDrawer />
       </CreateListProvider>
     </Stack>

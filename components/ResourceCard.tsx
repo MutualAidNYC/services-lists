@@ -12,21 +12,26 @@ export const ResourceCard = ({
   return (
     <Stack
       spacing="24px"
-      border="1px"
+      border="1px solid #EAECF0"
       borderRadius="8px"
+      boxShadow="0px 12px 16px -4px rgba(16, 24, 40, 0.08), 0px 4px 6px -2px rgba(16, 24, 40, 0.03)"
       p="24px"
       height="100%"
       direction="column"
       justify="space-between"
     >
       <Stack spacing="24px">
-        <Text fontSize="24px">{resource.title}</Text>
+        <Text fontSize="2xl" fontWeight="semibold">
+          {resource.title}
+        </Text>
         {resource.groupName && resource.groupName != NO_ASSOCIATED_GROUP && (
-          <Text>{resource.groupName}</Text>
+          <Text fontSize="xl" fontWeight="semibold">
+            {resource.groupName}
+          </Text>
         )}
         <Text overflowWrap="anywhere">{resource.details}</Text>
       </Stack>
-      <HStack>
+      <HStack spacing="12px">
         <IconButton
           aria-label="Save resource"
           icon={<Bookmark />}
