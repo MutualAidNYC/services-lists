@@ -6,9 +6,8 @@ import { useRouter } from 'next/router'
 import Script from 'next/script'
 import { useEffect } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { theme } from '../components/theme'
 import { sendPageView } from '../gtag'
-import { theme } from '../theme'
-
 
 const queryClient = new QueryClient()
 
