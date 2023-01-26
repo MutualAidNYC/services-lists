@@ -1,5 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react'
-import { Fonts, Navbar, theme } from 'components/Layout'
+import { Fonts, Navbar } from 'components/Layout'
 import { Footer } from 'components/Layout/Footer'
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
@@ -7,6 +7,8 @@ import Script from 'next/script'
 import { useEffect } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { sendPageView } from '../gtag'
+import { theme } from '../theme'
+
 
 const queryClient = new QueryClient()
 
