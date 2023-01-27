@@ -57,5 +57,12 @@ export const theme = extendTheme({
         color: 'Gray.900',
       },
     },
+    Button: {
+      baseStyle: {
+        bg: 'Primary.50',
+        background: 'Primary.50',
+        color: 'Primary.700',
+      },
+    },
   },
 })
