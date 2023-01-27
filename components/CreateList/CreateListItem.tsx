@@ -1,10 +1,10 @@
 import { MinusIcon } from '@chakra-ui/icons'
 import { Flex, IconButton, Text } from '@chakra-ui/react'
 import { useCreateListContext } from 'hooks'
-import { Service } from 'models'
+import { Resource } from 'models'
 
 interface CreateListItemProps {
-  service: Service
+  service: Resource
 }
 
 export const CreateListItem = ({
@@ -14,7 +14,7 @@ export const CreateListItem = ({
 
   return (
     <Flex alignItems="center" justifyContent="space-between">
-      <Text>{service.name}</Text>
+      <Text>{service.title}</Text>
       <IconButton
         aria-label="Remove resource from list"
         icon={<MinusIcon />}

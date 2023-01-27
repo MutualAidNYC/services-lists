@@ -1,30 +1,46 @@
 import { ArrowDownIcon, PlusSquareIcon } from '@chakra-ui/icons'
 import {
-  Heading,
+  Box,
+  Button,
   Center,
+  Heading,
   HStack,
-  Text,
-  VStack,
   LinkBox,
   LinkOverlay,
-  Box,
+  Spinner,
   Stack,
-  Button,
+  Text,
+  VStack,
 } from '@chakra-ui/react'
+import { AddressWithLabel, Resource } from 'models'
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React, { useRef, useState } from 'react'
-import { Map, SearchBar, ServiceItem } from '../../components'
-import { ServiceListProvider, useServiceList } from '../../hooks'
-import { Address, Service } from '../../models'
 import { PaginatedList } from 'react-paginated-list'
 import Select, {
   CSSObjectWithLabel,
   GroupBase,
   StylesConfig,
 } from 'react-select'
-import { Spinner } from '@chakra-ui/react'
+import { Map, SearchBar, ServiceItem } from '../../components'
+import { ServiceListProvider, useServiceList } from '../../hooks'
+
+const getAddressWithLabel = (
+  service: Resource
+): AddressWithLabel | undefined => {
+  if (service.streetAddress) {
+    return {
+      streetAddress: service.streetAddress,
+      city: service.city,
+      state: service.state,
+      zip: service.zip,
+      latitude: service.latitude,
+      longitude: service.longitude,
+      label: service.title,
+    } as AddressWithLabel
+  }
+}
 
 export const ListPage: NextPage = () => {
   const router = useRouter()
@@ -37,8 +53,6 @@ export const ListPage: NextPage = () => {
     visibleServices,
     numServices,
     setSearchQuery,
-    addressIdToServiceName,
-    addresses,
     defaultMapCenter,
   } = serviceListHandler
 
@@ -108,25 +122,13 @@ export const ListPage: NextPage = () => {
     },
   }
 
-  const [selectedAddress, setSelectedAddress] = useState<Address>()
+  const [selectedAddress, setSelectedAddress] = useState<AddressWithLabel>()
   const [taxonomyFilters, setTaxonomyFilters] = useState<string[]>([])
-
-  function getAddress(service: Service): Address | undefined {
-    let res = undefined
-    for (let i = 0; i < addresses.length; i++) {
-      const address = addresses[i]
-      if (service.address !== undefined && address.id === service.address[0]) {
-        res = address
-        break
-      }
-    }
-    return res
-  }
 
   const getAllUniqueTaxonomies = (): string[] => {
     const taxonomies: string[] = []
     for (let i = 0; i < visibleServices.length; i++) {
-      const serviceTaxonomies = visibleServices[i].taxonomyString
+      const serviceTaxonomies = visibleServices[i].Needs
       if (serviceTaxonomies) {
         for (let n = 0; n < serviceTaxonomies.length; n++) {
           if (!taxonomies.includes(serviceTaxonomies[n])) {
@@ -138,11 +140,11 @@ export const ListPage: NextPage = () => {
     return taxonomies
   }
 
-  const getFilteredList = (list: Service[]): Service[] => {
+  const getFilteredList = (list: Resource[]): Resource[] => {
     if (taxonomyFilters.length > 0) {
-      const filteredList: Service[] = []
+      const filteredList: Resource[] = []
       for (let i = 0; i < list.length; i++) {
-        const taxonomies = list[i].taxonomyString
+        const taxonomies = list[i].Needs
         if (taxonomies) {
           for (let n = 0; n < taxonomyFilters.length; n++) {
             if (taxonomies.includes(taxonomyFilters[n])) {
@@ -157,19 +159,17 @@ export const ListPage: NextPage = () => {
     return list
   }
 
-  const getFilteredAddressList = (list: Service[]): Address[] => {
-    if (taxonomyFilters.length > 0) {
-      const addressArr: Address[] = []
-      for (let i = 0; i < list.length; i++) {
-        const address = getAddress(list[i])
-        if (address) {
-          addressArr.push(address)
-        }
+  const getFilteredAddressList = (
+    resources: Resource[]
+  ): AddressWithLabel[] => {
+    const addressArr = []
+    for (let i = 0; i < resources.length; i++) {
+      const address = getAddressWithLabel(resources[i])
+      if (address) {
+        addressArr.push(address)
       }
-      return addressArr
-    } else {
-      return addresses ? addresses : []
     }
+    return addressArr
   }
 
   return (
@@ -278,7 +278,7 @@ export const ListPage: NextPage = () => {
                 list={visibleServices}
                 useMinimalControls={true}
                 itemsPerPage={maxAmountDisplayed}
-                renderList={(list: Service[]) => {
+                renderList={(list: Resource[]) => {
                   return (
                     <VStack
                       px={2}
@@ -300,14 +300,14 @@ export const ListPage: NextPage = () => {
                     >
                       <>
                         {!isLoading &&
-                          list.map((item: Service) => {
+                          list.map((item: Resource) => {
                             return (
                               <Box w="100%" cursor="pointer" key={item.id}>
                                 <ServiceItem
                                   service={item}
                                   selectedAddress={selectedAddress}
                                   setSelectedAddress={setSelectedAddress}
-                                  getAddress={getAddress}
+                                  getAddressWithLabel={getAddressWithLabel}
                                 />
                               </Box>
                             )
@@ -382,7 +382,6 @@ export const ListPage: NextPage = () => {
               >
                 <Map
                   defaultCenter={defaultMapCenter}
-                  addressIdToLabel={addressIdToServiceName}
                   addresses={getFilteredAddressList(
                     getFilteredList(visibleServices)
                   )}

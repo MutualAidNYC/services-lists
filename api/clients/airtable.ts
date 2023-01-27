@@ -1,4 +1,4 @@
-import Airtable, { Base } from 'airtable'
+import Airtable, { Base, FieldSet } from 'airtable'
 
 interface AirtableCreateObject<T> {
   fields: T
@@ -15,30 +15,29 @@ export class AirtableClient {
     this.base = new Airtable({ apiKey: apiKey }).base(baseId)
   }
 
-  async find<T>(tableName: string, id: string): Promise<T> {
-    const record = await this.base.table(tableName).find(id)
-    return record.fields as unknown as T
+  async find<T extends FieldSet>(tableName: string, id: string): Promise<T> {
+    const record = await this.base.table<T>(tableName).find(id)
+    return record.fields
   }
 
-  async selectAll<T extends object>(
+  async selectAll<T extends FieldSet>(
     tableName: string,
     filterFormula = ''
   ): Promise<T[]> {
-    const records = await this.base
-      .table(tableName)
+    const records = await this.base<T>(tableName)
       .select({
         filterByFormula: filterFormula,
       })
       .all()
 
-    return records.map((record) => record.fields) as T[]
+    return records.map((record) => record.fields)
   }
 
-  async create<T>(
+  async create<T extends FieldSet>(
     tableName: string,
     recordObjects: AirtableCreateObject<T>[]
   ): Promise<AirtableCreateResponse[]> {
-    const records = await this.base(tableName).create(recordObjects)
+    const records = await this.base<T>(tableName).create(recordObjects)
 
     return records.map((record) => {
       return {
