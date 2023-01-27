@@ -5,11 +5,10 @@ export const Footer = (): JSX.Element => {
   return (
     <Flex
       alignItems="center"
-      bgColor="#204045"
-      color="white"
-      p="8px"
+      color="black"
       mt="16px"
       w="100%"
+      px={{ base: '48px', md: '64px' }}
       justify="space-between"
     >
       <HStack>
