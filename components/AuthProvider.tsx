@@ -37,14 +37,16 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     setLoading(true)
 
     let userDocUnsub: Unsubscribe
-    const authUserUnsub = onAuthStateChanged(auth, (user) => {
-      userDocUnsub = onSnapshot(doc(userRef, user?.uid), (doc) => {
-        const data = doc.data() as UserDoc
-        setUserData(data)
-      })
+    const authUserUnsub = onAuthStateChanged(auth, (authUser) => {
+      if (authUser) {
+        userDocUnsub = onSnapshot(doc(userRef, authUser.uid), (doc) => {
+          const data = doc.data() as UserDoc
+          setUserData(data)
+        })
 
-      setUser(user)
-      setLoading(false)
+        setUser(authUser)
+        setLoading(false)
+      }
     })
 
     return () => {
