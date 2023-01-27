@@ -1,8 +1,8 @@
 export interface UserDoc {
   name: string
   email: string
-  id: string
-  lists: string[] //Array of list ids
+  /** Array of resource list ids */
+  lists: string[]
 }
 
 export interface PasswordAuthResponse {

@@ -1,5 +1,5 @@
 import { UserDoc } from 'models/users'
-import { onAuthStateChanged, User } from 'firebase/auth'
+import { onAuthStateChanged, Unsubscribe, User } from 'firebase/auth'
 import { doc, onSnapshot } from 'firebase/firestore'
 import React, {
   createContext,
@@ -12,14 +12,12 @@ import { auth, userRef } from 'utils/firebase'
 
 const AuthContext = createContext<{
   user: User | null
-  userLoading: boolean
+  loading: boolean
   userData: UserDoc | null
-  userDataLoading: boolean
 }>({
   user: null,
-  userLoading: true,
+  loading: true,
   userData: null,
-  userDataLoading: true,
 })
 
 export const useUser = () => {
@@ -32,41 +30,31 @@ export const useUser = () => {
 
 const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null)
-  const [userLoading, setLoading] = useState(true)
-  const [userDoc, setUserDoc] = useState<UserDoc | null>(null)
-  const [userDataLoading, setUserDataLoading] = useState(true)
-
-  useEffect(() => {
-    setUserDataLoading(true)
-    if (user) {
-      const unsub = onSnapshot(doc(userRef, user.uid), (doc) => {
-        const data = doc.data() as UserDoc
-        setUserDoc(data)
-        setUserDataLoading(false)
-      })
-
-      return unsub
-    } else {
-      setUserDoc(null)
-      setUserDataLoading(false)
-    }
-  }, [user])
+  const [loading, setLoading] = useState(true)
+  const [userData, setUserData] = useState<UserDoc | null>(null)
 
   useEffect(() => {
     setLoading(true)
 
-    const unsub = onAuthStateChanged(auth, (user) => {
+    let userDocUnsub: Unsubscribe
+    const authUserUnsub = onAuthStateChanged(auth, (user) => {
+      userDocUnsub = onSnapshot(doc(userRef, user?.uid), (doc) => {
+        const data = doc.data() as UserDoc
+        setUserData(data)
+      })
+
       setUser(user)
       setLoading(false)
     })
 
-    return unsub
+    return () => {
+      userDocUnsub()
+      authUserUnsub()
+    }
   }, [])
 
   return (
-    <AuthContext.Provider
-      value={{ user, userLoading, userData: userDoc, userDataLoading }}
-    >
+    <AuthContext.Provider value={{ user, loading, userData }}>
       {children}
     </AuthContext.Provider>
   )

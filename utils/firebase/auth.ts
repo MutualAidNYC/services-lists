@@ -1,6 +1,5 @@
 import {
   signInWithPopup,
-  getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth'
@@ -21,7 +20,6 @@ export const googleSignIn = async () => {
     const newAccInfo: UserDoc = {
       name: user.displayName || 'Not Available',
       email: user.email || 'Not Available',
-      id: user.uid,
       lists: [],
     }
 
@@ -31,55 +29,76 @@ export const googleSignIn = async () => {
   }
 }
 
-export const emailSignUp = (
+export const emailSignUp = async (
   email: string,
   password: string
-): PasswordAuthResponse => {
+): Promise<PasswordAuthResponse> => {
   //NOTE: should do some kind of validation beforehand to make sure that it is a proper email/password combo
   //NOTE: using response codes/messages so the UI can be updated based on whether or not the sign up was successful
-  const auth = getAuth()
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user
+
+  try {
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    )
+    const user = userCredential.user
+    return {
+      code: 200,
+      message: `User account ${user.email} successfully created.`,
+    }
+  } catch (error) {
+    if (
+      typeof error == 'object' &&
+      error &&
+      'code' in error &&
+      'message' in error
+    ) {
       return {
-        code: 201,
-        message: `User account ${user.email} successfully created.`,
+        code: error.code as number, //need to coerce the type because the function does not provide a type for errors
+        message: error.message as string,
       }
-    })
-    .catch((error) => {
+    } else {
       return {
-        code: error.code,
-        message: error.message,
+        code: 500,
+        message: 'There was an issue processing this request',
       }
-    })
-  return {
-    code: 500,
-    message: 'There was an issue processing this request',
+    }
   }
 }
 
-export const emailSignIn = (
+export const emailSignIn = async (
   email: string,
   password: string
-): PasswordAuthResponse => {
-  const auth = getAuth()
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user
+): Promise<PasswordAuthResponse> => {
+  try {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    )
+    const user = userCredential.user
+    return {
+      code: 200,
+      message: `User account ${user.email} successfully signed in.`,
+    }
+  } catch (error) {
+    if (
+      typeof error == 'object' &&
+      error &&
+      'code' in error &&
+      'message' in error
+    ) {
       return {
-        code: 201,
-        message: `User account ${user.email} successfully signed in.`,
+        code: error.code as number, //need to coerce the type because the function does not provide a type for errors
+        message: error.message as string,
       }
-    })
-    .catch((error) => {
+    } else {
       return {
-        code: error.code,
-        message: error.message,
+        code: 500,
+        message: 'There was an issue processing this request',
       }
-    })
-  return {
-    code: 500,
-    message: 'There was an issue processing this request',
+    }
   }
 }
 
