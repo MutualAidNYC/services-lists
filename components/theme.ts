@@ -55,6 +55,7 @@ export const theme = extendTheme({
     Heading: {
       baseStyle: {
         color: 'Gray.900',
+        fontWeight: 'semibold',
       },
     },
     Button: {

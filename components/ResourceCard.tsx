@@ -1,4 +1,11 @@
-import { HStack, IconButton, Link, Stack, Text } from '@chakra-ui/react'
+import {
+  Heading,
+  HStack,
+  IconButton,
+  Link,
+  Stack,
+  Text,
+} from '@chakra-ui/react'
 import { NO_ASSOCIATED_GROUP, Resource } from 'models'
 import { Bookmark, ExternalLink } from 'react-feather'
 
@@ -21,11 +28,9 @@ export const ResourceCard = ({
       justify="space-between"
     >
       <Stack spacing="24px">
-        <Text fontSize="2xl" fontWeight="semibold">
-          {resource.title}
-        </Text>
+        <Heading fontSize="2xl">{resource.title}</Heading>
         {resource.groupName && resource.groupName != NO_ASSOCIATED_GROUP && (
-          <Text fontSize="xl" fontWeight="semibold">
+          <Text fontSize="xl" fontWeight="semibold" color="Gray.900">
             {resource.groupName}
           </Text>
         )}
