@@ -1,4 +1,14 @@
-import { Button, Grid, Heading, HStack, Stack, Text } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Center,
+  Grid,
+  Heading,
+  HStack,
+  Link,
+  Stack,
+  Text,
+} from '@chakra-ui/react'
 import {
   CreateListAlert,
   CreateListDrawer,
@@ -43,7 +53,7 @@ export const CreateListPage: NextPage = () => {
   }
 
   return (
-    <Stack spacing="32px" p={{ base: '48px', md: '64px' }}>
+    <>
       <Head>
         <title>{'Create A List'}</title>
         <meta
@@ -53,18 +63,25 @@ export const CreateListPage: NextPage = () => {
         <meta name="image" content="/manyc_logo.png" />
         <link rel="icon" href="/icon.ico" />
       </Head>
-      <Stack
-        direction={{ base: 'column', sm: 'row' }}
-        align={{ base: undefined, sm: 'center' }}
-        spacing="16px"
-        justify="space-between"
-      >
-        <Heading fontSize={{ base: '32px', md: '48px' }}>
-          Create a resource list
+      <Box px="112px" py="96px">
+        <Text fontWeight="semibold" color="Primary.600" mb="12px">
+          Community Resources
+        </Text>
+        <Heading as="h1" fontSize="5xl" mb="24px">
+          Resource Hub
         </Heading>
+        <Text maxW="50%">
+          Our community-sourced, volunteer-curated library is a growing
+          collection of the many resources available to New Yorkers. Mutual Aid
+          NYC is committed to building a comprehensive list of high-quality
+          resources—check back frequently, as new resources are added every day!
+          <br /> <br />
+          If you can’t find what you need, search the map and borough-specific
+          lists in the Groups Directory to find groups that can help.
+        </Text>
+      </Box>
+      <Stack spacing="16px" px="112px">
         <Button onClick={onDrawerOpen}>View your list</Button>
-      </Stack>
-      <Stack spacing="16px">
         <Stack
           direction={{ base: 'column', md: 'row' }}
           align={{ base: undefined, md: 'center' }}
@@ -98,7 +115,7 @@ export const CreateListPage: NextPage = () => {
           />
         </HStack>
       </Stack>
-      <Grid templateColumns="repeat(3, 1fr)" gap="32px">
+      <Grid templateColumns="repeat(3, 1fr)" gap="32px" px="112px" py="32px">
         {visibleServices.map((service) => (
           <ResourceCard
             key={service.id}
@@ -111,7 +128,21 @@ export const CreateListPage: NextPage = () => {
         <CreateListAlert selectedService={selectedResource} />
         <CreateListDrawer />
       </CreateListProvider>
-    </Stack>
+      <Center bgColor="Gray.50" flexDirection="column" py="96px">
+        <Heading pb="20px">Contribute to the Resource Hub</Heading>
+        <Text pb="40px" textAlign="center">
+          If you know of resources that aren’t included in our database, please
+          submit it to MANYC.
+        </Text>
+        <Button
+          isExternal
+          as={Link}
+          href="https://mutualaid.nyc/submit-a-resource/"
+        >
+          Submit a resource
+        </Button>
+      </Center>
+    </>
   )
 }
 
