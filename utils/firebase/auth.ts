@@ -1,9 +1,9 @@
 import {
-  signInWithPopup,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signInWithPopup,
 } from 'firebase/auth'
-import { setDoc, doc, getDoc } from 'firebase/firestore'
+import { doc, getDoc, setDoc } from 'firebase/firestore'
 import { PasswordAuthResponse, UserDoc } from 'models/users'
 import { auth, authProvider, userRef } from './init'
 

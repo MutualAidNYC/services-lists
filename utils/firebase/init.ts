@@ -1,6 +1,6 @@
-import { initializeApp } from 'firebase/app'
 import { getAnalytics, isSupported } from 'firebase/analytics'
-import { getAuth, GoogleAuthProvider } from 'firebase/auth'
+import { initializeApp } from 'firebase/app'
+import { GoogleAuthProvider, getAuth } from 'firebase/auth'
 import { collection, getFirestore } from 'firebase/firestore'
 
 const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY

@@ -1,6 +1,6 @@
-import { UserDoc } from 'models/users'
 import { onAuthStateChanged, Unsubscribe, User } from 'firebase/auth'
 import { doc, onSnapshot } from 'firebase/firestore'
+import { UserDoc } from 'models/users'
 import React, {
   createContext,
   ReactNode,
@@ -28,14 +28,15 @@ export const useUser = () => {
 //User is the data used by Firebase to distinguish different user accounts
 //userDoc is the data we use to handle list ownership
 
-const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [userData, setUserData] = useState<UserDoc | null>(null)
 
   useEffect(() => {
     setLoading(true)
-
     let userDocUnsub: Unsubscribe
     const authUserUnsub = onAuthStateChanged(auth, (authUser) => {
       if (authUser) {
@@ -43,12 +44,13 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
           const data = doc.data() as UserDoc
           setUserData(data)
         })
-
         setUser(authUser)
         setLoading(false)
+      } else {
+        setUser(null)
+        setUserData(null)
       }
     })
-
     return () => {
       userDocUnsub()
       authUserUnsub()
@@ -61,5 +63,3 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     </AuthContext.Provider>
   )
 }
-
-export default AuthProvider

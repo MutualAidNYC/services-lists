@@ -14,7 +14,6 @@ import {
   useCreateList,
 } from 'hooks'
 import { Resource } from 'models'
-import { Service } from 'models'
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
