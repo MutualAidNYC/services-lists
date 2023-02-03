@@ -1,8 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useDeepCompareMemo } from 'use-deep-compare'
 
-const pageSizes = [5, 10, 25, 50, 100]
-
 export interface PaginationHandler<T> {
   paginatedData: T[]
   page: number
@@ -17,7 +15,10 @@ export const PaginationProvider = PaginationContext.Provider
 export const usePaginationContext = <T>(): PaginationHandler<T> =>
   useContext(PaginationContext)
 
-export const usePagination = <T>(data: T[]): PaginationHandler<T> => {
+export const usePagination = <T>(
+  data: T[],
+  pageSizes = [5, 10, 25, 50]
+): PaginationHandler<T> => {
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(pageSizes[0])
 

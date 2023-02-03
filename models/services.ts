@@ -6,6 +6,8 @@ export type ResourceStatus =
   | 'Published'
   | 'Do Not Publish'
 
+export const NO_ASSOCIATED_GROUP = '-No Associated Group'
+
 export type Address = {
   streetAddress: string
   city: string
