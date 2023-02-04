@@ -80,7 +80,10 @@ export const useCreateList = (): CreateListHandler => {
     setTaxonomyFilters,
   } = useFilters(baseServices ?? [], ['title', 'details'], 'Needs')
   const sortHandler = useSort(filteredServices)
-  const paginationHandler = usePagination(sortHandler.sortedData)
+  const paginationHandler = usePagination(
+    sortHandler.sortedData,
+    [6, 12, 24, 48]
+  )
 
   const {
     isOpen: isAlertOpen,

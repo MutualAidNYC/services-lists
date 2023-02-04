@@ -63,6 +63,14 @@ export const theme = extendTheme({
     Heading: {
       baseStyle: {
         color: 'Gray.900',
+        fontWeight: 'semibold',
+      },
+    },
+    Button: {
+      baseStyle: {
+        bg: 'Primary.50',
+        background: 'Primary.50',
+        color: 'Primary.700',
       },
     },
   },
