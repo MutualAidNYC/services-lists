@@ -123,7 +123,9 @@ const Login = ({ setCurrentState }: LoginProps): JSX.Element => {
                     children={
                       <Button
                         variant="ghost"
-                        mr={4}
+                        backgroundColor="inherit"
+                        px={6}
+                        mr={2}
                         fontWeight="light"
                         onClick={() => setShowPassword(!showPassword)}
                       >

@@ -10,7 +10,8 @@ import {
 } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import React, { Dispatch, SetStateAction, useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, ErrorOption, useForm } from 'react-hook-form'
+import { emailSignUp } from 'utils/firebase'
 import * as yup from 'yup'
 import { GoogleSignInComponent } from '.'
 
@@ -23,7 +24,7 @@ interface SignUpForm {
   password: string
   firstName: string
   lastName: string
-  organization?: string
+  organization: string
 }
 
 const signUpFormSchema = yup.object({
@@ -49,6 +50,26 @@ const SignUp = ({ setCurrentState }: SignUpProps): JSX.Element => {
   })
 
   const [showPassword, setShowPassword] = useState(false)
+
+  const onSubmit = ({
+    email,
+    password,
+    firstName,
+    lastName,
+    organization,
+  }: SignUpForm) => {
+    emailSignUp(email, password, firstName, lastName, organization)
+      .then((res) => {
+        // TODO handle different types of possible firebase errors and return types also add a toast
+        if (res.code !== 200) {
+          const error: ErrorOption = {
+            message: res.message.substring(9),
+          }
+          methods.setError('password', error)
+        }
+      })
+      .catch((err) => console.log(err))
+  }
 
   return (
     <VStack flex={1} w="100%" justifyContent="space-between" color="black">
@@ -198,7 +219,7 @@ const SignUp = ({ setCurrentState }: SignUpProps): JSX.Element => {
                     onChange={field.onChange}
                     onKeyDown={(e) => {
                       if (e.key == 'Enter') {
-                        // methods.handleSubmit(onSubmit)()
+                        methods.handleSubmit(onSubmit)()
                       }
                     }}
                   />
@@ -207,7 +228,9 @@ const SignUp = ({ setCurrentState }: SignUpProps): JSX.Element => {
                     children={
                       <Button
                         variant="ghost"
-                        mr={4}
+                        backgroundColor="inherit"
+                        px={6}
+                        mr={2}
                         fontWeight="light"
                         onClick={() => setShowPassword(!showPassword)}
                       >
@@ -226,15 +249,7 @@ const SignUp = ({ setCurrentState }: SignUpProps): JSX.Element => {
           }}
         />
 
-        {/* TODO update userDoc when user signs up with the appropriate data */}
-        <Button
-          w="100%"
-          onClick={() => {
-            // emailSignUp(email, password)
-            //   .then((d) => console.log(d))
-            //   .catch((err) => console.log(err))
-          }}
-        >
+        <Button w="100%" onClick={methods.handleSubmit(onSubmit)}>
           Sign In
         </Button>
       </VStack>

@@ -11,10 +11,16 @@ import {
   MenuList,
   Stack,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react'
+import { useUser } from 'components'
+import AuthModal from 'components/Auth/AuthModal'
 import { AvatarIcon } from 'components/Icons'
 
 export const Navbar = (): JSX.Element => {
+  const { onOpen, isOpen, onClose } = useDisclosure()
+  const { loading, userData } = useUser()
+
   return (
     <Stack
       w="100%"
@@ -23,6 +29,11 @@ export const Navbar = (): JSX.Element => {
       borderBottom="1px solid #F2F4F7"
       bgColor="white"
     >
+      <AuthModal
+        isOpen={isOpen}
+        onClose={onClose}
+        message={'Login To MANY Resources Hub'}
+      />
       <Flex
         alignItems="center"
         justify="space-between"
@@ -47,12 +58,25 @@ export const Navbar = (): JSX.Element => {
           </Link>
           <Link href="https://mutualaid.nyc/">About Mutual Aid NYC</Link>
         </HStack>
-        <Link href="/profile">
-          <HStack cursor="pointer" _hover={{ textDecoration: 'underline' }}>
+        {userData && !loading && (
+          <Link href="/profile">
+            <HStack cursor="pointer" _hover={{ textDecoration: 'underline' }}>
+              <AvatarIcon />
+              <Text> Account </Text>
+            </HStack>
+          </Link>
+        )}
+        {!userData && !loading && (
+          <HStack
+            cursor="pointer"
+            _hover={{ textDecoration: 'underline' }}
+            onClick={onOpen}
+          >
             <AvatarIcon />
-            <Text> Account </Text>
+            <Text> Log In/ Sign Up </Text>
           </HStack>
-        </Link>
+        )}
+
         <Menu>
           <MenuButton
             display={{ base: 'inherit', lg: 'none' }}
@@ -133,10 +157,13 @@ export const Navbar = (): JSX.Element => {
             <MenuItem>
               <Link href="https://mutualaid.nyc/">About Mutual Aid NYC</Link>
             </MenuItem>
-            <MenuItem>
-              <Link href="/profile">
-                <Text> Account </Text>
-              </Link>
+            <MenuItem onClick={!userData && !loading ? onOpen : undefined}>
+              {userData && !loading && (
+                <Link href="/profile">
+                  <Text> Account </Text>
+                </Link>
+              )}
+              {!userData && !loading && <Text> Log In/ Sign Up </Text>}
             </MenuItem>
           </MenuList>
         </Menu>

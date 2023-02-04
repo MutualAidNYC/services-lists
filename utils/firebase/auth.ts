@@ -1,7 +1,10 @@
+import { FirebaseError } from 'firebase/app'
 import {
   createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
+  updateProfile,
 } from 'firebase/auth'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
 import { PasswordAuthResponse, UserDoc } from 'models/users'
@@ -21,6 +24,7 @@ export const googleSignIn = async () => {
       name: user.displayName || 'Not Available',
       email: user.email || 'Not Available',
       lists: [],
+      organization: '',
     }
 
     await setDoc(doc(userRef, user.uid), newAccInfo)
@@ -31,7 +35,10 @@ export const googleSignIn = async () => {
 
 export const emailSignUp = async (
   email: string,
-  password: string
+  password: string,
+  firstName: string,
+  lastName: string,
+  organization: string
 ): Promise<PasswordAuthResponse> => {
   //NOTE: should do some kind of validation beforehand to make sure that it is a proper email/password combo
   //NOTE: using response codes/messages so the UI can be updated based on whether or not the sign up was successful
@@ -42,21 +49,31 @@ export const emailSignUp = async (
       email,
       password
     )
+
     const user = userCredential.user
+
+    const newUser: UserDoc = {
+      name: firstName + ' ' + lastName,
+      email: email,
+      organization: organization,
+      lists: [],
+    }
+
+    await updateProfile(user, {
+      displayName: newUser.name,
+    })
+
+    await setDoc(doc(userRef, user.uid), newUser)
+
     return {
       code: 200,
       message: `User account ${user.email} successfully created.`,
     }
   } catch (error) {
-    if (
-      typeof error == 'object' &&
-      error &&
-      'code' in error &&
-      'message' in error
-    ) {
+    if (error instanceof FirebaseError) {
       return {
-        code: error.code as number, //need to coerce the type because the function does not provide a type for errors
-        message: error.message as string,
+        code: Number(error.code),
+        message: error.message,
       }
     } else {
       return {
@@ -83,15 +100,10 @@ export const emailSignIn = async (
       message: `User account ${user.email} successfully signed in.`,
     }
   } catch (error) {
-    if (
-      typeof error == 'object' &&
-      error &&
-      'code' in error &&
-      'message' in error
-    ) {
+    if (error instanceof FirebaseError) {
       return {
-        code: error.code as number, //need to coerce the type because the function does not provide a type for errors
-        message: error.message as string,
+        code: Number(error.code),
+        message: error.message,
       }
     } else {
       return {
@@ -104,4 +116,8 @@ export const emailSignIn = async (
 
 export const signout = async () => {
   await auth.signOut()
+}
+
+export const resetPassword = async (email: string) => {
+  await sendPasswordResetEmail(auth, email)
 }
