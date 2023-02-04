@@ -6,8 +6,8 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react'
-import React from 'react'
-import { AuthContainer } from '.'
+import React, { useEffect } from 'react'
+import { AuthContainer, useUser } from '.'
 
 interface Props {
   isOpen: boolean
@@ -16,6 +16,14 @@ interface Props {
 }
 
 const AuthModal = ({ isOpen, onClose, message }: Props): JSX.Element => {
+  const { userData } = useUser()
+
+  useEffect(() => {
+    if (userData) {
+      onClose()
+    }
+  }, [onClose, userData])
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />

@@ -32,7 +32,7 @@ export const Navbar = (): JSX.Element => {
       <AuthModal
         isOpen={isOpen}
         onClose={onClose}
-        message={'Login To MANY Resources Hub'}
+        message={'Login to MANY Resources Hub'}
       />
       <Flex
         alignItems="center"
