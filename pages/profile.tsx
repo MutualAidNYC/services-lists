@@ -1,4 +1,14 @@
-import { HStack, Stack, Text, VStack } from '@chakra-ui/react'
+import {
+  HStack,
+  Stack,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+  VStack,
+} from '@chakra-ui/react'
 import { AuthContainer, useUser } from 'components/Auth'
 import { NextPage } from 'next'
 import Head from 'next/head'
@@ -42,32 +52,23 @@ export const ProfilePage: NextPage = () => {
               </Text>
             </HStack>
             <VStack w="100%" pt={8}>
-              <HStack
-                margin={0}
-                borderBottom="1px solid black"
+              <Tabs
                 w="100%"
-                color="black"
+                defaultIndex={0}
+                variant="line"
+                colorScheme="black"
+                size="lg"
               >
-                {/* Handle hover/mouse over and the current state text border values */}
-                <Text
-                  _hover={{
-                    borderBottom: '2px solid black',
-                    fontWeight: 'semibold',
-                  }}
-                  px={2}
-                >
-                  My Collections
-                </Text>
-                <Text
-                  _hover={{
-                    borderBottom: '2px solid black',
-                    fontWeight: 'semibold',
-                  }}
-                  px={2}
-                >
-                  Profile
-                </Text>
-              </HStack>
+                <TabList color="black">
+                  <Tab>My Collections</Tab>
+                  <Tab>Profile</Tab>
+                </TabList>
+
+                <TabPanels>
+                  <TabPanel></TabPanel>
+                  <TabPanel></TabPanel>
+                </TabPanels>
+              </Tabs>
             </VStack>
           </Stack>
         )}
