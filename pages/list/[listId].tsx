@@ -16,7 +16,7 @@ import { AddressWithLabel, Resource } from 'models'
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { PaginatedList } from 'react-paginated-list'
 import Select, {
   CSSObjectWithLabel,
@@ -199,10 +199,7 @@ export const ListPage: NextPage = () => {
               {listName}
             </Heading>
             <LinkBox display="flex" justifyContent="center">
-              <LinkOverlay
-                href="/create-list"
-                _hover={{ textDecoration: 'underline' }}
-              >
+              <LinkOverlay href="/" _hover={{ textDecoration: 'underline' }}>
                 <Button colorScheme="teal">
                   {' '}
                   Create a new List <PlusSquareIcon mx={1} />{' '}
