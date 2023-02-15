@@ -29,7 +29,7 @@ import Head from 'next/head'
 import { useState } from 'react'
 import Select from 'react-select'
 
-export const CreateListPage: NextPage = () => {
+export const HomePage: NextPage = () => {
   const createListHandler = useCreateList()
   const {
     visibleServices,
@@ -146,4 +146,4 @@ export const CreateListPage: NextPage = () => {
   )
 }
 
-export default CreateListPage
+export default HomePage
