@@ -33,7 +33,6 @@ export const HomePage: NextPage = () => {
   const createListHandler = useCreateList()
   const {
     visibleServices,
-    numServices,
     setSearchQuery,
     taxonomyOptions,
     setTaxonomyFilters,
@@ -42,7 +41,6 @@ export const HomePage: NextPage = () => {
     onAlertOpen,
     onDrawerOpen,
   } = createListHandler
-  const { paginatedData } = paginationHandler
 
   const sortFieldsTextToVal = { Name: 'name', Description: 'description' }
 
@@ -63,6 +61,10 @@ export const HomePage: NextPage = () => {
         <meta name="image" content="/manyc_logo.png" />
         <link rel="icon" href="/icon.ico" />
       </Head>
+      <CreateListProvider value={createListHandler}>
+        <CreateListAlert selectedService={selectedResource} />
+        <CreateListDrawer />
+      </CreateListProvider>
       <Box px="112px" py="96px">
         <Text fontWeight="semibold" color="Primary.600" mb="12px">
           Community Resources
@@ -80,54 +82,53 @@ export const HomePage: NextPage = () => {
           lists in the Groups Directory to find groups that can help.
         </Text>
       </Box>
-      <Stack spacing="16px" px="112px">
-        <Button onClick={onDrawerOpen}>View your list</Button>
-        <Stack
-          direction={{ base: 'column', md: 'row' }}
-          align={{ base: undefined, md: 'center' }}
-          spacing="16px"
-          justify="space-between"
-        >
-          <SearchBar
-            handleSearch={setSearchQuery}
-            placeholder={'Search resources'}
-            w={{ base: '100%', md: '60%' }}
-          />
-          <Text>
-            Showing {paginatedData.length} of {numServices} results.
-          </Text>
-        </Stack>
-        <PaginationProvider value={paginationHandler}>
-          <PaginationSection />
-        </PaginationProvider>
-        <HStack spacing="16px">
-          <SortProvider value={sortHandler}>
-            <SortMenu sortFieldsTextToVal={sortFieldsTextToVal} />
-          </SortProvider>
-          <Select
-            isMulti
-            isSearchable
-            instanceId="taxonomySelect"
-            closeMenuOnSelect={false}
-            options={taxonomyOptions}
-            placeholder="Filter by resource category"
-            onChange={(e) => setTaxonomyFilters(e.map((e) => e.value))}
-          />
-        </HStack>
+      <Stack
+        bgColor="Primary.50"
+        py="72px"
+        px="112px"
+        direction={{ base: 'column', md: 'row' }}
+        align={{ base: undefined, md: 'center' }}
+        spacing="16px"
+        justify="space-between"
+      >
+        <SearchBar
+          handleSearch={setSearchQuery}
+          placeholder={'Search keywords'}
+          w={{ base: '100%', md: '33%' }}
+        />
+        <Button>Search</Button>
       </Stack>
-      <Grid templateColumns="repeat(3, 1fr)" gap="32px" px="112px" py="32px">
-        {visibleServices.map((service) => (
-          <ResourceCard
-            key={service.id}
-            resource={service}
-            saveResource={() => saveResource(service)}
-          />
-        ))}
-      </Grid>
-      <CreateListProvider value={createListHandler}>
-        <CreateListAlert selectedService={selectedResource} />
-        <CreateListDrawer />
-      </CreateListProvider>
+      <Stack spacing="32px" px="112px" py="64px">
+        <Stack spacing="16px">
+          <PaginationProvider value={paginationHandler}>
+            <PaginationSection />
+          </PaginationProvider>
+          <HStack spacing="16px">
+            <SortProvider value={sortHandler}>
+              <SortMenu sortFieldsTextToVal={sortFieldsTextToVal} />
+            </SortProvider>
+            <Select
+              isMulti
+              isSearchable
+              instanceId="taxonomySelect"
+              closeMenuOnSelect={false}
+              options={taxonomyOptions}
+              placeholder="Filter by resource category"
+              onChange={(e) => setTaxonomyFilters(e.map((e) => e.value))}
+            />
+          </HStack>
+          <Button onClick={onDrawerOpen}>View your list</Button>
+        </Stack>
+        <Grid templateColumns="repeat(3, 1fr)" gap="32px" py="32px">
+          {visibleServices.map((service) => (
+            <ResourceCard
+              key={service.id}
+              resource={service}
+              saveResource={() => saveResource(service)}
+            />
+          ))}
+        </Grid>
+      </Stack>
       <Center bgColor="Gray.50" flexDirection="column" py="96px">
         <Heading pb="20px">Contribute to the Resource Hub</Heading>
         <Text pb="40px" textAlign="center">

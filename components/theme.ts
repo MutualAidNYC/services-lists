@@ -19,6 +19,7 @@ export const theme = extendTheme({
     },
     Gray: {
       50: '#F9FAFB',
+      300: '#D0D5DD',
       500: '#667085',
       900: '#101828',
     },
@@ -70,6 +71,16 @@ export const theme = extendTheme({
           bg: 'Primary.50',
           background: 'Primary.50',
           color: 'Primary.700',
+        },
+      },
+    },
+    Input: {
+      baseStyle: {
+        field: {
+          bg: 'white',
+          background: 'white',
+          border: '1px solid Gray.300',
+          borderRadius: '8px',
         },
       },
     },
