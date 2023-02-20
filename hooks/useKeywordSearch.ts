@@ -11,6 +11,7 @@ export const useKeywordSearch = <T>(
   initialData: T[],
   keys: Fuse.FuseOptionKey<T>[]
 ): UseKeywordSearchReturn<T> => {
+  // Can't get data passed into Fuse so need to store in state
   const [data, setData] = useState(initialData)
   const [keyword, setKeyword] = useState<string>()
   const fuse = new Fuse(data, { keys })
@@ -26,6 +27,7 @@ export const useKeywordSearch = <T>(
       return data
     }
 
+    // Map search results to array of type T
     return fuse.search(keyword).map((result) => result.item)
   }
 
