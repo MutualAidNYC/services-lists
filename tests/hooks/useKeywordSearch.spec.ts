@@ -23,10 +23,12 @@ const testData: TestDatum[] = [
 
 describe('useKeywordSearch', () => {
   it('Exact match, one key, one result', () => {
-    const { result } = renderHook(() => useKeywordSearch<TestDatum>(['field1']))
+    const { result } = renderHook(() =>
+      useKeywordSearch<TestDatum>(testData, ['field1'])
+    )
 
     act(() => result.current.setKeyword('foo'))
-    const searchData = result.current.search(testData)
+    const searchData = result.current.search()
 
     expect(searchData?.length).toBe(1)
     expect(searchData).toStrictEqual([
@@ -39,14 +41,14 @@ describe('useKeywordSearch', () => {
 
   it('Exact match, multiple keys, multiple result', () => {
     const { result } = renderHook(() =>
-      useKeywordSearch<TestDatum>(['field1', 'field2'])
+      useKeywordSearch(testData, ['field1', 'field2'])
     )
 
     act(() => result.current.setKeyword('bar'))
-    const searchData = result.current.search(testData)
+    const searchData = result.current.search()
 
     expect(searchData?.length).toBe(2)
-    expect(result.current.search(testData)).toEqual(
+    expect(searchData).toEqual(
       expect.arrayContaining([
         {
           field1: 'foo',
@@ -61,10 +63,10 @@ describe('useKeywordSearch', () => {
   })
 
   it('Fuzzy match, one key, one result', () => {
-    const { result } = renderHook(() => useKeywordSearch<TestDatum>(['field1']))
+    const { result } = renderHook(() => useKeywordSearch(testData, ['field1']))
 
     act(() => result.current.setKeyword('fo'))
-    const searchData = result.current.search(testData)
+    const searchData = result.current.search()
 
     expect(searchData?.length).toBe(1)
     expect(searchData).toStrictEqual([
@@ -77,20 +79,22 @@ describe('useKeywordSearch', () => {
 
   it('Multiple keys, no results', () => {
     const { result } = renderHook(() =>
-      useKeywordSearch<TestDatum>(['field1', 'field2'])
+      useKeywordSearch(testData, ['field1', 'field2'])
     )
 
     act(() => result.current.setKeyword('c'))
-    const searchData = result.current.search(testData)
+    const searchData = result.current.search()
 
     expect(searchData?.length).toBe(0)
   })
 
-  it('No keyword, one key, returns input data', () => {
-    const { result } = renderHook(() => useKeywordSearch<TestDatum>(['field1']))
+  it('No keyword, one key, returns input data after updating data from empty array', () => {
+    const { result } = renderHook(() =>
+      useKeywordSearch<TestDatum>([], ['field1'])
+    )
 
-    act(() => result.current.setKeyword(''))
-    const searchData = result.current.search(testData)
+    act(() => result.current.setData(testData))
+    const searchData = result.current.search()
 
     expect(searchData?.length).toBe(3)
     expect(searchData).toStrictEqual(testData)

@@ -1,21 +1,37 @@
 import Fuse from 'fuse.js'
 import { useState } from 'react'
 
-export const useKeywordSearch = <T>(keys: Fuse.FuseOptionKey<T>[]) => {
-  const [keyword, setKeyword] = useState<string>()
+type UseKeywordSearchReturn<T> = {
+  setKeyword: (keyword: string) => void
+  setData: (data: T[]) => void
+  search: () => T[]
+}
 
-  const search = (data: T[]) => {
+export const useKeywordSearch = <T>(
+  initialData: T[],
+  keys: Fuse.FuseOptionKey<T>[]
+): UseKeywordSearchReturn<T> => {
+  const [data, setData] = useState(initialData)
+  const [keyword, setKeyword] = useState<string>()
+  const fuse = new Fuse(data, { keys })
+
+  const setDataWrapper = (data: T[]) => {
+    setData(data)
+    fuse.setCollection(data)
+  }
+
+  const search = () => {
     // Return data if there is no keyword
     if (!keyword) {
       return data
     }
 
-    const fuse = new Fuse(data, { keys })
     return fuse.search(keyword).map((result) => result.item)
   }
 
   return {
     setKeyword,
+    setData: setDataWrapper,
     search,
   }
 }
