@@ -24,7 +24,6 @@
     "emotion-theming": "^11.0.0",
     "firebase": "^9.10.0",
     "framer-motion": "^4.1.17",
-    "fuse.js": "^6.6.2",
     "geolib": "^3.3.3",
     "next": "^11.1.4",
     "react": "^17.0.2",
