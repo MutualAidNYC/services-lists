@@ -24,7 +24,7 @@ const testData: TestDatum[] = [
 describe('useKeywordSearch', () => {
   it('Exact match, one key, one result', () => {
     const { result } = renderHook(() =>
-      useKeywordSearch<TestDatum>(testData, ['field1'])
+      useKeywordSearch<TestDatum>(testData, { keys: ['field1'] })
     )
 
     act(() => result.current.setKeyword('foo'))
@@ -41,7 +41,7 @@ describe('useKeywordSearch', () => {
 
   it('Exact match, multiple keys, multiple result', () => {
     const { result } = renderHook(() =>
-      useKeywordSearch(testData, ['field1', 'field2'])
+      useKeywordSearch(testData, { keys: ['field1', 'field2'] })
     )
 
     act(() => result.current.setKeyword('bar'))
@@ -63,7 +63,9 @@ describe('useKeywordSearch', () => {
   })
 
   it('Fuzzy match, one key, one result', () => {
-    const { result } = renderHook(() => useKeywordSearch(testData, ['field1']))
+    const { result } = renderHook(() =>
+      useKeywordSearch(testData, { keys: ['field1'] })
+    )
 
     act(() => result.current.setKeyword('fo'))
     const searchData = result.current.search()
@@ -79,7 +81,7 @@ describe('useKeywordSearch', () => {
 
   it('Multiple keys, no results', () => {
     const { result } = renderHook(() =>
-      useKeywordSearch(testData, ['field1', 'field2'])
+      useKeywordSearch(testData, { keys: ['field1', 'field2'] })
     )
 
     act(() => result.current.setKeyword('c'))
@@ -90,7 +92,7 @@ describe('useKeywordSearch', () => {
 
   it('No keyword, one key, returns input data after updating data from empty array', () => {
     const { result } = renderHook(() =>
-      useKeywordSearch<TestDatum>([], ['field1'])
+      useKeywordSearch<TestDatum>([], { keys: ['field1'] })
     )
 
     act(() => result.current.setData(testData))
