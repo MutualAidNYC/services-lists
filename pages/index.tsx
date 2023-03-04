@@ -1,51 +1,87 @@
-import { Heading, HStack, Stack, Text } from '@chakra-ui/react'
 import {
+  Box,
+  Button,
+  Center,
+  Grid,
+  Heading,
+  HStack,
+  Link,
+  Stack,
+  Text,
+} from '@chakra-ui/react'
+import {
+  CreateListAlert,
+  CreateListDrawer,
   PaginationSection,
+  ResourceCard,
   SearchBar,
-  ServicesListItem,
   SortMenu,
 } from 'components'
-import { PaginationProvider, SortProvider, useAllServicesLists } from 'hooks'
+import {
+  CreateListProvider,
+  PaginationProvider,
+  SortProvider,
+  useCreateList,
+} from 'hooks'
+import { Resource } from 'models'
 import { NextPage } from 'next'
 import Head from 'next/head'
+import { useState } from 'react'
 import Select from 'react-select'
 
 export const HomePage: NextPage = () => {
+  const createListHandler = useCreateList()
   const {
-    visibleServicesLists,
-    numServicesLists,
+    visibleServices,
+    numServices,
     setSearchQuery,
     taxonomyOptions,
     setTaxonomyFilters,
-    sortHandler,
     paginationHandler,
-  } = useAllServicesLists()
+    sortHandler,
+    onAlertOpen,
+    onDrawerOpen,
+  } = createListHandler
   const { paginatedData } = paginationHandler
 
   const sortFieldsTextToVal = { Name: 'name', Description: 'description' }
 
+  const [selectedResource, setSelectedResource] = useState<Resource>()
+  const saveResource = (resource: Resource) => {
+    setSelectedResource(resource)
+    onAlertOpen()
+  }
+
   return (
-    <Stack spacing="32px" p={{ base: '48px', md: '64px' }}>
+    <>
       <Head>
-        <title>Resource Lists</title>
+        <title>{'Create A List'}</title>
         <meta
           name="description"
-          content={
-            'A directory of lists of resources available for New Yorkers.'
-          }
+          content={'Create a customized list of resources that you can share.'}
         />
         <meta name="image" content="/manyc_logo.png" />
         <link rel="icon" href="/icon.ico" />
       </Head>
-      <Stack spacing="16px">
-        <Heading fontSize={{ base: '32px', md: '48px' }}>
-          Resource lists
-        </Heading>
-        <Text fontSize={{ base: '16px', md: '24px' }}>
-          Where you can view curated lists of resources or create your own!
+      <Box px="112px" py="96px">
+        <Text fontWeight="semibold" color="Primary.600" mb="12px">
+          Community Resources
         </Text>
-      </Stack>
-      <Stack spacing="16px">
+        <Heading as="h1" fontSize="5xl" mb="24px">
+          Resource Hub
+        </Heading>
+        <Text maxW="50%">
+          Our community-sourced, volunteer-curated library is a growing
+          collection of the many resources available to New Yorkers. Mutual Aid
+          NYC is committed to building a comprehensive list of high-quality
+          resources—check back frequently, as new resources are added every day!
+          <br /> <br />
+          If you can’t find what you need, search the map and borough-specific
+          lists in the Groups Directory to find groups that can help.
+        </Text>
+      </Box>
+      <Stack spacing="16px" px="112px">
+        <Button onClick={onDrawerOpen}>View your list</Button>
         <Stack
           direction={{ base: 'column', md: 'row' }}
           align={{ base: undefined, md: 'center' }}
@@ -54,11 +90,11 @@ export const HomePage: NextPage = () => {
         >
           <SearchBar
             handleSearch={setSearchQuery}
-            placeholder="Search resource lists"
+            placeholder={'Search resources'}
             w={{ base: '100%', md: '60%' }}
           />
           <Text>
-            Showing {paginatedData.length} of {numServicesLists} results.
+            Showing {paginatedData.length} of {numServices} results.
           </Text>
         </Stack>
         <PaginationProvider value={paginationHandler}>
@@ -73,35 +109,40 @@ export const HomePage: NextPage = () => {
             isSearchable
             instanceId="taxonomySelect"
             closeMenuOnSelect={false}
-            placeholder="Filter by resource list categories"
             options={taxonomyOptions}
-            onChange={(e) => {
-              setTaxonomyFilters(e.map((e) => e.value))
-            }}
-            theme={(theme) => ({
-              ...theme,
-              borderRadius: 16,
-              colors: {
-                ...theme.colors,
-                primary25: '#B2DFDB',
-                primary: 'black',
-              },
-            })}
+            placeholder="Filter by resource category"
+            onChange={(e) => setTaxonomyFilters(e.map((e) => e.value))}
           />
         </HStack>
       </Stack>
-      {visibleServicesLists.map((servicesList) => (
-        <ServicesListItem
-          p={{ base: 2, md: 4 }}
-          key={servicesList.id}
-          servicesList={servicesList}
-          _hover={{
-            base: {},
-            md: { background: '#fafafa', borderRadius: '24px' },
-          }}
-        />
-      ))}
-    </Stack>
+      <Grid templateColumns="repeat(3, 1fr)" gap="32px" px="112px" py="32px">
+        {visibleServices.map((service) => (
+          <ResourceCard
+            key={service.id}
+            resource={service}
+            saveResource={() => saveResource(service)}
+          />
+        ))}
+      </Grid>
+      <CreateListProvider value={createListHandler}>
+        <CreateListAlert selectedService={selectedResource} />
+        <CreateListDrawer />
+      </CreateListProvider>
+      <Center bgColor="Gray.50" flexDirection="column" py="96px">
+        <Heading pb="20px">Contribute to the Resource Hub</Heading>
+        <Text pb="40px" textAlign="center">
+          If you know of resources that aren’t included in our database, please
+          submit it to MANYC.
+        </Text>
+        <Button
+          isExternal
+          as={Link}
+          href="https://mutualaid.nyc/submit-a-resource/"
+        >
+          Submit a resource
+        </Button>
+      </Center>
+    </>
   )
 }
 

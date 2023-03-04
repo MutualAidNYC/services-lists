@@ -32,9 +32,8 @@ export const Navbar = (): JSX.Element => {
         spacing={{ base: '16px', lg: '32px' }}
         display={{ base: 'none', lg: 'inherit' }}
       >
-        <Link href="/">Resource lists</Link>
+        <Link href="/">Resource hub</Link>
         <Link href="https://resources.mutualaid.nyc/">Resource library</Link>
-        <Link href="/create-list">Create new list</Link>
         <Link href="https://mutualaid.nyc/submit-a-resource/">
           Submit a resource
         </Link>
@@ -55,15 +54,12 @@ export const Navbar = (): JSX.Element => {
           <MenuItem
             _focus={{ background: 'darkPurple', filter: 'brightness(150%)' }}
           >
-            <Link href="/">Resource lists</Link>
+            <Link href="/">Resource hub</Link>
           </MenuItem>
           <MenuItem>
             <Link href="https://resources.mutualaid.nyc/">
               Resource library
             </Link>
-          </MenuItem>
-          <MenuItem>
-            <Link href="/create-list">Create new list</Link>
           </MenuItem>
           <MenuItem>
             <Link href="https://mutualaid.nyc/submit-a-resource/">
