@@ -15,7 +15,7 @@ interface Props {
   message: string
 }
 
-const AuthModal = ({ isOpen, onClose, message }: Props): JSX.Element => {
+export const AuthModal = ({ isOpen, onClose, message }: Props): JSX.Element => {
   const { userData } = useUser()
 
   useEffect(() => {
@@ -43,5 +43,3 @@ const AuthModal = ({ isOpen, onClose, message }: Props): JSX.Element => {
     </Modal>
   )
 }
-
-export default AuthModal

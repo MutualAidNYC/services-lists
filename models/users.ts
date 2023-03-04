@@ -10,3 +10,5 @@ export interface PasswordAuthResponse {
   code: number
   message: string
 }
+
+export type AuthState = 'sign_up' | 'log_in'

@@ -1,10 +1,11 @@
 import { Text, VStack } from '@chakra-ui/react'
+import { AuthState } from 'models/users'
 import React, { useState } from 'react'
 import Login from './Login'
 import SignUp from './Signup'
 
 interface AuthContainerProps {
-  initialState: 'sign_up' | 'log_in'
+  initialState: AuthState
   descriptiveText?: string
   displayBorder: boolean
 }
@@ -14,9 +15,7 @@ export const AuthContainer = ({
   descriptiveText,
   displayBorder,
 }: AuthContainerProps): JSX.Element => {
-  const [currentState, setCurrentState] = useState<'sign_up' | 'log_in'>(
-    initialState
-  )
+  const [currentState, setCurrentState] = useState<AuthState>(initialState)
 
   return (
     <VStack

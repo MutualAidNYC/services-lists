@@ -13,9 +13,8 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react'
-import { useUser } from 'components'
-import AuthModal from 'components/Auth/AuthModal'
-import { AvatarIcon } from 'components/Icons'
+import { AuthModal, useUser } from 'components'
+import { User } from 'react-feather'
 
 export const Navbar = (): JSX.Element => {
   const { onOpen, isOpen, onClose } = useDisclosure()
@@ -44,7 +43,7 @@ export const Navbar = (): JSX.Element => {
         <HStack spacing={{ base: '16px', lg: '32px' }}>
           <Link href="/">
             <Image
-              src="/new_manyc_logo.png"
+              src="/teal_manyc_logo.png"
               w="108px"
               h="96px"
               alt="Mutual Aid NYC"
@@ -61,7 +60,7 @@ export const Navbar = (): JSX.Element => {
         {userData && !loading && (
           <Link href="/profile">
             <HStack cursor="pointer" _hover={{ textDecoration: 'underline' }}>
-              <AvatarIcon />
+              <User />
               <Text> Account </Text>
             </HStack>
           </Link>
@@ -72,7 +71,7 @@ export const Navbar = (): JSX.Element => {
             _hover={{ textDecoration: 'underline' }}
             onClick={onOpen}
           >
-            <AvatarIcon />
+            <User />
             <Text> Log In/ Sign Up </Text>
           </HStack>
         )}

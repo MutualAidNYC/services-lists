@@ -9,14 +9,17 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useHookFormProps } from 'hooks'
+import { AuthState } from 'models/users'
 import React, { Dispatch, SetStateAction, useState } from 'react'
-import { Controller, ErrorOption, useForm } from 'react-hook-form'
+import { Eye, EyeOff } from 'react-feather'
+import { ErrorOption, useForm } from 'react-hook-form'
 import { emailSignUp } from 'utils/firebase'
 import * as yup from 'yup'
-import { GoogleSignInComponent } from '.'
+import { GoogleSignInButton } from '.'
 
 interface SignUpProps {
-  setCurrentState: Dispatch<SetStateAction<'sign_up' | 'log_in'>>
+  setCurrentState: Dispatch<SetStateAction<AuthState>>
 }
 
 interface SignUpForm {
@@ -44,31 +47,35 @@ const initialState: SignUpForm = {
 }
 
 const SignUp = ({ setCurrentState }: SignUpProps): JSX.Element => {
-  const methods = useForm({
+  const form = useForm({
     defaultValues: initialState,
     resolver: yupResolver(signUpFormSchema),
   })
 
   const [showPassword, setShowPassword] = useState(false)
 
-  const onSubmit = ({
+  const onSubmit = async ({
     email,
     password,
     firstName,
     lastName,
     organization,
   }: SignUpForm) => {
-    emailSignUp(email, password, firstName, lastName, organization)
-      .then((res) => {
-        // TODO handle different types of possible firebase errors and return types also add a toast
-        if (res.code !== 200) {
-          const error: ErrorOption = {
-            message: res.message.substring(9),
-          }
-          methods.setError('password', error)
-        }
-      })
-      .catch((err) => console.log(err))
+    // TODO handle different types of possible firebase errors and return types also add a toast
+    const res = await emailSignUp(
+      email,
+      password,
+      firstName,
+      lastName,
+      organization
+    )
+
+    if (res.code !== 200) {
+      const error: ErrorOption = {
+        message: res.message.substring(9),
+      }
+      form.setError('password', error)
+    }
   }
 
   return (
@@ -76,7 +83,7 @@ const SignUp = ({ setCurrentState }: SignUpProps): JSX.Element => {
       <Text fontSize={'3xl'} fontWeight="bold">
         Create an Account
       </Text>
-      <GoogleSignInComponent />
+      <GoogleSignInButton />
       <HStack w="100%">
         <Divider border="1px solid gray.400" />
         <Text> or </Text>
@@ -84,180 +91,87 @@ const SignUp = ({ setCurrentState }: SignUpProps): JSX.Element => {
       </HStack>
       <VStack w="100%" maxW="xs">
         <HStack>
-          <Controller
-            control={methods.control}
-            name="firstName"
-            render={({ field, fieldState }) => {
-              return (
-                <VStack w="100%">
-                  <Input
-                    ref={field.ref}
-                    borderColor={fieldState.error ? 'red' : 'inherit'}
-                    type="text"
-                    value={field.value}
-                    placeholder="First Name"
-                    onChange={field.onChange}
-                    onBlur={field.onBlur}
-                    onKeyDown={(e) => {
-                      if (e.key == 'Enter') {
-                        methods.setFocus('lastName')
-                      }
-                    }}
-                  />
-                  {fieldState.error && (
-                    <Text w="100%" color="red">
-                      {fieldState.error.message}
-                    </Text>
-                  )}
-                </VStack>
-              )
+          <Input
+            isRequired
+            {...useHookFormProps('firstName', form)}
+            _invalid={{ borderColor: 'red', outlineColor: 'none' }}
+            type="text"
+            placeholder="First Name"
+            onKeyDown={(e) => {
+              if (e.key == 'Enter') {
+                form.setFocus('lastName')
+              }
             }}
           />
-          <Controller
-            control={methods.control}
-            name="lastName"
-            render={({ field, fieldState }) => {
-              return (
-                <VStack w="100%">
-                  <Input
-                    ref={field.ref}
-                    borderColor={fieldState.error ? 'red' : 'inherit'}
-                    type="text"
-                    value={field.value}
-                    placeholder="Last Name"
-                    onChange={field.onChange}
-                    onBlur={field.onBlur}
-                    onKeyDown={(e) => {
-                      if (e.key == 'Enter') {
-                        methods.setFocus('organization')
-                      }
-                    }}
-                  />
-                  {fieldState.error && (
-                    <Text w="100%" color="red">
-                      {fieldState.error.message}
-                    </Text>
-                  )}
-                </VStack>
-              )
+
+          <Input
+            isRequired
+            {...useHookFormProps('lastName', form)}
+            _invalid={{ borderColor: 'red', outlineColor: 'none' }}
+            type="text"
+            placeholder="Last Name"
+            onKeyDown={(e) => {
+              if (e.key == 'Enter') {
+                form.setFocus('organization')
+              }
             }}
           />
         </HStack>
-        <Controller
-          control={methods.control}
-          name="organization"
-          render={({ field, fieldState }) => {
-            return (
-              <VStack w="100%">
-                <Input
-                  ref={field.ref}
-                  borderColor={fieldState.error ? 'red' : 'inherit'}
-                  type="text"
-                  value={field.value}
-                  placeholder="Organization (Optional)"
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
-                  onKeyDown={(e) => {
-                    if (e.key == 'Enter') {
-                      methods.setFocus('email')
-                    }
-                  }}
-                />
-                {fieldState.error && (
-                  <Text w="100%" color="red">
-                    {fieldState.error.message}
-                  </Text>
-                )}
-              </VStack>
-            )
+
+        <Input
+          {...useHookFormProps('organization', form)}
+          _invalid={{ borderColor: 'red', outlineColor: 'none' }}
+          type="text"
+          placeholder="Organization (Optional)"
+          onKeyDown={(e) => {
+            if (e.key == 'Enter') {
+              form.setFocus('email')
+            }
           }}
         />
 
-        <Controller
-          control={methods.control}
-          name="email"
-          render={({ field, fieldState }) => {
-            return (
-              <VStack w="100%">
-                <Input
-                  ref={field.ref}
-                  borderColor={fieldState.error ? 'red' : 'inherit'}
-                  type="email"
-                  value={field.value}
-                  placeholder="Email Address"
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
-                  onKeyDown={(e) => {
-                    if (e.key == 'Enter') {
-                      methods.setFocus('password')
-                    }
-                  }}
-                />
-                {fieldState.error && (
-                  <Text w="100%" color="red">
-                    {fieldState.error.message}
-                  </Text>
-                )}
-              </VStack>
-            )
-          }}
-        />
-        <Controller
-          control={methods.control}
-          name="password"
-          render={({ field, fieldState }) => {
-            return (
-              <VStack w="100%">
-                <InputGroup>
-                  <Input
-                    ref={field.ref}
-                    onBlur={field.onBlur}
-                    borderColor={fieldState.error ? 'red' : 'inherit'}
-                    type={showPassword ? 'text' : 'password'}
-                    value={field.value}
-                    placeholder="Password"
-                    onChange={field.onChange}
-                    onKeyDown={(e) => {
-                      if (e.key == 'Enter') {
-                        methods.handleSubmit(onSubmit)()
-                      }
-                    }}
-                  />
-                  <InputRightElement
-                    // eslint-disable-next-line react/no-children-prop
-                    children={
-                      <Button
-                        variant="ghost"
-                        backgroundColor="inherit"
-                        px={6}
-                        mr={2}
-                        fontWeight="light"
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        {showPassword ? 'Hide' : 'Show'}
-                      </Button>
-                    }
-                  />
-                </InputGroup>
-                {fieldState.error && (
-                  <Text w="100%" color="red">
-                    {fieldState.error.message}
-                  </Text>
-                )}
-              </VStack>
-            )
+        <Input
+          isRequired
+          {...useHookFormProps('email', form)}
+          _invalid={{ borderColor: 'red', outlineColor: 'none' }}
+          type="email"
+          placeholder="Email Address"
+          onKeyDown={(e) => {
+            if (e.key == 'Enter') {
+              form.setFocus('password')
+            }
           }}
         />
 
-        <Button w="100%" onClick={methods.handleSubmit(onSubmit)}>
+        <InputGroup>
+          <Input
+            isRequired
+            {...useHookFormProps('password', form)}
+            _invalid={{ borderColor: 'red', outlineColor: 'none' }}
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Password"
+            onKeyDown={(e) => {
+              if (e.key == 'Enter') {
+                form.handleSubmit(onSubmit)()
+              }
+            }}
+          />
+          <InputRightElement
+            onClick={() => setShowPassword(!showPassword)}
+            cursor="pointer"
+            // eslint-disable-next-line react/no-children-prop
+            children={showPassword ? <EyeOff /> : <Eye />}
+          />
+        </InputGroup>
+
+        <Button w="100%" onClick={form.handleSubmit(onSubmit)}>
           Sign In
         </Button>
       </VStack>
 
       <Text
         fontWeight="medium"
-        cursor={'pointer'}
-        _hover={{ textDecor: 'underline' }}
+        variant="clickable"
         onClick={() => setCurrentState('log_in')}
       >
         Already have an account? Log in.
