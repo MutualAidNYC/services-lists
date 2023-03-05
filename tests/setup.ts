@@ -1,6 +1,6 @@
 import { server } from './mocks/server'
 
-// Airtable API uses fetch which isn't available in Node so it must be mocked
+// Airtable API uses `fetch` which isn't available in Node so it must be mocked
 require('jest-fetch-mock').enableMocks() // eslint-disable-line @typescript-eslint/no-var-requires
 
 // establish API mocking before all tests

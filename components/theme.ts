@@ -18,6 +18,7 @@ export const theme = extendTheme({
       800: '#0A4761',
     },
     Gray: {
+      50: '#F9FAFB',
       500: '#667085',
       900: '#101828',
     },
@@ -68,9 +69,16 @@ export const theme = extendTheme({
     },
     Button: {
       baseStyle: {
-        bg: 'Primary.50',
-        background: 'Primary.50',
-        color: 'Primary.700',
+        bg: 'Primary.600',
+        background: 'Primary.600',
+        color: 'white',
+      },
+      variants: {
+        secondary: {
+          bg: 'Primary.50',
+          background: 'Primary.50',
+          color: 'Primary.700',
+        },
       },
     },
   },

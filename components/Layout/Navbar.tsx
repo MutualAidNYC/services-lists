@@ -49,7 +49,7 @@ export const Navbar = (): JSX.Element => {
               alt="Mutual Aid NYC"
             />
           </Link>
-          <Link href="/">Resource lists</Link>
+          <Link href="/">Resource hub</Link>
           <Link href="https://resources.mutualaid.nyc/">Resource library</Link>
           <Link href="/create-list">Create new list</Link>
           <Link href="https://mutualaid.nyc/submit-a-resource/">
@@ -91,7 +91,7 @@ export const Navbar = (): JSX.Element => {
             <MenuItem
               _focus={{ background: 'darkPurple', filter: 'brightness(150%)' }}
             >
-              <Link href="/">Resource lists</Link>
+              <Link href="/">Resource hub</Link>
             </MenuItem>
             <MenuItem>
               <Link href="https://resources.mutualaid.nyc/">
@@ -138,7 +138,7 @@ export const Navbar = (): JSX.Element => {
           />
           <MenuList display={{ base: 'inherit', lg: 'none' }}>
             <MenuItem>
-              <Link href="/">Resource lists</Link>
+              <Link href="/">Resource hub</Link>
             </MenuItem>
             <MenuItem>
               <Link href="https://resources.mutualaid.nyc/">
