@@ -1,3 +1,4 @@
+export * from './AvatarIcon'
 export * from './FacebookIcon'
 export * from './SearchIcon'
 export * from './ShareIcon'

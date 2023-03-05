@@ -53,6 +53,14 @@ export const theme = extendTheme({
         },
       },
     },
+    Divider: {
+      variants: {
+        thick: {
+          border: '2px solid gray.300',
+          borderRadius: 10,
+        },
+      },
+    },
     Heading: {
       baseStyle: {
         color: 'Gray.900',

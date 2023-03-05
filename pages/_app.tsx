@@ -1,5 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react'
-import AuthProvider from 'components/AuthProvider'
+import { AuthProvider } from 'components'
 import { Fonts, Navbar } from 'components/Layout'
 import { Footer } from 'components/Layout/Footer'
 import { AppProps } from 'next/app'
