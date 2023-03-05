@@ -72,6 +72,7 @@ const SignUp = ({ setCurrentState }: SignUpProps): JSX.Element => {
 
     if (res.code !== 200) {
       const error: ErrorOption = {
+        // truncates the code #### from the error message so the string is more user friendly/readable
         message: res.message.substring(9),
       }
       form.setError('password', error)

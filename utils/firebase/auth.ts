@@ -38,7 +38,7 @@ export const emailSignUp = async (
   password: string,
   firstName: string,
   lastName: string,
-  organization: string
+  organization?: string
 ): Promise<PasswordAuthResponse> => {
   //NOTE: should do some kind of validation beforehand to make sure that it is a proper email/password combo
   //NOTE: using response codes/messages so the UI can be updated based on whether or not the sign up was successful
