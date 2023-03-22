@@ -15,7 +15,7 @@ export const getService = async (id: string): Promise<Resource> => {
   return response.data
 }
 
-export const getAllServices = async (filter = ''): Promise<Resource[]> => {
+export const getAllResources = async (filter = ''): Promise<Resource[]> => {
   const response = await ServicesAxiosClient.get<Resource[]>(
     `/services?filter=${filter}`
   )

@@ -3,21 +3,26 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import {
   AirtableCreateResponse,
   createServicesLists,
-  getAllServices,
+  getAllResources,
 } from 'api'
 import {
-  PaginationHandler,
-  SortHandler,
-  useFilters,
-  usePagination,
-  useSort,
-} from 'hooks'
-import { CreateServicesListRequest, Resource } from 'models'
+  CreateServicesListRequest,
+  Resource,
+  RESOURCE_SEARCH_FIELDS,
+} from 'models'
 import { useRouter } from 'next/router'
-import { BaseSyntheticEvent, createContext, useContext, useState } from 'react'
+import {
+  BaseSyntheticEvent,
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form'
 import { useMutation, useQuery } from 'react-query'
 import * as yup from 'yup'
+import { useKeywordSearch } from './useKeywordSearch'
 
 interface CreateListForm {
   name: string
@@ -35,13 +40,9 @@ const createListSchema = yup.object({
 
 interface CreateListHandler {
   isLoading: boolean
-  visibleServices: Resource[]
-  numServices: number
-  setSearchQuery: (query: string) => void
-  taxonomyOptions: { value: string; label: string }[]
-  setTaxonomyFilters: (filters: string[]) => void
-  sortHandler: SortHandler<Resource>
-  paginationHandler: PaginationHandler<Resource>
+  filteredResources: Resource[]
+  setKeyword: (keyword: string) => void
+  keywordSearch: () => void
   isAlertOpen: boolean
   onAlertClose: () => void
   onAlertOpen: () => void
@@ -64,26 +65,38 @@ export const useCreateListContext = (): CreateListHandler =>
 export const CreateListProvider = CreateListContext.Provider
 
 export const useCreateList = (): CreateListHandler => {
-  const { isLoading: isLoadingServices, data: baseServices } = useQuery<
-    Resource[],
-    Error
-  >(['allServices'], () => getAllServices(), {
-    retry: false,
-    refetchOnWindowFocus: false,
-  })
+  const { isLoading, data: allResources } = useQuery<Resource[], Error>(
+    ['allResources'],
+    () => getAllResources(),
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  )
+
+  const [searchedResources, setSearchedResources] = useState(allResources ?? [])
 
   const {
-    isLoading: isLoadingFilters,
-    filteredData: filteredServices,
-    setSearchQuery,
-    taxonomyOptions,
-    setTaxonomyFilters,
-  } = useFilters(baseServices ?? [], ['title', 'details'], 'Needs')
-  const sortHandler = useSort(filteredServices)
-  const paginationHandler = usePagination(
-    sortHandler.sortedData,
-    [6, 12, 24, 48]
-  )
+    setKeyword,
+    setData: setResourcesToSearch,
+    search,
+  } = useKeywordSearch(searchedResources, {
+    keys: RESOURCE_SEARCH_FIELDS,
+  })
+
+  // Set data to be resources to be searched
+  useEffect(() => {
+    if (allResources) {
+      setSearchedResources(allResources)
+      setResourcesToSearch(allResources)
+    }
+  }, [allResources, setResourcesToSearch])
+
+  const keywordSearch = () => setSearchedResources(search())
+
+  const filteredResources = useMemo(() => {
+    return searchedResources
+  }, [searchedResources])
 
   const {
     isOpen: isAlertOpen,
@@ -142,14 +155,10 @@ export const useCreateList = (): CreateListHandler => {
   }
 
   return {
-    isLoading: isLoadingServices || isLoadingFilters,
-    visibleServices: paginationHandler.paginatedData,
-    numServices: filteredServices.length,
-    taxonomyOptions,
-    setTaxonomyFilters,
-    setSearchQuery,
-    sortHandler,
-    paginationHandler,
+    isLoading,
+    filteredResources,
+    setKeyword,
+    keywordSearch,
     isAlertOpen,
     onAlertClose,
     onAlertOpen,

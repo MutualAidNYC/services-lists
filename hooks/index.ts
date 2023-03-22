@@ -1,4 +1,3 @@
-export * from './useAllServicesLists'
 export * from './useCreateList'
 export * from './useFilters'
 export * from './useHookFormProps'

@@ -1,5 +1,6 @@
 import Fuse from 'fuse.js'
 import { useState } from 'react'
+
 type UseKeywordSearchReturn<T> = {
   setKeyword: (keyword: string) => void
   setData: (data: T[]) => void
@@ -8,7 +9,7 @@ type UseKeywordSearchReturn<T> = {
 
 export const useKeywordSearch = <T>(
   initialData: T[],
-  options: Fuse.IFuseOptions<T>
+  options?: Fuse.IFuseOptions<T>
 ): UseKeywordSearchReturn<T> => {
   // Can't get data passed into Fuse so need to store in state
   const [data, setData] = useState(initialData)

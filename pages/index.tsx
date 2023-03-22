@@ -4,45 +4,55 @@ import {
   Center,
   Grid,
   Heading,
-  HStack,
+  Input,
+  InputGroup,
+  InputLeftElement,
   Link,
   Stack,
   Text,
 } from '@chakra-ui/react'
-import {
-  CreateListAlert,
-  CreateListDrawer,
-  PaginationSection,
-  ResourceCard,
-  SearchBar,
-  SortMenu,
-} from 'components'
-import {
-  CreateListProvider,
-  PaginationProvider,
-  SortProvider,
-  useCreateList,
-} from 'hooks'
-import { Resource } from 'models'
+import { getAllResources } from 'api'
+import { CreateListAlert, CreateListDrawer, ResourceCard } from 'components'
+import Fuse from 'fuse.js'
+import { CreateListProvider, useCreateList } from 'hooks'
+import { Resource, RESOURCE_SEARCH_FIELDS } from 'models'
 import { NextPage } from 'next'
 import Head from 'next/head'
-import { useState } from 'react'
-import Select from 'react-select'
+import { useEffect, useMemo, useState } from 'react'
+import { Search } from 'react-feather'
+import { useQuery } from 'react-query'
+import { fuseSearch, onEnter } from 'utils'
 
 export const HomePage: NextPage = () => {
-  const createListHandler = useCreateList()
-  const {
-    visibleServices,
-    setSearchQuery,
-    taxonomyOptions,
-    setTaxonomyFilters,
-    paginationHandler,
-    sortHandler,
-    onAlertOpen,
-    onDrawerOpen,
-  } = createListHandler
+  const { data: allResources } = useQuery<Resource[], Error>(
+    ['allResources'],
+    () => getAllResources()
+  )
+  const [filteredResources, setFilteredResources] = useState(allResources ?? [])
+  // Update resources state when query finishes
+  useEffect(() => {
+    if (allResources) {
+      setFilteredResources(allResources)
+    }
+  }, [allResources])
 
-  const sortFieldsTextToVal = { Name: 'name', Description: 'description' }
+  const fuse = useMemo(() => {
+    return new Fuse(allResources ?? [], { keys: RESOURCE_SEARCH_FIELDS })
+  }, [allResources])
+  // For keyword searches
+  const [keyword, setKeyword] = useState('')
+
+  const filterResources = () => {
+    // Return all resources if keyword is an empty string
+    const keywordSearchResources = keyword
+      ? fuseSearch({ fuse, pattern: keyword })
+      : allResources ?? []
+
+    setFilteredResources(keywordSearchResources)
+  }
+
+  const createListHandler = useCreateList()
+  const { onAlertOpen, onDrawerOpen } = createListHandler
 
   const [selectedResource, setSelectedResource] = useState<Resource>()
   const saveResource = (resource: Resource) => {
@@ -91,40 +101,29 @@ export const HomePage: NextPage = () => {
         spacing="16px"
         justify="space-between"
       >
-        <SearchBar
-          handleSearch={setSearchQuery}
-          placeholder={'Search keywords'}
-          w={{ base: '100%', md: '33%' }}
-        />
-        <Button>Search</Button>
+        <InputGroup>
+          <InputLeftElement pointerEvents="none">
+            <Search />
+          </InputLeftElement>
+          <Input
+            value={keyword}
+            placeholder="Search by keyword"
+            onChange={(event) => setKeyword(event.target.value)}
+            onKeyDown={(event) => onEnter({ event, handler: filterResources })}
+          />
+        </InputGroup>
+        <Button onClick={filterResources}>Search</Button>
       </Stack>
       <Stack spacing="32px" px="112px" py="64px">
         <Stack spacing="16px">
-          <PaginationProvider value={paginationHandler}>
-            <PaginationSection />
-          </PaginationProvider>
-          <HStack spacing="16px">
-            <SortProvider value={sortHandler}>
-              <SortMenu sortFieldsTextToVal={sortFieldsTextToVal} />
-            </SortProvider>
-            <Select
-              isMulti
-              isSearchable
-              instanceId="taxonomySelect"
-              closeMenuOnSelect={false}
-              options={taxonomyOptions}
-              placeholder="Filter by resource category"
-              onChange={(e) => setTaxonomyFilters(e.map((e) => e.value))}
-            />
-          </HStack>
           <Button onClick={onDrawerOpen}>View your list</Button>
         </Stack>
         <Grid templateColumns="repeat(3, 1fr)" gap="32px" py="32px">
-          {visibleServices.map((service) => (
+          {filteredResources.map((resource) => (
             <ResourceCard
-              key={service.id}
-              resource={service}
-              saveResource={() => saveResource(service)}
+              key={resource.id}
+              resource={resource}
+              saveResource={() => saveResource(resource)}
             />
           ))}
         </Grid>
