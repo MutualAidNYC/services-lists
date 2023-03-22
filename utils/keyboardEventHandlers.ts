@@ -1,10 +1,10 @@
 import { KeyboardEvent } from 'react'
 
-export const onEnter = ({
+export const onEnter = <T = Element>({
   event,
   handler,
 }: {
-  event: KeyboardEvent<HTMLInputElement>
+  event: KeyboardEvent<T>
   handler: () => void
 }) => {
   if (event.key === 'Enter') {
