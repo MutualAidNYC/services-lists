@@ -1,4 +1,5 @@
 export * from './cache'
 export * from './format'
 export * from './keyboardEventHandlers'
+export * from './range'
 export * from './search'
