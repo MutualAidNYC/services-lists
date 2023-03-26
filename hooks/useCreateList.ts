@@ -1,28 +1,12 @@
 import { useDisclosure } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
-import {
-  AirtableCreateResponse,
-  createServicesLists,
-  getAllResources,
-} from 'api'
-import {
-  CreateServicesListRequest,
-  Resource,
-  RESOURCE_SEARCH_FIELDS,
-} from 'models'
+import { AirtableCreateResponse, createServicesLists } from 'api'
+import { CreateServicesListRequest, Resource } from 'models'
 import { useRouter } from 'next/router'
-import {
-  BaseSyntheticEvent,
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import { BaseSyntheticEvent, createContext, useContext, useState } from 'react'
 import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation } from 'react-query'
 import * as yup from 'yup'
-import { useKeywordSearch } from './useKeywordSearch'
 
 interface CreateListForm {
   name: string
@@ -39,10 +23,6 @@ const createListSchema = yup.object({
 })
 
 interface CreateListHandler {
-  isLoading: boolean
-  filteredResources: Resource[]
-  setKeyword: (keyword: string) => void
-  keywordSearch: () => void
   isAlertOpen: boolean
   onAlertClose: () => void
   onAlertOpen: () => void
@@ -65,39 +45,6 @@ export const useCreateListContext = (): CreateListHandler =>
 export const CreateListProvider = CreateListContext.Provider
 
 export const useCreateList = (): CreateListHandler => {
-  const { isLoading, data: allResources } = useQuery<Resource[], Error>(
-    ['allResources'],
-    () => getAllResources(),
-    {
-      retry: false,
-      refetchOnWindowFocus: false,
-    }
-  )
-
-  const [searchedResources, setSearchedResources] = useState(allResources ?? [])
-
-  const {
-    setKeyword,
-    setData: setResourcesToSearch,
-    search,
-  } = useKeywordSearch(searchedResources, {
-    keys: RESOURCE_SEARCH_FIELDS,
-  })
-
-  // Set data to be resources to be searched
-  useEffect(() => {
-    if (allResources) {
-      setSearchedResources(allResources)
-      setResourcesToSearch(allResources)
-    }
-  }, [allResources, setResourcesToSearch])
-
-  const keywordSearch = () => setSearchedResources(search())
-
-  const filteredResources = useMemo(() => {
-    return searchedResources
-  }, [searchedResources])
-
   const {
     isOpen: isAlertOpen,
     onOpen: onAlertOpen,
@@ -155,10 +102,6 @@ export const useCreateList = (): CreateListHandler => {
   }
 
   return {
-    isLoading,
-    filteredResources,
-    setKeyword,
-    keywordSearch,
     isAlertOpen,
     onAlertClose,
     onAlertOpen,
