@@ -30,3 +30,7 @@ yarn-error.log*
 .env.production.local
 
 tsconfig.tsbuildinfo
+
+
+# vs code settings
+/.vscode/
