@@ -2,18 +2,20 @@ import { useState } from 'react'
 import { range } from 'utils'
 
 export const usePagination = ({
-  total,
-  initialPageSize = 6,
-  pagesDisplayed = 6,
+  totalItems,
+  initialPage = 1,
+  initialPageSize,
+  pagesDisplayed,
 }: {
-  total: number
+  totalItems: number
+  initialPage?: number
   initialPageSize: number
   pagesDisplayed: number
 }) => {
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(initialPage)
   const [pageSize, setPageSize] = useState(initialPageSize)
 
-  const lastPage = Math.ceil(total / pageSize)
+  const lastPage = Math.ceil(totalItems / pageSize)
 
   const hasPrevious = page > 1
   const hasNext = page < lastPage
