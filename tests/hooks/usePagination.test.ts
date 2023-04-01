@@ -58,18 +58,6 @@ describe('usePagination', () => {
     expect(result.current.page).toBe(1)
   })
 
-  it('Check page range at first page with six pages displayed, ten total', () => {
-    const { result } = renderHook(() =>
-      usePagination({
-        totalItems: 10,
-        initialPageSize: 1,
-        pagesDisplayed: 5,
-      })
-    )
-
-    expect(result.current.range).toStrictEqual([1, 2, 3, 4, ELLIPSIS, 10])
-  })
-
   it('Check number of pages given ten items, page size of one', () => {
     const { result } = renderHook(() =>
       usePagination({
@@ -92,6 +80,18 @@ describe('usePagination', () => {
     )
 
     expect(result.current.lastPage).toBe(4)
+  })
+
+  it('Check page range at first page with six pages displayed, ten total', () => {
+    const { result } = renderHook(() =>
+      usePagination({
+        totalItems: 10,
+        initialPageSize: 1,
+        pagesDisplayed: 5,
+      })
+    )
+
+    expect(result.current.range).toStrictEqual([1, 2, 3, 4, ELLIPSIS, 10])
   })
 
   it('Check page range at last page with five pages displayed, ten total', () => {

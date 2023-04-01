@@ -75,10 +75,15 @@ export const theme = extendTheme({
         color: 'white',
       },
       variants: {
-        secondary: {
+        outline: {
           bg: 'Primary.50',
           background: 'Primary.50',
           color: 'Primary.700',
+        },
+        ghost: {
+          bg: 'transparent',
+          background: 'transparent',
+          color: 'Gray.500',
         },
       },
     },

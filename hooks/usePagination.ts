@@ -1,6 +1,19 @@
 import { useState } from 'react'
 import { range } from 'utils'
 
+export type UsePaginationReturn = {
+  page: number
+  setPage: (page: number) => void
+  pageSize: number
+  setPageSize: (page: number) => void
+  lastPage: number
+  range: (number | '...')[]
+  hasPrevious: boolean
+  hasNext: boolean
+  next: () => void
+  previous: () => void
+}
+
 export const usePagination = ({
   totalItems,
   initialPage = 1,
@@ -11,7 +24,7 @@ export const usePagination = ({
   initialPage?: number
   initialPageSize: number
   pagesDisplayed: number
-}) => {
+}): UsePaginationReturn => {
   const [page, setPage] = useState(initialPage)
   const [pageSize, setPageSize] = useState(initialPageSize)
 

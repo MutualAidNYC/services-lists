@@ -12,9 +12,14 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { getAllResources } from 'api'
-import { CreateListAlert, CreateListDrawer, ResourceCard } from 'components'
+import {
+  CreateListAlert,
+  CreateListDrawer,
+  Pagination,
+  ResourceCard,
+} from 'components'
 import Fuse from 'fuse.js'
-import { CreateListProvider, useCreateList } from 'hooks'
+import { CreateListProvider, useCreateList, usePagination } from 'hooks'
 import { Resource, RESOURCE_SEARCH_FIELDS } from 'models'
 import { NextPage } from 'next'
 import Head from 'next/head'
@@ -28,6 +33,7 @@ export const HomePage: NextPage = () => {
     ['allResources'],
     () => getAllResources()
   )
+
   const [filteredResources, setFilteredResources] = useState(allResources ?? [])
   // Update resources state when query finishes
   useEffect(() => {
@@ -35,6 +41,21 @@ export const HomePage: NextPage = () => {
       setFilteredResources(allResources)
     }
   }, [allResources])
+
+  const {
+    page,
+    setPage,
+    pageSize,
+    range,
+    hasPrevious,
+    hasNext,
+    previous,
+    next,
+  } = usePagination({
+    totalItems: filteredResources.length,
+    initialPageSize: 6,
+    pagesDisplayed: 10,
+  })
 
   const fuse = useMemo(() => {
     return new Fuse(allResources ?? [], { keys: RESOURCE_SEARCH_FIELDS })
@@ -119,14 +140,25 @@ export const HomePage: NextPage = () => {
           <Button onClick={onDrawerOpen}>View your list</Button>
         </Stack>
         <Grid templateColumns="repeat(3, 1fr)" gap="32px" py="32px">
-          {filteredResources.map((resource) => (
-            <ResourceCard
-              key={resource.id}
-              resource={resource}
-              saveResource={() => saveResource(resource)}
-            />
-          ))}
+          {filteredResources
+            .slice((page - 1) * pageSize, page * pageSize)
+            .map((resource) => (
+              <ResourceCard
+                key={resource.id}
+                resource={resource}
+                saveResource={() => saveResource(resource)}
+              />
+            ))}
         </Grid>
+        <Pagination
+          page={page}
+          setPage={setPage}
+          range={range}
+          hasPrevious={hasPrevious}
+          hasNext={hasNext}
+          previous={previous}
+          next={next}
+        />
       </Stack>
       <Center bgColor="Gray.50" flexDirection="column" py="96px">
         <Heading pb="20px">Contribute to the Resource Hub</Heading>
