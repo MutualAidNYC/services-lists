@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import { range } from 'utils'
 
+export const ELLIPSIS = '...'
+
 export type UsePaginationReturn = {
   page: number
   setPage: (page: number) => void
   pageSize: number
   setPageSize: (page: number) => void
   lastPage: number
-  range: (number | '...')[]
+  range: (number | typeof ELLIPSIS)[]
   hasPrevious: boolean
   hasNext: boolean
   next: () => void
@@ -59,8 +61,6 @@ export const usePagination = ({
   }
 }
 
-export const ELLIPSIS = '...'
-
 /**
  * Get array of length `pagesDisplayed` of page numbers between `page` and
  * `lastPage`, with ellipses between page numbers indicating pages that aren't
@@ -74,7 +74,7 @@ const getPageRange = ({
   page: number
   lastPage: number
   pagesDisplayed: number
-}): (number | '...')[] => {
+}): (number | typeof ELLIPSIS)[] => {
   if (lastPage <= pagesDisplayed) {
     return range({ start: 1, end: lastPage })
   }

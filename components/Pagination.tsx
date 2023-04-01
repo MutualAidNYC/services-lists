@@ -1,5 +1,5 @@
 import { Button, HStack } from '@chakra-ui/react'
-import { UsePaginationReturn } from 'hooks'
+import { ELLIPSIS, UsePaginationReturn } from 'hooks'
 import { ArrowLeft, ArrowRight, MoreHorizontal } from 'react-feather'
 
 const PageButton = ({
@@ -7,11 +7,11 @@ const PageButton = ({
   isCurrentPage,
   setPage,
 }: {
-  page: number | '...'
+  page: number | typeof ELLIPSIS
   isCurrentPage: boolean
   setPage: (page: number) => void
 }): JSX.Element => {
-  if (page === '...') {
+  if (page === ELLIPSIS) {
     return <MoreHorizontal />
   }
 
