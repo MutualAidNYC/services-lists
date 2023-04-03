@@ -41,7 +41,7 @@ export const ResourceCard = ({
           aria-label="Save resource"
           icon={<Bookmark />}
           onClick={saveResource}
-          variant="secondary"
+          variant="outline"
         />
         {resource.link && (
           <IconButton
@@ -50,7 +50,7 @@ export const ResourceCard = ({
             as={Link}
             href={resource.link}
             icon={<ExternalLink />}
-            variant="secondary"
+            variant="outline"
           />
         )}
       </HStack>

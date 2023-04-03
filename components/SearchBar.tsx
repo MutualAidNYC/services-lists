@@ -1,11 +1,11 @@
 import {
   Input,
-  InputLeftElement,
   InputGroup,
   InputGroupProps,
+  InputLeftElement,
 } from '@chakra-ui/react'
-import { useState, KeyboardEvent } from 'react'
-import { SearchIcon } from './Icons'
+import { KeyboardEvent, useState } from 'react'
+import { Search } from 'react-feather'
 
 interface SearchBarProps extends InputGroupProps {
   handleSearch: (query: string) => void
@@ -27,11 +27,9 @@ export const SearchBar = ({
   return (
     <InputGroup {...props}>
       <InputLeftElement pointerEvents="none">
-        <SearchIcon />
+        <Search color="#667085" />
       </InputLeftElement>
       <Input
-        border="2px"
-        borderColor="black"
         placeholder={placeholder}
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={(e) => onEnter(e)}

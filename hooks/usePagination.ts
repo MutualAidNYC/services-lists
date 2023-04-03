@@ -1,55 +1,118 @@
-import { createContext, useContext, useEffect, useState } from 'react'
-import { useDeepCompareMemo } from 'use-deep-compare'
+import { useState } from 'react'
+import { range } from 'utils'
 
-export interface PaginationHandler<T> {
-  paginatedData: T[]
+export const ELLIPSIS = '...'
+
+export type UsePaginationReturn = {
   page: number
-  numPages: number
   setPage: (page: number) => void
-  pageSizeOptions: { value: number; label: string }[]
-  setPageSize: (pageSize: number) => void
+  pageSize: number
+  setPageSize: (page: number) => void
+  lastPage: number
+  range: (number | typeof ELLIPSIS)[]
+  hasPrevious: boolean
+  hasNext: boolean
+  next: () => void
+  previous: () => void
 }
 
-const PaginationContext = createContext({} as PaginationHandler<any>) // eslint-disable-line @typescript-eslint/no-explicit-any
-export const PaginationProvider = PaginationContext.Provider
-export const usePaginationContext = <T>(): PaginationHandler<T> =>
-  useContext(PaginationContext)
+export const usePagination = ({
+  totalItems,
+  initialPage = 1,
+  initialPageSize,
+  pagesDisplayed,
+}: {
+  totalItems: number
+  initialPage?: number
+  initialPageSize: number
+  pagesDisplayed: number
+}): UsePaginationReturn => {
+  const [page, setPage] = useState(initialPage)
+  const [pageSize, setPageSize] = useState(initialPageSize)
 
-export const usePagination = <T>(
-  data: T[],
-  pageSizes = [5, 10, 25, 50]
-): PaginationHandler<T> => {
-  const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(pageSizes[0])
+  const lastPage = Math.ceil(totalItems / pageSize)
 
-  useEffect(() => {
-    if (pageSize === data.length) setPage(1)
-  }, [pageSize, data.length])
+  const hasPrevious = page > 1
+  const hasNext = page < lastPage
 
-  const paginatedData = useDeepCompareMemo(() => {
-    return pageSize === data.length
-      ? data
-      : data.slice((page - 1) * pageSize, page * pageSize)
-  }, [data, page, pageSize])
+  const previous = () => {
+    if (hasPrevious) {
+      setPage(page - 1)
+    }
+  }
 
-  const pageSizeOptions = useDeepCompareMemo(() => {
-    const pageSizeOptions: { value: number; label: string }[] = []
-    pageSizes.forEach((size) => {
-      if (size < data.length) {
-        pageSizeOptions.push({ value: size, label: size.toString() })
-      }
-    })
-    pageSizeOptions.push({ value: data.length, label: 'All' })
-
-    return pageSizeOptions
-  }, [data.length])
+  const next = () => {
+    if (hasNext) {
+      setPage(page + 1)
+    }
+  }
 
   return {
-    paginatedData,
     page,
-    numPages: Math.ceil(data.length / pageSize),
     setPage,
+    pageSize,
     setPageSize,
-    pageSizeOptions,
+    lastPage,
+    range: getPageRange({ page, lastPage, pagesDisplayed }),
+    hasPrevious,
+    hasNext,
+    previous,
+    next,
   }
+}
+
+/**
+ * Get array of length `pagesDisplayed` of page numbers between `page` and
+ * `lastPage`, with ellipses between page numbers indicating pages that aren't
+ * visible. The array will always start with `page` and end with `lastPage`.
+ */
+const getPageRange = ({
+  page,
+  lastPage,
+  pagesDisplayed,
+}: {
+  page: number
+  lastPage: number
+  pagesDisplayed: number
+}): (number | typeof ELLIPSIS)[] => {
+  if (lastPage <= pagesDisplayed) {
+    return range({ start: 1, end: lastPage })
+  }
+
+  /* Max possible number of pages to the left and right of the current one, not
+   * including the first and last pages.
+   */
+  const maxLeftRange = Math.ceil((pagesDisplayed - 3) / 2)
+  const maxRightRange = Math.floor((pagesDisplayed - 3) / 2)
+
+  /* Max possible number of pages to the left of the current one would be
+   * beyond the first page.
+   */
+  if (page - maxLeftRange < 2) {
+    // Calculate how many extra pages there are to display on the left side
+    const leftOverflow = 2 - (page - maxLeftRange)
+    return [
+      ...range({ start: 1, end: page + maxRightRange + leftOverflow }),
+      ELLIPSIS,
+      lastPage,
+    ]
+  }
+
+  // Analogous case for pages to the right of the current one
+  if (page + maxRightRange > lastPage - 1) {
+    const rightOverflow = page + maxRightRange - (lastPage - 1)
+    return [
+      1,
+      ELLIPSIS,
+      ...range({ start: page - maxLeftRange - rightOverflow, end: lastPage }),
+    ]
+  }
+
+  return [
+    1,
+    ELLIPSIS,
+    ...range({ start: page - maxLeftRange, end: page + maxRightRange }),
+    ELLIPSIS,
+    lastPage,
+  ]
 }
