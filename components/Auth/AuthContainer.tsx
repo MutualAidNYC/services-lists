@@ -1,6 +1,7 @@
 import { Text, VStack } from '@chakra-ui/react'
 import { AuthState } from 'models/users'
 import React, { useState } from 'react'
+import ForgotPassword from './ForgotPassword'
 import Login from './Login'
 import SignUp from './Signup'
 
@@ -28,9 +29,12 @@ export const AuthContainer = ({
       <Text fontWeight={'semi-bold'} fontSize="lg" pt={2}>
         {descriptiveText}
       </Text>
-      {currentState == 'log_in' && <Login setCurrentState={setCurrentState} />}{' '}
+      {currentState == 'log_in' && <Login setCurrentState={setCurrentState} />}
       {currentState == 'sign_up' && (
         <SignUp setCurrentState={setCurrentState} />
+      )}
+      {currentState == 'forgot_password' && (
+        <ForgotPassword setCurrentState={setCurrentState} />
       )}
     </VStack>
   )

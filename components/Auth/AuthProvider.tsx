@@ -53,7 +53,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       }
     })
     return () => {
-      userDocUnsub()
+      if (typeof userDocUnsub === 'function') {
+        userDocUnsub()
+      }
       authUserUnsub()
     }
   }, [])
