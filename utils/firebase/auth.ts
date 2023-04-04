@@ -118,6 +118,22 @@ export const signout = async () => {
   await auth.signOut()
 }
 
+//The firebase function doesn't return a message/status code, so we have to do it ourselves.
+//The code numbers themselves dont really matter. We just want something to display on the UI.
 export const resetPassword = async (email: string) => {
-  await sendPasswordResetEmail(auth, email)
+  try {
+    await sendPasswordResetEmail(auth, email)
+    return {
+      status: 200,
+      message: `We have sent an email to ${email} . Please follow the instructions to reset your password.`,
+    }
+  } catch (error) {
+    if (error instanceof FirebaseError) {
+      return { status: 400, message: error.code }
+    }
+    return {
+      status: 500,
+      message: 'There was an issue processing this request',
+    }
+  }
 }

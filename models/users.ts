@@ -11,4 +11,4 @@ export interface PasswordAuthResponse {
   message: string
 }
 
-export type AuthState = 'sign_up' | 'log_in'
+export type AuthState = 'sign_up' | 'log_in' | 'forgot_password'
