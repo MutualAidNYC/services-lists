@@ -1,15 +1,16 @@
 import { ArrowBackIcon } from '@chakra-ui/icons'
-import { Button, HStack, Input, Text, useToast, VStack } from '@chakra-ui/react'
+import { Button, HStack, Text, useToast, VStack } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { Input } from 'components'
 import { useHookFormProps } from 'hooks'
 import { AuthState } from 'models/users'
-import React, { Dispatch, SetStateAction } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { resetPassword } from 'utils/firebase'
 import * as yup from 'yup'
 
 interface ForgotPasswordProps {
-  setCurrentState: Dispatch<SetStateAction<AuthState>>
+  setCurrentState: (authState: AuthState) => void
 }
 
 interface ForgotPasswordForm {
@@ -81,6 +82,7 @@ const ForgotPassword = ({
             _invalid={{ borderColor: 'red', outlineColor: 'none' }}
             placeholder="Email Address"
             onKeyDown={(e) => {
+              e.preventDefault()
               if (e.key == 'Enter') {
                 form.handleSubmit(onSubmit)()
               }
