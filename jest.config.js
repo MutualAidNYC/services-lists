@@ -5,6 +5,7 @@ module.exports = {
   moduleNameMapper: {
     '^api': '<rootDir>/api/index',
     '^hooks': '<rootDir>/hooks/index',
+    '^utils': '<rootDir>/utils/index',
   },
   globalSetup: '<rootDir>/tests/globalSetup.ts',
   setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],

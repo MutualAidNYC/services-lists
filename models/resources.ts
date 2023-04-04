@@ -31,6 +31,12 @@ export type Resource = {
   // Not all resources have addresses
 } & Partial<Address>
 
+export const RESOURCE_SEARCH_FIELDS: (keyof Resource)[] = [
+  'title',
+  'groupName',
+  'details',
+]
+
 export type CreateServicesListRequest = {
   name: string
   description: string
