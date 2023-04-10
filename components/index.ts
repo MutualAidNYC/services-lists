@@ -1,6 +1,6 @@
 export * from './Auth'
 export * from './CreateList'
-export * from './forms'
+export * from './form'
 export * from './Icons'
 export * from './Layout'
 export * from './Map'
