@@ -26,6 +26,7 @@ import Head from 'next/head'
 import { useEffect, useMemo, useState } from 'react'
 import { Search } from 'react-feather'
 import { useQuery } from 'react-query'
+import Select from 'react-select'
 import { fuseSearch, onEnter } from 'utils'
 
 export const HomePage: NextPage = () => {
@@ -84,7 +85,7 @@ export const HomePage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{'Create A List'}</title>
+        <title>Resource Hub - Mutual Aid NYC</title>
         <meta
           name="description"
           content={'Create a customized list of resources that you can share.'}
@@ -136,9 +137,8 @@ export const HomePage: NextPage = () => {
         <Button onClick={filterResources}>Search</Button>
       </Stack>
       <Stack spacing="32px" px="112px" py="64px">
-        <Stack spacing="16px">
-          <Button onClick={onDrawerOpen}>View your list</Button>
-        </Stack>
+        <Button onClick={onDrawerOpen}>View your list</Button>
+        <Select isMulti isSearchable placeholder="Category" />
         <Grid templateColumns="repeat(3, 1fr)" gap="32px" py="32px">
           {filteredResources
             .slice((page - 1) * pageSize, page * pageSize)
