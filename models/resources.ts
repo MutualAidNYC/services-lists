@@ -26,8 +26,8 @@ export type Resource = {
   link?: string
   phone?: string
   email?: string
-  /** Comma-separated string of needs */
-  Needs?: string[]
+  /** Resources should have only one need - array shape comes from Airtable mapping */
+  needs?: string[]
   // Not all resources have addresses
 } & Partial<Address>
 

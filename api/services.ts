@@ -1,6 +1,6 @@
 import { AirtableClient, AirtableCreateResponse } from 'database'
 import { CreateServicesListRequest, Need, Resource, ServicesList } from 'models'
-import { AxiosClient } from './clients'
+import { AxiosClient } from './axios'
 
 const ServicesAxiosClient = new AxiosClient('/api')
 
@@ -51,7 +51,7 @@ export const postServicesList = async (
 
 export const getAllNeeds = async (filter = ''): Promise<Need[]> => {
   const response = await ServicesAxiosClient.get<Need[]>(
-    `/taxonomies?filter=${filter}`
+    `/needs?filter=${filter}`
   )
   return response.data
 }

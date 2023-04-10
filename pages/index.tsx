@@ -11,7 +11,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { getAllResources } from 'api'
+import { getAllNeeds, getAllResources } from 'api'
 import {
   CreateListAlert,
   CreateListDrawer,
@@ -23,25 +23,41 @@ import { CreateListProvider, useCreateList, usePagination } from 'hooks'
 import { Resource, RESOURCE_SEARCH_FIELDS } from 'models'
 import { NextPage } from 'next'
 import Head from 'next/head'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Search } from 'react-feather'
 import { useQuery } from 'react-query'
 import Select from 'react-select'
-import { fuseSearch, onEnter } from 'utils'
+import { fuseSearch } from 'utils'
 
 export const HomePage: NextPage = () => {
-  const { data: allResources } = useQuery<Resource[], Error>(
-    ['allResources'],
-    () => getAllResources()
+  const { data: allResources } = useQuery('getAllResources', () =>
+    getAllResources()
   )
 
-  const [filteredResources, setFilteredResources] = useState(allResources ?? [])
-  // Update resources state when query finishes
-  useEffect(() => {
-    if (allResources) {
-      setFilteredResources(allResources)
-    }
+  const { data: allNeeds } = useQuery('getAllNeeds', () => getAllNeeds())
+  const [selectedNeeds, setSelectedNeeds] = useState<string[]>([])
+
+  const fuse = useMemo(() => {
+    return new Fuse(allResources ?? [], { keys: RESOURCE_SEARCH_FIELDS })
   }, [allResources])
+  // For keyword searches
+  const [keyword, setKeyword] = useState('')
+
+  const filteredResources = useMemo(() => {
+    // Return all resources if keyword is an empty string
+    let filteredResources = keyword
+      ? fuseSearch({ fuse, pattern: keyword })
+      : allResources ?? []
+
+    if (selectedNeeds.length > 0) {
+      filteredResources = filteredResources.filter(
+        (resource) =>
+          resource.needs && selectedNeeds?.includes(resource.needs[0])
+      )
+    }
+
+    return filteredResources
+  }, [allResources, fuse, keyword, selectedNeeds])
 
   const {
     page,
@@ -57,21 +73,6 @@ export const HomePage: NextPage = () => {
     initialPageSize: 6,
     pagesDisplayed: 10,
   })
-
-  const fuse = useMemo(() => {
-    return new Fuse(allResources ?? [], { keys: RESOURCE_SEARCH_FIELDS })
-  }, [allResources])
-  // For keyword searches
-  const [keyword, setKeyword] = useState('')
-
-  const filterResources = () => {
-    // Return all resources if keyword is an empty string
-    const keywordSearchResources = keyword
-      ? fuseSearch({ fuse, pattern: keyword })
-      : allResources ?? []
-
-    setFilteredResources(keywordSearchResources)
-  }
 
   const createListHandler = useCreateList()
   const { onAlertOpen, onDrawerOpen } = createListHandler
@@ -131,14 +132,23 @@ export const HomePage: NextPage = () => {
             value={keyword}
             placeholder="Search by keyword"
             onChange={(event) => setKeyword(event.target.value)}
-            onKeyDown={(event) => onEnter({ event, handler: filterResources })}
           />
         </InputGroup>
-        <Button onClick={filterResources}>Search</Button>
       </Stack>
       <Stack spacing="32px" px="112px" py="64px">
         <Button onClick={onDrawerOpen}>View your list</Button>
-        <Select isMulti isSearchable placeholder="Category" />
+        <Select
+          isMulti
+          isSearchable
+          options={allNeeds?.map((need) => ({
+            value: need.Need,
+            label: need.Need,
+          }))}
+          onChange={(values) =>
+            setSelectedNeeds(values.map((value) => value.value))
+          }
+          placeholder="Filter by need"
+        />
         <Grid templateColumns="repeat(3, 1fr)" gap="32px" py="32px">
           {filteredResources
             .slice((page - 1) * pageSize, page * pageSize)

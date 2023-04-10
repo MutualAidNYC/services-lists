@@ -163,7 +163,7 @@ export const ServiceItem = ({
         flexDirection="row"
         justifyContent="space-between"
       >
-        {service.Needs && <TaxonomySection taxonomies={service.Needs} />}
+        {service.needs && <TaxonomySection taxonomies={service.needs} />}
         {service.streetAddress && setSelectedAddress && getAddressWithLabel && (
           <SearchAddressIcon
             selectedAddress={selectedAddress}
