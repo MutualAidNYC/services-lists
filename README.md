@@ -26,7 +26,7 @@ As of our most recent design, the major components of the project are as follows
 
 ## Requirements
 
-- [Node.js](https://nodejs.org/en/) (max version: 16.20.0)
+- [Node.js](https://nodejs.org/en/download/releases) (max version: 16.20.0)
   - This Node.js version cap is because [the project's version of Next.js (11.1.4), doesn't support above the specified version](https://github.com/vercel/next.js/issues/30078).
   - To easily switch between versions of Node when running locally, install [nvm](https://github.com/nvm-sh/nvm) (Node Version Manager).
   - Alternatively, the `NODE_OPTIONS` environment variable can be set before running locally with Node v17+: `NODE_OPTIONS=--openssl-legacy-provider npm run dev`
