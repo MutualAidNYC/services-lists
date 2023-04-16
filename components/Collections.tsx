@@ -36,15 +36,7 @@ export const Collections = ({ userData }: CollectionProps): JSX.Element => {
   if (loading) {
     return (
       <Stack w="100%" alignItems={'center'}>
-        <Spinner
-          mt={16}
-          mb={8}
-          boxSize="75px"
-          color="teal"
-          thickness="4px"
-          speed="0.65s"
-          emptyColor="gray.200"
-        />
+        <Spinner variant="primary" />
       </Stack>
     )
   }

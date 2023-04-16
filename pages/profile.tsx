@@ -1,5 +1,6 @@
 import {
   HStack,
+  Spinner,
   Stack,
   Tab,
   TabList,
@@ -15,7 +16,7 @@ import { useState } from 'react'
 import { signout } from 'utils/firebase'
 
 export const ProfilePage: NextPage = () => {
-  const { userData, loading } = useUser()
+  const { user, userData, loading } = useUser()
   const [currentTab, setCurrentTab] = useState<'collections' | 'profile'>(
     'collections'
   )
@@ -32,7 +33,8 @@ export const ProfilePage: NextPage = () => {
         <link rel="icon" href="/icon.ico" />
       </Head>
       <Stack spacing="16px" w="100%" alignItems={'center'}>
-        {!userData && !loading && (
+        {loading && <Spinner variant="primary" />}
+        {!user && !loading && (
           <AuthContainer
             displayBorder={true}
             initialState={'log_in'}
