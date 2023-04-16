@@ -20,7 +20,7 @@ const CollectionItem = ({
       {...props}
       boxShadow="md"
       rounded="lg"
-      p="8"
+      p={{ base: 4, md: 8 }}
       _hover={{ boxShadow: 'lg' }}
     >
       <HStack justifyContent={'space-between'} w="100%">

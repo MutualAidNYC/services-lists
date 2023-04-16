@@ -31,7 +31,7 @@ export const Collections = ({ userData }: CollectionProps): JSX.Element => {
       setListData(list)
       setLoading(false)
     })
-  }, [userData])
+  }, [userData.lists])
 
   if (loading) {
     return (

@@ -21,7 +21,7 @@ export const ProfilePage: NextPage = () => {
   )
 
   return (
-    <Stack spacing="32px" w="100%" p={{ base: '48px', md: '64px' }}>
+    <Stack spacing="32px" w="100%" p={{ base: 4, md: 12 }}>
       <Head>
         <title>Resource Lists</title>
         <meta
