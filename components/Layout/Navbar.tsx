@@ -121,7 +121,7 @@ export const Navbar = (): JSX.Element => {
       >
         <Link href="/">
           <Image
-            src="/new_manyc_logo.png"
+            src="/teal_manyc_logo.png"
             w="108px"
             h="96px"
             alt="Mutual Aid NYC"
@@ -133,7 +133,7 @@ export const Navbar = (): JSX.Element => {
             display={{ base: 'inherit', lg: 'none' }}
             as={IconButton}
             aria-label="Navbar menu"
-            icon={<HamburgerIcon />}
+            icon={<HamburgerIcon color="black" />}
             bgColor="white"
           />
           <MenuList display={{ base: 'inherit', lg: 'none' }}>

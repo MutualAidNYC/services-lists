@@ -28,7 +28,7 @@ export const Collections = ({ userData }: CollectionProps): JSX.Element => {
     }
 
     Promise.all(promises.map((p) => p.catch((e) => e))).then((list) => {
-      setListData(list)
+      setListData(list.filter((l) => !(l instanceof Error)))
       setLoading(false)
     })
   }, [userData.lists])
@@ -44,21 +44,25 @@ export const Collections = ({ userData }: CollectionProps): JSX.Element => {
   return (
     <VStack alignItems="left" w="100%" spacing={4}>
       <ButtonGroup variant={'ghost'}>
-        <Button as="a" href="">
+        <Button as="a" href="/">
           Create New Collection
         </Button>
-        {/* Using a Button Group in case we want to follow the current designs completely */}
+        <Button as="a" href="/">
+          Edit Collections
+        </Button>{' '}
       </ButtonGroup>
 
-      {listData.map((list) => {
-        if (!(list instanceof Error)) {
-          return <CollectionItem key={list.id} servicesList={list} />
-        }
-      })}
+      {listData.map((list) => (
+        <CollectionItem key={list.id} servicesList={list} />
+      ))}
 
       {listData.length === 0 && !loading && (
-        // TODO: Add a button to create a new collection & make this look better
-        <Text> You have no collections </Text>
+        <VStack>
+          <Text>You have no collections</Text>
+          <Button variant="ghost" as="a" href="/">
+            Create New Collection
+          </Button>
+        </VStack>
       )}
     </VStack>
   )
