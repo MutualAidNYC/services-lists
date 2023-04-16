@@ -1,4 +1,11 @@
-import { Button, ButtonGroup, Text, VStack } from '@chakra-ui/react'
+import {
+  Button,
+  ButtonGroup,
+  Spinner,
+  Stack,
+  Text,
+  VStack,
+} from '@chakra-ui/react'
 import { getServicesList } from 'api'
 import { ServicesList } from 'models'
 import { UserDoc } from 'models/users'
@@ -25,6 +32,22 @@ export const Collections = ({ userData }: CollectionProps): JSX.Element => {
       setLoading(false)
     })
   }, [userData])
+
+  if (loading) {
+    return (
+      <Stack w="100%" alignItems={'center'}>
+        <Spinner
+          mt={16}
+          mb={8}
+          boxSize="75px"
+          color="teal"
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+        />
+      </Stack>
+    )
+  }
 
   return (
     <VStack alignItems="left" w="100%" spacing={4}>
