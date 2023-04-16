@@ -3,19 +3,22 @@ import {
   Stack,
   Tab,
   TabList,
-  TabPanel,
-  TabPanels,
   Tabs,
   Text,
   VStack,
 } from '@chakra-ui/react'
+import { Collections } from 'components'
 import { AuthContainer, useUser } from 'components/Auth'
 import { NextPage } from 'next'
 import Head from 'next/head'
+import { useState } from 'react'
 import { signout } from 'utils/firebase'
 
 export const ProfilePage: NextPage = () => {
   const { userData, loading } = useUser()
+  const [currentTab, setCurrentTab] = useState<'collections' | 'profile'>(
+    'collections'
+  )
 
   return (
     <Stack spacing="32px" w="100%" p={{ base: '48px', md: '64px' }}>
@@ -60,15 +63,27 @@ export const ProfilePage: NextPage = () => {
                 size="lg"
               >
                 <TabList color="black">
-                  <Tab>My Collections</Tab>
-                  <Tab>Profile</Tab>
+                  <Tab
+                    _selected={{ fontWeight: 700 }}
+                    onClick={() => setCurrentTab('collections')}
+                  >
+                    My Collections
+                  </Tab>
+                  <Tab
+                    _selected={{ fontWeight: 700 }}
+                    onClick={() => setCurrentTab('profile')}
+                  >
+                    Profile
+                  </Tab>
                 </TabList>
-
-                <TabPanels>
-                  <TabPanel></TabPanel>
-                  <TabPanel></TabPanel>
-                </TabPanels>
               </Tabs>
+
+              <VStack pt={{ base: 2, md: 4 }} alignItems="left" w="100%">
+                {currentTab == 'collections' && (
+                  <Collections userData={userData} />
+                )}
+                {currentTab == 'profile' && <Text> {currentTab} </Text>}
+              </VStack>
             </VStack>
           </Stack>
         )}
