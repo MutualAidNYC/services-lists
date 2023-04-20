@@ -1,4 +1,4 @@
-import { findServiceList } from 'api'
+import { findServiceList } from 'apiFunctions'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {

@@ -16,7 +16,7 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "api": ["./api/index"],
+      "apiFunctions": ["apiFunctions/index"],
       "components": ["./components/index"],
       "hooks": ["./hooks/index"],
       "models": ["./models/index"],
