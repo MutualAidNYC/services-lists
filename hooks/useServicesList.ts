@@ -1,4 +1,4 @@
-import { getService, getServicesList } from 'api'
+import { getService, getServicesList } from 'apiFunctions'
 import { Resource, ServicesList } from 'models'
 import { createContext, useContext } from 'react'
 import { useQueries, useQuery, UseQueryOptions } from 'react-query'
