@@ -44,6 +44,8 @@ As of our most recent design, the major components of the project are as follows
 
 ## Running with Docker
 
+- Copy the `sample.env` file: `cp sample.env .env.local`
+- Add your Airtable API key and the id of the Airtable base containing your data to the `.env.local` file.
 - Build docker image from main directory: `docker build -t services-lists-docker . `
 - Run created image: `docker run -p 3000:3000 services-lists-docker`
 
