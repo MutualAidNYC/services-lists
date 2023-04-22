@@ -17,9 +17,9 @@ import { signout } from 'utils/firebase'
 
 export const ProfilePage: NextPage = () => {
   const { user, userData, loading } = useUser()
-  const [currentTab, setCurrentTab] = useState<'collections' | 'profile'>(
-    'collections'
-  )
+
+  // 0 -> Collections  1 -> Profile
+  const [tabIndex, setTabIndex] = useState(0)
 
   return (
     <Stack spacing="32px" w="100%" p={{ base: 4, md: 12 }}>
@@ -67,13 +67,13 @@ export const ProfilePage: NextPage = () => {
                 <TabList color="black">
                   <Tab
                     _selected={{ fontWeight: 700 }}
-                    onClick={() => setCurrentTab('collections')}
+                    onClick={() => setTabIndex(0)}
                   >
                     My Collections
                   </Tab>
                   <Tab
                     _selected={{ fontWeight: 700 }}
-                    onClick={() => setCurrentTab('profile')}
+                    onClick={() => setTabIndex(1)}
                   >
                     Profile
                   </Tab>
@@ -81,10 +81,8 @@ export const ProfilePage: NextPage = () => {
               </Tabs>
 
               <VStack pt={{ base: 2, md: 4 }} alignItems="left" w="100%">
-                {currentTab == 'collections' && (
-                  <Collections userData={userData} />
-                )}
-                {currentTab == 'profile' && <Text> {currentTab} </Text>}
+                {tabIndex === 0 && <Collections userData={userData} />}
+                {tabIndex === 1 && <Text> Profile </Text>}
               </VStack>
             </VStack>
           </Stack>

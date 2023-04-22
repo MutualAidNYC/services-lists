@@ -21,17 +21,19 @@ export const Collections = ({ userData }: CollectionProps): JSX.Element => {
   const [listData, setListData] = useState<ServicesList[]>([])
 
   useEffect(() => {
-    const promises = []
-    for (const list of userData.lists) {
-      const listData = getServicesList(list)
-      promises.push(listData)
-    }
+    if (loading) {
+      const promises = []
+      for (const list of userData.lists) {
+        const listData = getServicesList(list)
+        promises.push(listData)
+      }
 
-    Promise.all(promises.map((p) => p.catch((e) => e))).then((list) => {
-      setListData(list.filter((l) => !(l instanceof Error)))
-      setLoading(false)
-    })
-  }, [userData.lists])
+      Promise.all(promises.map((p) => p.catch((e) => e))).then((list) => {
+        setListData(list.filter((l) => !(l instanceof Error)))
+        setLoading(false)
+      })
+    }
+  }, [loading, userData.lists])
 
   if (loading) {
     return (
