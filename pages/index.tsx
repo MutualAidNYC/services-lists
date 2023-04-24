@@ -11,7 +11,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { getAllNeeds, getAllResources } from 'apiFunctions'
+import { getAllNeeds, getAllResources, selectAllNeighborhoods } from 'apiFunctions'
 import {
   CreateListAlert,
   CreateListDrawer,
@@ -20,7 +20,7 @@ import {
 } from 'components'
 import Fuse from 'fuse.js'
 import { CreateListProvider, useCreateList, usePagination } from 'hooks'
-import { Resource, RESOURCE_SEARCH_FIELDS } from 'models'
+import { Neighborhood, Resource, RESOURCE_SEARCH_FIELDS } from 'models'
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { useMemo, useState } from 'react'
