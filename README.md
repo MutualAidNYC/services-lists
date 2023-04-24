@@ -26,7 +26,10 @@ As of our most recent design, the major components of the project are as follows
 
 ## Requirements
 
-- [Node.js](https://nodejs.org/en/)
+- [Node.js](https://nodejs.org/en/download/releases) (max version: 16.20.0) - Downloads are under "Releases" for each Node version. The installers for Windows have the `.msi` file extension, `.pkg` for macOS.
+  - This Node.js version cap is because [the project's version of Next.js (11.1.4), doesn't support above the specified version](https://github.com/vercel/next.js/issues/30078).
+  - To install and easily switch between versions of Node when running locally, install [nvm](https://github.com/nvm-sh/nvm) (Node Version Manager).
+  - Alternatively, the `NODE_OPTIONS` environment variable can be set before running locally with Node v17+: `NODE_OPTIONS=--openssl-legacy-provider npm run dev`
 - [Yarn 1](https://classic.yarnpkg.com/lang/en/)
 
 ## Running Locally
@@ -41,6 +44,8 @@ As of our most recent design, the major components of the project are as follows
 
 ## Running with Docker
 
+- Copy the `sample.env` file: `cp sample.env .env.local`
+- Add your Airtable API key and the id of the Airtable base containing your data to the `.env.local` file.
 - Build docker image from main directory: `docker build -t services-lists-docker . `
 - Run created image: `docker run -p 3000:3000 services-lists-docker`
 

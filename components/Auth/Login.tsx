@@ -112,7 +112,12 @@ const Login = ({ setCurrentState }: LoginProps): JSX.Element => {
       </VStack>
 
       <VStack>
-        <Text variant={'clickable'}>Forgot your Password?</Text>
+        <Text
+          variant={'clickable'}
+          onClick={() => setCurrentState('forgot_password')}
+        >
+          Forgot your Password?
+        </Text>
         <Text variant={'clickable'} onClick={() => setCurrentState('sign_up')}>
           Create an account
         </Text>
