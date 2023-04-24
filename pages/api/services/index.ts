@@ -1,4 +1,4 @@
-import { selectAllServices } from 'api'
+import { selectAllServices } from 'apiFunctions'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Cache } from 'utils'
 

@@ -11,7 +11,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { getAllNeeds, getAllResources } from 'api'
+import { getAllNeeds, getAllResources } from 'apiFunctions'
 import {
   CreateListAlert,
   CreateListDrawer,

@@ -1,4 +1,4 @@
-import { getService, getServicesList } from 'api'
+import { getService, getServicesList } from 'apiFunctions'
 import { Resource, ServicesList } from 'models'
 import { createContext, useContext } from 'react'
 import { useQueries, useQuery, UseQueryOptions } from 'react-query'
@@ -49,7 +49,7 @@ export const useServiceList = (listId: string): ServiceListHandler => {
   const { filteredData: filteredServices, setSearchQuery } = useFilters(
     isLoadingServices ? [] : (baseServices as Resource[]),
     ['title', 'details'],
-    'Needs'
+    'needs'
   )
 
   return {

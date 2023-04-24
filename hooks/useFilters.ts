@@ -1,4 +1,4 @@
-import { getAllNeeds } from 'api'
+import { getAllNeeds } from 'apiFunctions'
 import { Need } from 'models'
 import { useState } from 'react'
 import { useQuery } from 'react-query'
