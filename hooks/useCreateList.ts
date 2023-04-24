@@ -1,11 +1,7 @@
 import { useDisclosure } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
-<<<<<<< HEAD
 import { createServicesLists } from 'apiFunctions'
 import { AirtableCreateResponse } from 'database'
-=======
-import { AirtableCreateResponse, createServicesLists } from 'apiFunctions'
->>>>>>> dfe1c02b3a5811cc1638a25971369da63afa1f0d
 import { CreateServicesListRequest, Resource } from 'models'
 import { useRouter } from 'next/router'
 import { BaseSyntheticEvent, createContext, useContext, useState } from 'react'
