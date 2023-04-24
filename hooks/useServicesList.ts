@@ -49,7 +49,7 @@ export const useServiceList = (listId: string): ServiceListHandler => {
   const { filteredData: filteredServices, setSearchQuery } = useFilters(
     isLoadingServices ? [] : (baseServices as Resource[]),
     ['title', 'details'],
-    'Needs'
+    'needs'
   )
 
   return {

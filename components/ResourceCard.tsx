@@ -34,6 +34,11 @@ export const ResourceCard = ({
             {resource.groupName}
           </Text>
         )}
+        {resource.needs && (
+          <Text fontSize="xl" fontWeight="semibold" color="Gray.900">
+            {`Need: ${resource.needs[0]}`}
+          </Text>
+        )}
         <Text overflowWrap="anywhere">{resource.details}</Text>
       </Stack>
       <HStack spacing="12px">
