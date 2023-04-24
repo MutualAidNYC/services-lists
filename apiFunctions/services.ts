@@ -112,10 +112,6 @@ export const createServicesLists = (
   )
 }
 
-export const selectAllNeeds = (filterFormula?: string): Promise<Need[]> => {
-  return ServicesAirtableClient.selectAll<Need>('Ref - Need', filterFormula)
-}
-
 export const selectAllNeighborhoods = (
   filterFormula?: string
 ): Promise<Neighborhood[]> => {

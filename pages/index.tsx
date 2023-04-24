@@ -11,7 +11,11 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { getAllNeeds, getAllResources, selectAllNeighborhoods } from 'apiFunctions'
+import {
+  getAllNeeds,
+  getAllResources,
+  selectAllNeighborhoods,
+} from 'apiFunctions'
 import {
   CreateListAlert,
   CreateListDrawer,
@@ -37,6 +41,13 @@ export const HomePage: NextPage = () => {
   const { data: allNeeds } = useQuery('getAllNeeds', () => getAllNeeds())
   const [selectedNeeds, setSelectedNeeds] = useState<string[]>([])
 
+  const { data: allNeighborhoods } = useQuery('selectAllNeighborhoods', () =>
+    selectAllNeighborhoods()
+  )
+  const [selectedNeighborhoods, setSelectedNeighborhoods] = useState<
+    Neighborhood[]
+  >([])
+
   const fuse = useMemo(() => {
     return new Fuse(allResources ?? [], { keys: RESOURCE_SEARCH_FIELDS })
   }, [allResources])
@@ -56,8 +67,24 @@ export const HomePage: NextPage = () => {
       )
     }
 
+    if (selectedNeighborhoods.length > 0) {
+      const neighborhoodResources: string[] = []
+      selectedNeighborhoods.forEach(function (neighborhood: Neighborhood) {
+        if (neighborhood['Resources']) {
+          neighborhood['Resources'].forEach(function (resourceId: string) {
+            neighborhoodResources.push(resourceId)
+          })
+        }
+      })
+      filteredResources = filteredResources.filter(function (
+        resource: Resource
+      ) {
+        return neighborhoodResources.includes(resource['id'])
+      })
+    }
+
     return filteredResources
-  }, [allResources, fuse, keyword, selectedNeeds])
+  }, [allResources, fuse, keyword, selectedNeeds, selectedNeighborhoods])
 
   const {
     page,
@@ -137,6 +164,22 @@ export const HomePage: NextPage = () => {
       </Stack>
       <Stack spacing="32px" px="112px" py="64px">
         <Button onClick={onDrawerOpen}>View your list</Button>
+        <Select
+          isMulti
+          isSearchable
+          options={allNeighborhoods
+            ?.map((neighborhood) => ({
+              value: neighborhood,
+              label: neighborhood['Neighborhood Name'],
+            }))
+            .sort(function (a, b) {
+              return a.label.localeCompare(b.label)
+            })}
+          onChange={(values) =>
+            setSelectedNeighborhoods(values.map((value) => value.value))
+          }
+          placeholder="Filter by neighborhood"
+        />
         <Select
           isMulti
           isSearchable
