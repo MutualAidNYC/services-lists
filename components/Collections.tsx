@@ -7,9 +7,9 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { getServicesList } from 'api'
-import { ServicesList } from 'models'
 import { UserDoc } from 'models/users'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useQuery } from 'react-query'
 import CollectionItem from './CollectionItem'
 
 interface CollectionProps {
@@ -17,25 +17,24 @@ interface CollectionProps {
 }
 
 export const Collections = ({ userData }: CollectionProps): JSX.Element => {
-  const [loading, setLoading] = useState(true)
-  const [listData, setListData] = useState<ServicesList[]>([])
+  const queryFn = async () => {
+    // remove duplicates and create fetch promises
+    const promises = userData.lists.map((list) => getServicesList(list))
 
-  useEffect(() => {
-    if (loading) {
-      const promises = []
-      for (const list of userData.lists) {
-        const listData = getServicesList(list)
-        promises.push(listData)
-      }
+    // fetch all lists in parallel and remove ones that errored
+    const result = (
+      await Promise.all<typeof promises>(promises.map((p) => p.catch((e) => e)))
+    ).filter((l) => !(l instanceof Error))
 
-      Promise.all(promises.map((p) => p.catch((e) => e))).then((list) => {
-        setListData(list.filter((l) => !(l instanceof Error)))
-        setLoading(false)
-      })
-    }
-  }, [loading, userData.lists])
+    return result
+  }
 
-  if (loading) {
+  const { data, isLoading } = useQuery({
+    queryKey: ['serviceListsResource', userData.lists],
+    queryFn,
+  })
+
+  if (isLoading) {
     return (
       <Stack w="100%" alignItems={'center'}>
         <Spinner variant="primary" />
@@ -54,11 +53,11 @@ export const Collections = ({ userData }: CollectionProps): JSX.Element => {
         </Button>{' '}
       </ButtonGroup>
 
-      {listData.map((list) => (
+      {data?.map((list) => (
         <CollectionItem key={list.id} servicesList={list} />
       ))}
 
-      {listData.length === 0 && !loading && (
+      {data?.length === 0 && !isLoading && (
         <VStack>
           <Text>You have no collections</Text>
           <Button variant="ghost" as="a" href="/">
