@@ -63,20 +63,11 @@ export const ProfilePage: NextPage = () => {
                 variant="line"
                 colorScheme="black"
                 size="lg"
+                onChange={(index) => setTabIndex(index)}
               >
                 <TabList color="black">
-                  <Tab
-                    _selected={{ fontWeight: 700 }}
-                    onClick={() => setTabIndex(0)}
-                  >
-                    My Collections
-                  </Tab>
-                  <Tab
-                    _selected={{ fontWeight: 700 }}
-                    onClick={() => setTabIndex(1)}
-                  >
-                    Profile
-                  </Tab>
+                  <Tab _selected={{ fontWeight: 700 }}>My Collections</Tab>
+                  <Tab _selected={{ fontWeight: 700 }}>Profile</Tab>
                 </TabList>
               </Tabs>
 
