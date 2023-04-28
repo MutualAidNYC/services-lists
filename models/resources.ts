@@ -28,6 +28,7 @@ export type Resource = {
   email?: string
   /** Resources should have only one need - array shape comes from Airtable mapping */
   needs?: string[]
+  neighborhoodNames?: string[]
   // Not all resources have addresses
 } & Partial<Address>
 

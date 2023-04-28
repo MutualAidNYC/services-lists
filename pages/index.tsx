@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   Grid,
   Heading,
   Input,
@@ -24,7 +25,7 @@ import {
 } from 'components'
 import Fuse from 'fuse.js'
 import { CreateListProvider, useCreateList, usePagination } from 'hooks'
-import { Neighborhood, Resource, RESOURCE_SEARCH_FIELDS } from 'models'
+import { Resource, RESOURCE_SEARCH_FIELDS } from 'models'
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { useMemo, useState } from 'react'
@@ -44,9 +45,9 @@ export const HomePage: NextPage = () => {
   const { data: allNeighborhoods } = useQuery('selectAllNeighborhoods', () =>
     selectAllNeighborhoods()
   )
-  const [selectedNeighborhoods, setSelectedNeighborhoods] = useState<
-    Neighborhood[]
-  >([])
+  const [selectedNeighborhoods, setSelectedNeighborhoods] = useState<string[]>(
+    []
+  )
 
   const fuse = useMemo(() => {
     return new Fuse(allResources ?? [], { keys: RESOURCE_SEARCH_FIELDS })
@@ -68,19 +69,13 @@ export const HomePage: NextPage = () => {
     }
 
     if (selectedNeighborhoods.length > 0) {
-      const neighborhoodResources: string[] = []
-      selectedNeighborhoods.forEach(function (neighborhood: Neighborhood) {
-        if (neighborhood['Resources']) {
-          neighborhood['Resources'].forEach(function (resourceId: string) {
-            neighborhoodResources.push(resourceId)
-          })
-        }
-      })
-      filteredResources = filteredResources.filter(function (
-        resource: Resource
-      ) {
-        return neighborhoodResources.includes(resource['id'])
-      })
+      filteredResources = filteredResources.filter(
+        (resource) =>
+          resource.neighborhoodNames &&
+          resource.neighborhoodNames.filter((neighborhood) =>
+            selectedNeighborhoods.includes(neighborhood)
+          ).length >= 1
+      )
     }
 
     return filteredResources
@@ -164,34 +159,42 @@ export const HomePage: NextPage = () => {
       </Stack>
       <Stack spacing="32px" px="112px" py="64px">
         <Button onClick={onDrawerOpen}>View your list</Button>
-        <Select
-          isMulti
-          isSearchable
-          options={allNeighborhoods
-            ?.map((neighborhood) => ({
-              value: neighborhood,
-              label: neighborhood['Neighborhood Name'],
-            }))
-            .sort(function (a, b) {
-              return a.label.localeCompare(b.label)
-            })}
-          onChange={(values) =>
-            setSelectedNeighborhoods(values.map((value) => value.value))
-          }
-          placeholder="Filter by neighborhood"
-        />
-        <Select
-          isMulti
-          isSearchable
-          options={allNeeds?.map((need) => ({
-            value: need.Need,
-            label: need.Need,
-          }))}
-          onChange={(values) =>
-            setSelectedNeeds(values.map((value) => value.value))
-          }
-          placeholder="Filter by need"
-        />
+        <Flex w="100%">
+          <Flex w="50%">
+            <Box w="50%" pr="20px">
+              <Select
+                isMulti
+                isSearchable
+                options={allNeeds?.map((need) => ({
+                  value: need.Need,
+                  label: need.Need,
+                }))}
+                onChange={(values) =>
+                  setSelectedNeeds(values.map((value) => value.value))
+                }
+                placeholder="Filter by need"
+              />
+            </Box>
+            <Box w="50%">
+              <Select
+                isMulti
+                isSearchable
+                options={allNeighborhoods
+                  ?.map((neighborhood) => ({
+                    value: neighborhood['Neighborhood Name'],
+                    label: neighborhood['Neighborhood Name'],
+                  }))
+                  .sort(function (a, b) {
+                    return a.label.localeCompare(b.label)
+                  })}
+                onChange={(values) =>
+                  setSelectedNeighborhoods(values.map((value) => value.value))
+                }
+                placeholder="Filter by neighborhood"
+              />
+            </Box>
+          </Flex>
+        </Flex>
         <Grid templateColumns="repeat(3, 1fr)" gap="32px" py="32px">
           {filteredResources
             .slice((page - 1) * pageSize, page * pageSize)
