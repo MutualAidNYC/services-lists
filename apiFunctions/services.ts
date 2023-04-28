@@ -1,5 +1,11 @@
 import { AirtableClient, AirtableCreateResponse } from 'database'
-import { CreateServicesListRequest, Need, Resource, ServicesList } from 'models'
+import {
+  CreateServicesListRequest,
+  Need,
+  Neighborhood,
+  Resource,
+  ServicesList,
+} from 'models'
 import { AxiosClient } from './axios'
 
 const ServicesAxiosClient = new AxiosClient('/api')
@@ -103,5 +109,14 @@ export const createServicesLists = (
         },
       }
     })
+  )
+}
+
+export const selectAllNeighborhoods = (
+  filterFormula?: string
+): Promise<Neighborhood[]> => {
+  return ServicesAirtableClient.selectAll<Neighborhood>(
+    'Ref - Neighborhoods',
+    filterFormula
   )
 }
