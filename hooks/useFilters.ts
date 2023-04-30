@@ -1,7 +1,7 @@
+import { useQuery } from '@tanstack/react-query'
 import { getAllNeeds } from 'apiFunctions'
 import { Need } from 'models'
 import { useState } from 'react'
-import { useQuery } from 'react-query'
 import { useDeepCompareMemo } from 'use-deep-compare'
 
 export interface FiltersHandler<T> {
