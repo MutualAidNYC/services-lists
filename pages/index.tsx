@@ -9,6 +9,7 @@ import {
   InputGroup,
   InputLeftElement,
   Link,
+  Spacer,
   Stack,
   Text,
 } from '@chakra-ui/react'
@@ -26,7 +27,12 @@ import {
 } from 'components'
 import Fuse from 'fuse.js'
 import { CreateListProvider, useCreateList, usePagination } from 'hooks'
-import { Resource, RESOURCE_SEARCH_FIELDS } from 'models'
+import {
+  Resource,
+  ResourceSortMethod,
+  RESOURCE_SEARCH_FIELDS,
+  RESOURCE_SORT_METHODS,
+} from 'models'
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { useMemo, useState } from 'react'
@@ -48,6 +54,9 @@ export const HomePage: NextPage = () => {
   const [selectedNeighborhoods, setSelectedNeighborhoods] = useState<string[]>(
     []
   )
+
+  const [resourceSortMethod, setResourceSortMethod] =
+    useState<ResourceSortMethod>('Last Modified')
 
   const fuse = useMemo(() => {
     return new Fuse(allResources ?? [], { keys: RESOURCE_SEARCH_FIELDS })
@@ -78,8 +87,19 @@ export const HomePage: NextPage = () => {
       )
     }
 
+    filteredResources = filteredResources.sort(function (a, b) {
+      return a[resourceSortMethod] <= b[resourceSortMethod] ? 1 : -1
+    })
+
     return filteredResources
-  }, [allResources, fuse, keyword, selectedNeeds, selectedNeighborhoods])
+  }, [
+    allResources,
+    fuse,
+    keyword,
+    resourceSortMethod,
+    selectedNeeds,
+    selectedNeighborhoods,
+  ])
 
   const {
     page,
@@ -191,6 +211,22 @@ export const HomePage: NextPage = () => {
                   setSelectedNeighborhoods(values.map((value) => value.value))
                 }
                 placeholder="Filter by neighborhood"
+              />
+            </Box>
+          </Flex>
+          <Flex w="50%">
+            <Spacer />
+            <Box w="25%">
+              <Select
+                isSearchable={false}
+                options={RESOURCE_SORT_METHODS.map((method) => ({
+                  value: method,
+                  label: method,
+                }))}
+                onChange={(value) =>
+                  value ? setResourceSortMethod(value.value) : null
+                }
+                placeholder="Sort by"
               />
             </Box>
           </Flex>

@@ -29,6 +29,8 @@ export type Resource = {
   /** Resources should have only one need - array shape comes from Airtable mapping */
   needs?: string[]
   neighborhoodNames?: string[]
+  'Created Time': string
+  'Last Modified': string
   // Not all resources have addresses
 } & Partial<Address>
 
@@ -53,3 +55,7 @@ export type ServicesList = CreateServicesListRequest & {
   taxonomies?: string[]
   createdAt: string
 }
+
+export const RESOURCE_SORT_METHODS = ['Last Modified', 'Created Time'] as const
+
+export type ResourceSortMethod = typeof RESOURCE_SORT_METHODS[number]
