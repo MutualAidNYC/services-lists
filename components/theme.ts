@@ -25,8 +25,8 @@ export const theme = extendTheme({
     },
   },
   fonts: {
-    body: 'Neue Haas Grotesk Display Pro',
-    heading: 'Neue Haas Grotesk Display Pro',
+    heading: 'Inter',
+    body: 'Inter',
   },
   fontSizes: {
     heading1: '48px',
