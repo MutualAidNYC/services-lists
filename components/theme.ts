@@ -62,6 +62,18 @@ export const theme = extendTheme({
         },
       },
     },
+    Spinner: {
+      variants: {
+        "primary": {
+          marginBlock: 4,
+          boxSize: "75px",
+          color: "teal",
+          thickness: "4px",
+          speed: "0.65s",
+          emptyColor: "gray.200"
+        }
+      }
+    },
     Heading: {
       baseStyle: {
         color: 'Gray.900',
