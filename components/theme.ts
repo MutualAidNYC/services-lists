@@ -25,8 +25,8 @@ export const theme = extendTheme({
     },
   },
   fonts: {
-    body: 'Neue Haas Grotesk Display Pro',
-    heading: 'Neue Haas Grotesk Display Pro',
+    heading: 'Inter',
+    body: 'Inter',
   },
   fontSizes: {
     heading1: '48px',
@@ -61,6 +61,18 @@ export const theme = extendTheme({
           borderRadius: 10,
         },
       },
+    },
+    Spinner: {
+      variants: {
+        "primary": {
+          marginBlock: 4,
+          boxSize: "75px",
+          color: "teal",
+          thickness: "4px",
+          speed: "0.65s",
+          emptyColor: "gray.200"
+        }
+      }
     },
     Heading: {
       baseStyle: {

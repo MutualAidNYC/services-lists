@@ -1,24 +1,28 @@
 import {
   HStack,
+  Spinner,
   Stack,
   Tab,
   TabList,
-  TabPanel,
-  TabPanels,
   Tabs,
   Text,
   VStack,
 } from '@chakra-ui/react'
+import { Collections } from 'components'
 import { AuthContainer, useUser } from 'components/Auth'
 import { NextPage } from 'next'
 import Head from 'next/head'
+import { useState } from 'react'
 import { signout } from 'utils/firebase'
 
 export const ProfilePage: NextPage = () => {
-  const { userData, loading } = useUser()
+  const { user, userData, loading } = useUser()
+
+  // 0 -> Collections  1 -> Profile
+  const [tabIndex, setTabIndex] = useState(0)
 
   return (
-    <Stack spacing="32px" w="100%" p={{ base: '48px', md: '64px' }}>
+    <Stack spacing="32px" w="100%" p={{ base: 4, md: 12 }}>
       <Head>
         <title>Resource Lists</title>
         <meta
@@ -29,7 +33,8 @@ export const ProfilePage: NextPage = () => {
         <link rel="icon" href="/icon.ico" />
       </Head>
       <Stack spacing="16px" w="100%" alignItems={'center'}>
-        {!userData && !loading && (
+        {loading && <Spinner variant="primary" />}
+        {!user && !loading && (
           <AuthContainer
             displayBorder={true}
             initialState={'log_in'}
@@ -58,17 +63,18 @@ export const ProfilePage: NextPage = () => {
                 variant="line"
                 colorScheme="black"
                 size="lg"
+                onChange={(index) => setTabIndex(index)}
               >
                 <TabList color="black">
-                  <Tab>My Collections</Tab>
-                  <Tab>Profile</Tab>
+                  <Tab _selected={{ fontWeight: 700 }}>My Collections</Tab>
+                  <Tab _selected={{ fontWeight: 700 }}>Profile</Tab>
                 </TabList>
-
-                <TabPanels>
-                  <TabPanel></TabPanel>
-                  <TabPanel></TabPanel>
-                </TabPanels>
               </Tabs>
+
+              <VStack pt={{ base: 2, md: 4 }} alignItems="left" w="100%">
+                {tabIndex === 0 && <Collections userData={userData} />}
+                {tabIndex === 1 && <Text> Profile </Text>}
+              </VStack>
             </VStack>
           </Stack>
         )}

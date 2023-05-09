@@ -309,17 +309,7 @@ export const ListPage: NextPage = () => {
                               </Box>
                             )
                           })}
-                        {isLoading && (
-                          <Spinner
-                            mt={16}
-                            mb={8}
-                            boxSize="75px"
-                            color="teal"
-                            thickness="4px"
-                            speed="0.65s"
-                            emptyColor="gray.200"
-                          />
-                        )}
+                        {isLoading && <Spinner variant={'primary'} />}
                         <Box pb={8}> {/* Just for styling purposes */} </Box>
                       </>
                     </VStack>

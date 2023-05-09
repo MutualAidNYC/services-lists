@@ -1,4 +1,6 @@
 export * from './Auth'
+export * from './CollectionItem'
+export * from './Collections'
 export * from './CreateList'
 export * from './forms'
 export * from './Icons'
@@ -14,3 +16,4 @@ export * from './ShareLink'
 export * from './SortMenu'
 export * from './TaxonomySection'
 export * from './theme'
+
