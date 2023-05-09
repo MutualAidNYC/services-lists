@@ -6,10 +6,10 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react'
-import { getServicesList } from 'api'
+import { useQuery } from '@tanstack/react-query'
+import { getServicesList } from 'apiFunctions'
 import { UserDoc } from 'models/users'
 import React from 'react'
-import { useQuery } from 'react-query'
 import CollectionItem from './CollectionItem'
 
 interface CollectionProps {

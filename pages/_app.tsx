@@ -1,4 +1,7 @@
 import { ChakraProvider } from '@chakra-ui/react'
+import '@fontsource/inter/400.css'
+import '@fontsource/inter/600.css'
+import '@fontsource/inter/700.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthProvider } from 'components'
 import { Fonts, Navbar } from 'components/Layout'

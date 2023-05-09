@@ -64,15 +64,15 @@ export const theme = extendTheme({
     },
     Spinner: {
       variants: {
-        "primary": {
+        primary: {
           marginBlock: 4,
-          boxSize: "75px",
-          color: "teal",
-          thickness: "4px",
-          speed: "0.65s",
-          emptyColor: "gray.200"
-        }
-      }
+          boxSize: '75px',
+          color: 'teal',
+          thickness: '4px',
+          speed: '0.65s',
+          emptyColor: 'gray.200',
+        },
+      },
     },
     Heading: {
       baseStyle: {
