@@ -63,7 +63,7 @@ export const CreateListDrawer = (): JSX.Element => {
           <Button onClick={onDrawerClose}>Add more resources</Button>
           <Button
             type="submit"
-            disabled={!isValid || createListItems.length === 0}
+            isDisabled={!isValid || createListItems.length === 0}
             isLoading={isCreatingServicesList}
           >
             Submit

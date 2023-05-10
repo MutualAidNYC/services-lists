@@ -33,6 +33,7 @@
     "react-hook-form": "^7.43.9",
     "react-paginated-list": "^1.1.6",
     "react-select": "^5.7.3",
+    "styled-components": "^5.3.3",
     "use-deep-compare": "^1.1.0",
     "yup": "^0.32.11"
   },
