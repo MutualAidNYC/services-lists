@@ -3,7 +3,8 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
   moduleNameMapper: {
-    '^api': '<rootDir>/api/index',
+    '^apiFunctions': '<rootDir>/apiFunctions/index',
+    '^database': '<rootDir>/database/index',
     '^hooks': '<rootDir>/hooks/index',
     '^utils': '<rootDir>/utils/index',
   },

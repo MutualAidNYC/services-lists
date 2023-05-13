@@ -12,6 +12,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
+import { useQuery } from '@tanstack/react-query'
 import {
   getAllNeeds,
   getAllResources,
@@ -30,19 +31,18 @@ import { NextPage } from 'next'
 import Head from 'next/head'
 import { useMemo, useState } from 'react'
 import { Search } from 'react-feather'
-import { useQuery } from 'react-query'
 import Select from 'react-select'
 import { fuseSearch } from 'utils'
 
 export const HomePage: NextPage = () => {
-  const { data: allResources } = useQuery('getAllResources', () =>
+  const { data: allResources } = useQuery(['getAllResources'], () =>
     getAllResources()
   )
 
-  const { data: allNeeds } = useQuery('getAllNeeds', () => getAllNeeds())
+  const { data: allNeeds } = useQuery(['getAllNeeds'], () => getAllNeeds())
   const [selectedNeeds, setSelectedNeeds] = useState<string[]>([])
 
-  const { data: allNeighborhoods } = useQuery('selectAllNeighborhoods', () =>
+  const { data: allNeighborhoods } = useQuery(['selectAllNeighborhoods'], () =>
     selectAllNeighborhoods()
   )
   const [selectedNeighborhoods, setSelectedNeighborhoods] = useState<string[]>(

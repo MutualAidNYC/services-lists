@@ -1,7 +1,7 @@
+import { useQueries, useQuery, UseQueryOptions } from '@tanstack/react-query'
 import { getService, getServicesList } from 'apiFunctions'
 import { Resource, ServicesList } from 'models'
 import { createContext, useContext } from 'react'
-import { useQueries, useQuery, UseQueryOptions } from 'react-query'
 import { useFilters } from './useFilters'
 
 export interface ServiceListHandler {
@@ -40,8 +40,9 @@ export const useServiceList = (listId: string): ServiceListHandler => {
         },
       }
     }) ?? [] // cannot be undefined or useQueries throws an error
-  const serviceQueryResults =
-    useQueries<UseQueryOptions<Resource, Error>[]>(servicesQueryOptions)
+  const serviceQueryResults = useQueries<UseQueryOptions<Resource, Error>[]>({
+    queries: servicesQueryOptions,
+  })
   const isLoadingServices = serviceQueryResults.some(
     (result) => result.isLoading
   )

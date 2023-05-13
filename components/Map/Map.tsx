@@ -41,7 +41,7 @@ export const Map = ({
   const center = getCenter(coords)
 
   return loadError ? (
-    <Text>{loadError}</Text>
+    <Text>{loadError.message}</Text>
   ) : isLoaded ? (
     // For some reason doesn't work with % width & height you need to use pixel numbers unless pos is absolute
     <GoogleMap
