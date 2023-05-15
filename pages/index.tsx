@@ -59,6 +59,11 @@ export const HomePage: NextPage = () => {
 
   const [resourceSortMethod, setResourceSortMethod] =
     useState<ResourceSortMethod>('Last Modified')
+  const [resourceSortAscending, setResourceSortAscending] =
+    useState<boolean>(false)
+  const changeResourceSortOrder = () => {
+    setResourceSortAscending(!resourceSortAscending)
+  }
 
   const fuse = useMemo(() => {
     return new Fuse(allResources ?? [], { keys: RESOURCE_SEARCH_FIELDS })
@@ -90,7 +95,11 @@ export const HomePage: NextPage = () => {
     }
 
     filteredResources = filteredResources.sort(function (a, b) {
-      return a[resourceSortMethod] <= b[resourceSortMethod] ? 1 : -1
+      if (resourceSortAscending) {
+        return b[resourceSortMethod] <= a[resourceSortMethod] ? 1 : -1
+      } else {
+        return a[resourceSortMethod] <= b[resourceSortMethod] ? 1 : -1
+      }
     })
 
     return filteredResources
@@ -98,6 +107,7 @@ export const HomePage: NextPage = () => {
     allResources,
     fuse,
     keyword,
+    resourceSortAscending,
     resourceSortMethod,
     selectedNeeds,
     selectedNeighborhoods,
@@ -184,11 +194,6 @@ export const HomePage: NextPage = () => {
         <Flex w="100%">
           <Flex w="50%">
             <Box w="50%" pr="20px">
-              <IconButton
-              aria-label='sort'
-              size='lg'
-              icon={<HamburgerIcon />}
-              />
               <Select
                 isMulti
                 isSearchable
@@ -223,18 +228,29 @@ export const HomePage: NextPage = () => {
           </Flex>
           <Flex w="50%">
             <Spacer />
-            <Box w="25%">
-              <Select
-                isSearchable={false}
-                options={RESOURCE_SORT_METHODS.map((method) => ({
-                  value: method,
-                  label: method,
-                }))}
-                onChange={(value) =>
-                  value ? setResourceSortMethod(value.value) : null
-                }
-                placeholder="Sort by"
-              />
+            <Box w="30%">
+              <Flex>
+                <IconButton
+                  aria-label="sort"
+                  size="sg"
+                  variant="outline"
+                  icon={<HamburgerIcon />}
+                  onClick={changeResourceSortOrder}
+                />
+                <Box w="80%">
+                  <Select
+                    isSearchable={false}
+                    options={RESOURCE_SORT_METHODS.map((method) => ({
+                      value: method,
+                      label: method,
+                    }))}
+                    onChange={(value) =>
+                      value ? setResourceSortMethod(value.value) : null
+                    }
+                    placeholder="Sort by"
+                  />
+                </Box>
+              </Flex>
             </Box>
           </Flex>
         </Flex>

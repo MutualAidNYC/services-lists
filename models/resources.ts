@@ -56,6 +56,10 @@ export type ServicesList = CreateServicesListRequest & {
   createdAt: string
 }
 
-export const RESOURCE_SORT_METHODS = ['title', 'Last Modified', 'Created Time'] as const
+export const RESOURCE_SORT_METHODS = [
+  'Last Modified',
+  'Created Time',
+  'title',
+] as const
 
 export type ResourceSortMethod = typeof RESOURCE_SORT_METHODS[number]
