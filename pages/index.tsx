@@ -1,3 +1,4 @@
+import { HamburgerIcon } from '@chakra-ui/icons'
 import {
   Box,
   Button,
@@ -5,6 +6,7 @@ import {
   Flex,
   Grid,
   Heading,
+  IconButton,
   Input,
   InputGroup,
   InputLeftElement,
@@ -28,10 +30,10 @@ import {
 import Fuse from 'fuse.js'
 import { CreateListProvider, useCreateList, usePagination } from 'hooks'
 import {
-  Resource,
-  ResourceSortMethod,
   RESOURCE_SEARCH_FIELDS,
   RESOURCE_SORT_METHODS,
+  Resource,
+  ResourceSortMethod,
 } from 'models'
 import { NextPage } from 'next'
 import Head from 'next/head'
@@ -182,6 +184,11 @@ export const HomePage: NextPage = () => {
         <Flex w="100%">
           <Flex w="50%">
             <Box w="50%" pr="20px">
+              <IconButton
+              aria-label='sort'
+              size='lg'
+              icon={<HamburgerIcon />}
+              />
               <Select
                 isMulti
                 isSearchable
