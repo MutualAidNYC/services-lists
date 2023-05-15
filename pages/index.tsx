@@ -1,4 +1,4 @@
-import { HamburgerIcon } from '@chakra-ui/icons'
+import { TriangleDownIcon } from '@chakra-ui/icons'
 import {
   Box,
   Button,
@@ -234,7 +234,7 @@ export const HomePage: NextPage = () => {
                   aria-label="sort"
                   size="sg"
                   variant="outline"
-                  icon={<HamburgerIcon />}
+                  icon={<TriangleDownIcon />}
                   onClick={changeResourceSortOrder}
                 />
                 <Box w="80%">
