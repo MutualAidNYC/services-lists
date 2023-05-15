@@ -230,6 +230,7 @@ export const HomePage: NextPage = () => {
             <Spacer />
             <Box w="30%">
               <Flex>
+                <Spacer />
                 <IconButton
                   aria-label="sort"
                   size="sg"
