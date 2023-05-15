@@ -1,8 +1,8 @@
 import {
   FieldValues,
+  Path,
   UseFormRegisterReturn,
   UseFormReturn,
-  Path,
 } from 'react-hook-form'
 
 interface HookFormProps extends UseFormRegisterReturn {
@@ -17,8 +17,8 @@ export const useHookFormProps = <T extends FieldValues>(
   const { register, formState } = form
   const { errors } = formState
 
-  const isInvalid = errors[name] !== undefined
-  const error = isInvalid ? errors[name].message : ''
+  const isInvalid = name in errors
+  const error = isInvalid ? (errors[name]?.message as string) : ''
 
   return {
     isInvalid,
