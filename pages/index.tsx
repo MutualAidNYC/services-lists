@@ -55,16 +55,17 @@ export const HomePage: NextPage = () => {
   const [selectedNeighborhoods, setSelectedNeighborhoods] = useState<string[]>(
     []
   )
-  const [resourceSortLabel, setResourceSortLabel] = useState<string>(
-    "Sort Ascending"
-  )
+  const [resourceSortLabel, setResourceSortLabel] =
+    useState<string>('Sort Ascending')
 
   const [resourceSortMethod, setResourceSortMethod] =
     useState<ResourceSortMethod>('Last Modified')
   const [resourceSortAscending, setResourceSortAscending] =
     useState<boolean>(false)
   const changeResourceSortOrder = () => {
-    setResourceSortLabel(resourceSortAscending ? 'Sort Ascending': 'Sort Descending')
+    setResourceSortLabel(
+      resourceSortAscending ? 'Sort Ascending' : 'Sort Descending'
+    )
     setResourceSortAscending(!resourceSortAscending)
   }
 
@@ -98,8 +99,12 @@ export const HomePage: NextPage = () => {
     }
 
     filteredResources = filteredResources.sort(function (a, b) {
-      let aVal = a[resourceSortMethod].toLowerCase().replace(/[^0-9a-z]/gi, '')
-      let bVal = b[resourceSortMethod].toLowerCase().replace(/[^0-9a-z]/gi, '')
+      const aVal = a[resourceSortMethod]
+        .toLowerCase()
+        .replace(/[^0-9a-z]/gi, '')
+      const bVal = b[resourceSortMethod]
+        .toLowerCase()
+        .replace(/[^0-9a-z]/gi, '')
       if (resourceSortAscending) {
         return bVal <= aVal ? 1 : -1
       } else {
@@ -240,7 +245,9 @@ export const HomePage: NextPage = () => {
                   aria-label="sort"
                   size="sg"
                   variant="outline"
-                  icon={resourceSortAscending ? <ChevronsUp /> : <ChevronsDown />}
+                  icon={
+                    resourceSortAscending ? <ChevronsUp /> : <ChevronsDown />
+                  }
                   onClick={changeResourceSortOrder}
                   title={resourceSortLabel}
                 />
