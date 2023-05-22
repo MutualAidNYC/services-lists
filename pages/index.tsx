@@ -1,4 +1,3 @@
-import { TriangleDownIcon } from '@chakra-ui/icons'
 import {
   Box,
   Button,
@@ -38,7 +37,7 @@ import {
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { useMemo, useState } from 'react'
-import { Search } from 'react-feather'
+import { Search, ChevronsUp, ChevronsDown } from 'react-feather'
 import Select from 'react-select'
 import { fuseSearch } from 'utils'
 
@@ -56,12 +55,16 @@ export const HomePage: NextPage = () => {
   const [selectedNeighborhoods, setSelectedNeighborhoods] = useState<string[]>(
     []
   )
+  const [resourceSortLabel, setResourceSortLabel] = useState<string>(
+    "Sort Ascending"
+  )
 
   const [resourceSortMethod, setResourceSortMethod] =
     useState<ResourceSortMethod>('Last Modified')
   const [resourceSortAscending, setResourceSortAscending] =
     useState<boolean>(false)
   const changeResourceSortOrder = () => {
+    setResourceSortLabel(resourceSortAscending ? 'Sort Ascending': 'Sort Descending')
     setResourceSortAscending(!resourceSortAscending)
   }
 
@@ -95,10 +98,12 @@ export const HomePage: NextPage = () => {
     }
 
     filteredResources = filteredResources.sort(function (a, b) {
+      let aVal = a[resourceSortMethod].toLowerCase().replace(/[^0-9a-z]/gi, '')
+      let bVal = b[resourceSortMethod].toLowerCase().replace(/[^0-9a-z]/gi, '')
       if (resourceSortAscending) {
-        return b[resourceSortMethod] <= a[resourceSortMethod] ? 1 : -1
+        return bVal <= aVal ? 1 : -1
       } else {
-        return a[resourceSortMethod] <= b[resourceSortMethod] ? 1 : -1
+        return aVal <= bVal ? 1 : -1
       }
     })
 
@@ -235,8 +240,9 @@ export const HomePage: NextPage = () => {
                   aria-label="sort"
                   size="sg"
                   variant="outline"
-                  icon={<TriangleDownIcon />}
+                  icon={resourceSortAscending ? <ChevronsUp /> : <ChevronsDown />}
                   onClick={changeResourceSortOrder}
+                  title={resourceSortLabel}
                 />
                 <Box w="80%">
                   <Select
