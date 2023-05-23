@@ -5,10 +5,12 @@ import {
   Flex,
   Grid,
   Heading,
+  IconButton,
   Input,
   InputGroup,
   InputLeftElement,
   Link,
+  Spacer,
   Stack,
   Text,
 } from '@chakra-ui/react'
@@ -26,11 +28,16 @@ import {
 } from 'components'
 import Fuse from 'fuse.js'
 import { CreateListProvider, useCreateList, usePagination } from 'hooks'
-import { Resource, RESOURCE_SEARCH_FIELDS } from 'models'
+import {
+  RESOURCE_SEARCH_FIELDS,
+  RESOURCE_SORT_METHODS,
+  Resource,
+  ResourceSortMethod,
+} from 'models'
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { useMemo, useState } from 'react'
-import { Search } from 'react-feather'
+import { Search, ChevronsUp, ChevronsDown } from 'react-feather'
 import Select from 'react-select'
 import { fuseSearch } from 'utils'
 
@@ -48,6 +55,19 @@ export const HomePage: NextPage = () => {
   const [selectedNeighborhoods, setSelectedNeighborhoods] = useState<string[]>(
     []
   )
+  const [resourceSortLabel, setResourceSortLabel] =
+    useState<string>('Sort Ascending')
+
+  const [resourceSortMethod, setResourceSortMethod] =
+    useState<ResourceSortMethod>('Last Modified')
+  const [resourceSortAscending, setResourceSortAscending] =
+    useState<boolean>(false)
+  const changeResourceSortOrder = () => {
+    setResourceSortLabel(
+      resourceSortAscending ? 'Sort Ascending' : 'Sort Descending'
+    )
+    setResourceSortAscending(!resourceSortAscending)
+  }
 
   const fuse = useMemo(() => {
     return new Fuse(allResources ?? [], { keys: RESOURCE_SEARCH_FIELDS })
@@ -78,8 +98,30 @@ export const HomePage: NextPage = () => {
       )
     }
 
+    filteredResources = filteredResources.sort(function (a, b) {
+      const aVal = a[resourceSortMethod]
+        .toLowerCase()
+        .replace(/[^0-9a-z]/gi, '')
+      const bVal = b[resourceSortMethod]
+        .toLowerCase()
+        .replace(/[^0-9a-z]/gi, '')
+      if (resourceSortAscending) {
+        return bVal <= aVal ? 1 : -1
+      } else {
+        return aVal <= bVal ? 1 : -1
+      }
+    })
+
     return filteredResources
-  }, [allResources, fuse, keyword, selectedNeeds, selectedNeighborhoods])
+  }, [
+    allResources,
+    fuse,
+    keyword,
+    resourceSortAscending,
+    resourceSortMethod,
+    selectedNeeds,
+    selectedNeighborhoods,
+  ])
 
   const {
     page,
@@ -192,6 +234,37 @@ export const HomePage: NextPage = () => {
                 }
                 placeholder="Filter by neighborhood"
               />
+            </Box>
+          </Flex>
+          <Flex w="50%">
+            <Spacer />
+            <Box w="30%">
+              <Flex>
+                <Spacer />
+                <IconButton
+                  aria-label="sort"
+                  size="sg"
+                  variant="outline"
+                  icon={
+                    resourceSortAscending ? <ChevronsUp /> : <ChevronsDown />
+                  }
+                  onClick={changeResourceSortOrder}
+                  title={resourceSortLabel}
+                />
+                <Box w="80%">
+                  <Select
+                    isSearchable={false}
+                    options={RESOURCE_SORT_METHODS.map((method) => ({
+                      value: method,
+                      label: method,
+                    }))}
+                    onChange={(value) =>
+                      value ? setResourceSortMethod(value.value) : null
+                    }
+                    placeholder="Sort by"
+                  />
+                </Box>
+              </Flex>
             </Box>
           </Flex>
         </Flex>

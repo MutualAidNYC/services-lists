@@ -16,4 +16,3 @@ export * from './ShareLink'
 export * from './SortMenu'
 export * from './TaxonomySection'
 export * from './theme'
-
