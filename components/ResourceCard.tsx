@@ -6,6 +6,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
+import { format } from 'date-fns'
 import { NO_ASSOCIATED_GROUP, Resource } from 'models'
 import { Bookmark, ExternalLink } from 'react-feather'
 
@@ -40,13 +41,15 @@ export const ResourceCard = ({
           </Text>
         )}
         <Text>
-          {`Last Modified: ${resource['Last Modified']
-            .split('.')[0]
-            .replace('T', ' ')}`}
+          {`Last Modified: ${format(
+            new Date(resource['Last Modified']),
+            'dd MMM yyyy, h:mm aaaa'
+          )}`}
           <br />
-          {`Created Time: ${resource['Created Time']
-            .split('.')[0]
-            .replace('T', ' ')}`}
+          {`Created Time: ${format(
+            new Date(resource['Created Time']),
+            'dd MMM yyyy, h:mm aaaa'
+          )}`}
         </Text>
         <Text overflowWrap="anywhere">{resource.details}</Text>
       </Stack>
