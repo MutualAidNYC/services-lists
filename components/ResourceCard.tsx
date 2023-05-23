@@ -39,6 +39,15 @@ export const ResourceCard = ({
             {`Need: ${resource.needs[0]}`}
           </Text>
         )}
+        <Text>
+          {`Last Modified: ${resource['Last Modified']
+            .split('.')[0]
+            .replace('T', ' ')}`}
+          <br />
+          {`Created Time: ${resource['Created Time']
+            .split('.')[0]
+            .replace('T', ' ')}`}
+        </Text>
         <Text overflowWrap="anywhere">{resource.details}</Text>
       </Stack>
       <HStack spacing="12px">
