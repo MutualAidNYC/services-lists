@@ -3,13 +3,13 @@ import {
   Button,
   Center,
   Flex,
-  Grid,
   Heading,
   IconButton,
   Input,
   InputGroup,
   InputLeftElement,
   Link,
+  SimpleGrid,
   Spacer,
   Stack,
   Text,
@@ -37,7 +37,7 @@ import {
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { useMemo, useState } from 'react'
-import { Search, ChevronsUp, ChevronsDown } from 'react-feather'
+import { ChevronsDown, ChevronsUp, Search } from 'react-feather'
 import Select from 'react-select'
 import { fuseSearch } from 'utils'
 
@@ -162,14 +162,14 @@ export const HomePage: NextPage = () => {
         <CreateListAlert selectedService={selectedResource} />
         <CreateListDrawer />
       </CreateListProvider>
-      <Box px="112px" py="96px">
+      <Box px="10%" py="96px" minWidth="800px">
         <Text fontWeight="semibold" color="Primary.600" mb="12px">
           Community Resources
         </Text>
         <Heading as="h1" fontSize="5xl" mb="24px">
           Resource Hub
         </Heading>
-        <Text maxW="50%">
+        <Text maxW="800px">
           Our community-sourced, volunteer-curated library is a growing
           collection of the many resources available to New Yorkers. Mutual Aid
           NYC is committed to building a comprehensive list of high-quality
@@ -182,11 +182,12 @@ export const HomePage: NextPage = () => {
       <Stack
         bgColor="Primary.50"
         py="72px"
-        px="112px"
+        px="10%"
         direction={{ base: 'column', md: 'row' }}
         align={{ base: undefined, md: 'center' }}
         spacing="16px"
         justify="space-between"
+        minWidth="800px"
       >
         <InputGroup>
           <InputLeftElement pointerEvents="none">
@@ -199,11 +200,11 @@ export const HomePage: NextPage = () => {
           />
         </InputGroup>
       </Stack>
-      <Stack spacing="32px" px="112px" py="64px">
+      <Stack spacing="32px" px="10%" py="64px" minWidth="800px">
         <Button onClick={onDrawerOpen}>View your list</Button>
         <Flex w="100%">
           <Flex w="50%">
-            <Box w="50%" pr="20px">
+            <Box w="50%" pr="20px" minWidth="250px">
               <Select
                 isMulti
                 isSearchable
@@ -217,7 +218,7 @@ export const HomePage: NextPage = () => {
                 placeholder="Filter by need"
               />
             </Box>
-            <Box w="50%">
+            <Box w="50%" minWidth="250px">
               <Select
                 isMulti
                 isSearchable
@@ -238,7 +239,7 @@ export const HomePage: NextPage = () => {
           </Flex>
           <Flex w="50%">
             <Spacer />
-            <Box w="30%">
+            <Box w="30%" minWidth="200px">
               <Flex>
                 <Spacer />
                 <IconButton
@@ -268,7 +269,7 @@ export const HomePage: NextPage = () => {
             </Box>
           </Flex>
         </Flex>
-        <Grid templateColumns="repeat(3, 1fr)" gap="32px" py="32px">
+        <SimpleGrid minChildWidth="600px" gap="32px" py="32px">
           {filteredResources
             .slice((page - 1) * pageSize, page * pageSize)
             .map((resource) => (
@@ -278,7 +279,7 @@ export const HomePage: NextPage = () => {
                 saveResource={() => saveResource(resource)}
               />
             ))}
-        </Grid>
+        </SimpleGrid>
         <Pagination
           page={page}
           setPage={setPage}
@@ -289,7 +290,12 @@ export const HomePage: NextPage = () => {
           next={next}
         />
       </Stack>
-      <Center bgColor="Gray.50" flexDirection="column" py="96px">
+      <Center
+        bgColor="Gray.50"
+        flexDirection="column"
+        py="96px"
+        minWidth="800px"
+      >
         <Heading pb="20px">Contribute to the Resource Hub</Heading>
         <Text pb="40px" textAlign="center">
           If you know of resources that aren’t included in our database, please
