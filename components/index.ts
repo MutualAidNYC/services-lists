@@ -1,7 +1,6 @@
 export * from './Auth'
 export * from './CollectionItem'
 export * from './Collections'
-export * from './CreateList'
 export * from './forms'
 export * from './Icons'
 export * from './Layout'

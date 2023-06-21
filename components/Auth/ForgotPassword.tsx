@@ -2,11 +2,11 @@ import { ArrowBackIcon } from '@chakra-ui/icons'
 import { Button, HStack, Text, useToast, VStack } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Input } from 'components'
-import { useHookFormProps } from 'hooks'
 import { AuthState } from 'models/users'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { resetPassword } from 'utils/firebase'
+import { getHookFormProps } from 'utils/form'
 import * as yup from 'yup'
 
 interface ForgotPasswordProps {
@@ -78,7 +78,7 @@ const ForgotPassword = ({
           <Input
             type="email"
             isRequired
-            {...useHookFormProps('email', form)}
+            {...getHookFormProps('email', form)}
             _invalid={{ borderColor: 'red', outlineColor: 'none' }}
             placeholder="Email Address"
             onKeyDown={(e) => {

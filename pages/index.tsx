@@ -20,24 +20,20 @@ import {
   getAllResources,
   selectAllNeighborhoods,
 } from 'apiFunctions'
-import {
-  CreateListAlert,
-  CreateListDrawer,
-  Pagination,
-  ResourceCard,
-} from 'components'
+import { Pagination, ResourceCard } from 'components'
+import { CreateCollectionModal } from 'components/CreateCollectionModal'
 import Fuse from 'fuse.js'
-import { CreateListProvider, useCreateList, usePagination } from 'hooks'
+import { usePagination } from 'hooks'
+import { useCreateCollection } from 'hooks/useCreateCollection'
 import {
+  ResourceSortMethod,
   RESOURCE_SEARCH_FIELDS,
   RESOURCE_SORT_METHODS,
-  Resource,
-  ResourceSortMethod,
 } from 'models'
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { useMemo, useState } from 'react'
-import { Search, ChevronsUp, ChevronsDown } from 'react-feather'
+import { ChevronsDown, ChevronsUp, Search } from 'react-feather'
 import Select from 'react-select'
 import { fuseSearch } from 'utils'
 
@@ -138,14 +134,8 @@ export const HomePage: NextPage = () => {
     pagesDisplayed: 10,
   })
 
-  const createListHandler = useCreateList()
-  const { onAlertOpen, onDrawerOpen } = createListHandler
-
-  const [selectedResource, setSelectedResource] = useState<Resource>()
-  const saveResource = (resource: Resource) => {
-    setSelectedResource(resource)
-    onAlertOpen()
-  }
+  const { onModalOpen, saveResource, ...createCollectionModalProps } =
+    useCreateCollection()
 
   return (
     <>
@@ -158,10 +148,6 @@ export const HomePage: NextPage = () => {
         <meta name="image" content="/manyc_logo.png" />
         <link rel="icon" href="/icon.ico" />
       </Head>
-      <CreateListProvider value={createListHandler}>
-        <CreateListAlert selectedService={selectedResource} />
-        <CreateListDrawer />
-      </CreateListProvider>
       <Box px="112px" py="96px">
         <Text fontWeight="semibold" color="Primary.600" mb="12px">
           Community Resources
@@ -200,7 +186,7 @@ export const HomePage: NextPage = () => {
         </InputGroup>
       </Stack>
       <Stack spacing="32px" px="112px" py="64px">
-        <Button onClick={onDrawerOpen}>View your list</Button>
+        <Button onClick={onModalOpen}>View your list</Button>
         <Flex w="100%">
           <Flex w="50%">
             <Box w="50%" pr="20px">
@@ -279,6 +265,7 @@ export const HomePage: NextPage = () => {
               />
             ))}
         </Grid>
+        <CreateCollectionModal {...createCollectionModalProps} />
         <Pagination
           page={page}
           setPage={setPage}
