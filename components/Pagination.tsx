@@ -19,6 +19,7 @@ const PageButton = ({
     <Button
       onClick={() => setPage(page)}
       variant={isCurrentPage ? 'outline' : 'ghost'}
+      size={{ base: 'xs', md: 'md' }}
     >
       {page}
     </Button>
@@ -44,6 +45,7 @@ export const Pagination = ({
         onClick={previous}
         leftIcon={<ArrowLeft />}
         variant="ghost"
+        size={{ base: 'xs', md: 'md' }}
       >
         Previous
       </Button>
@@ -62,6 +64,7 @@ export const Pagination = ({
         onClick={next}
         rightIcon={<ArrowRight />}
         variant="ghost"
+        size={{ base: 'xs', md: 'md' }}
       >
         Next
       </Button>
