@@ -49,7 +49,25 @@ export const ResourceCard = ({
             'DD MMM YYYY, h:mm a'
           )}`}
         </Text>
-        <Text overflowWrap="anywhere">{resource.details}</Text>
+        <Text
+          overflowWrap="anywhere"
+          overflowY="scroll"
+          maxHeight={300}
+          css={{
+            '&::-webkit-scrollbar': {
+              width: '4px',
+            },
+            '&::-webkit-scrollbar-track': {
+              width: '6px',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              background: 'grey',
+              borderRadius: '24px',
+            },
+          }}
+        >
+          {resource.details}
+        </Text>
       </Stack>
       <HStack spacing="12px">
         <IconButton
