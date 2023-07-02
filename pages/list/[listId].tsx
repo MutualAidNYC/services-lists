@@ -201,8 +201,7 @@ export const ListPage: NextPage = () => {
             <LinkBox display="flex" justifyContent="center">
               <LinkOverlay href="/" _hover={{ textDecoration: 'underline' }}>
                 <Button colorScheme="teal">
-                  {' '}
-                  Create a new List <PlusSquareIcon mx={1} />{' '}
+                  Create a new List <PlusSquareIcon mx={1} />
                 </Button>
               </LinkOverlay>
             </LinkBox>
@@ -279,6 +278,7 @@ export const ListPage: NextPage = () => {
                   return (
                     <VStack
                       px={2}
+                      pt={4}
                       maxHeight="calc(100vh - 200px)"
                       overflowY="scroll"
                       overflowX="hidden"
