@@ -1,27 +1,23 @@
 import {
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
   forwardRef,
   Textarea as ChakraTextarea,
   TextareaProps as ChakraTextareaProps,
 } from '@chakra-ui/react'
+import { FormControl, FormControlChildProps } from './FormControl'
 
-interface TextareaProps extends ChakraTextareaProps {
-  label?: string
-  error?: string
-}
+type TextareaProps = ChakraTextareaProps & FormControlChildProps
 
-export const Textarea = forwardRef<TextareaProps, 'textarea'>(
+export const Textarea = forwardRef<TextareaProps, 'input'>(
   (
     {
+      id,
+      isRequired,
       isDisabled,
       isInvalid,
       isReadOnly,
-      isRequired,
-      id,
       label,
       error,
+      helperText,
       ...props
     },
     ref
@@ -29,14 +25,15 @@ export const Textarea = forwardRef<TextareaProps, 'textarea'>(
     return (
       <FormControl
         id={id}
-        isDisabled={isDisabled}
-        isReadOnly={isReadOnly}
         isRequired={isRequired}
+        isDisabled={isDisabled}
         isInvalid={isInvalid}
+        isReadOnly={isReadOnly}
+        label={label}
+        error={error}
+        helperText={helperText}
       >
-        {label && <FormLabel htmlFor={id}>{label}</FormLabel>}
         <ChakraTextarea ref={ref} {...props} />
-        {error && <FormErrorMessage>{error}</FormErrorMessage>}
       </FormControl>
     )
   }

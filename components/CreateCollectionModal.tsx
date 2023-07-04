@@ -30,7 +30,7 @@ const CreateCollectionResource = ({
 export const CreateCollectionModal = ({
   isModalOpen,
   onModalClose,
-  duplicateResourceMessage,
+  duplicateResourceId,
   form,
   collectionResources,
   removeResource,
@@ -49,50 +49,42 @@ export const CreateCollectionModal = ({
       onClose={onModalClose}
       title="Save resources to a collection"
     >
-      <Flex as="form" direction="column" onSubmit={onSubmit} minH="100%">
-        {duplicateResourceMessage && (
-          <Center flexGrow={1}>
-            Save at least one resource to your collection.
-          </Center>
-        )}
-        {!duplicateResourceMessage && (
-          <Flex direction="column" flexGrow={1} mb="32px">
-            <Stack spacing="16px" mb="32px">
-              <Input
-                isRequired
-                id="name"
-                label="Collection name"
-                {...getHookFormProps('name', form)}
+      <Stack as="form" onSubmit={onSubmit} spacing="32px">
+        <Stack spacing="16px">
+          <Input
+            isRequired
+            id="name"
+            label="Collection name"
+            helperText="Ex: Senator Gonzalez's District 59 Resources"
+            {...getHookFormProps('name', form)}
+          />
+          <Input
+            isRequired
+            id="creator"
+            label="Creator name"
+            helperText="Ex: Kristen Gonzalez"
+            {...getHookFormProps('creator', form)}
+          />
+          <Textarea
+            isRequired
+            id="description"
+            label="Description"
+            helperText="Ex: Mutual aid resources for NY State Senate District 59"
+            {...getHookFormProps('description', form)}
+          />
+        </Stack>
+        {collectionResources.length > 0 ? (
+          <Stack spacing="16px">
+            {collectionResources.map((resource, i) => (
+              <CreateCollectionResource
+                key={resource.key}
+                resource={resource}
+                removeResource={() => removeResource(i)}
               />
-              <Input
-                isRequired
-                id="creator"
-                label="Creator"
-                {...getHookFormProps('creator', form)}
-              />
-              <Textarea
-                isRequired
-                id="description"
-                label="Description"
-                {...getHookFormProps('description', form)}
-              />
-            </Stack>
-            {collectionResources.length > 0 ? (
-              <Stack spacing="16px">
-                {collectionResources.map((resource, i) => (
-                  <CreateCollectionResource
-                    key={resource.key}
-                    resource={resource}
-                    removeResource={() => removeResource(i)}
-                  />
-                ))}
-              </Stack>
-            ) : (
-              <Center flexGrow={1}>
-                Save at least one resource to your collection.
-              </Center>
-            )}
-          </Flex>
+            ))}
+          </Stack>
+        ) : (
+          <Center>Save at least one resource to your collection.</Center>
         )}
         <Stack direction={{ base: 'column', sm: 'row' }} spacing="16px">
           <Button onClick={onModalClose}>Close</Button>
@@ -104,7 +96,7 @@ export const CreateCollectionModal = ({
             Create collection
           </Button>
         </Stack>
-      </Flex>
+      </Stack>
     </Modal>
   )
 }

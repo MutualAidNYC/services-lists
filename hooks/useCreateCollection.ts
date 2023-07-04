@@ -5,7 +5,7 @@ import { createServicesLists } from 'apiFunctions'
 import { CreateServicesListRequest, Resource } from 'models'
 import { Collection } from 'models/collections'
 import { useRouter } from 'next/router'
-import { ReactNode, useState } from 'react'
+import { useState } from 'react'
 import {
   SubmitHandler,
   useFieldArray,
@@ -35,7 +35,7 @@ export type useCreateCollectionReturn = {
   onModalOpen: () => void
   onModalClose: () => void
   saveResource: (resource: Resource) => void
-  duplicateResourceMessage: ReactNode
+  duplicateResourceId: string
   form: UseFormReturn<CreateCollectionForm, unknown>
   collectionResources: (ResourceField & { key: string })[]
   removeResource: (resourceIndex: number) => void
@@ -86,15 +86,15 @@ export const useCreateCollection = (): useCreateCollectionReturn => {
   const onSubmit = form.handleSubmit(onValidSubmit)
 
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [duplicateResourceMessage, setDuplicateResourceMessage] = useState('')
+  const [duplicateResourceId, setDuplicateResourceId] = useState('')
 
   const saveResource = (resource: Resource) => {
     if (
       form.getValues('resources').filter((r) => r.id === resource.id).length > 0
     ) {
-      setDuplicateResourceMessage(``)
+      setDuplicateResourceId(resource.id)
     } else {
-      setDuplicateResourceMessage('')
+      setDuplicateResourceId('')
       append({ id: resource.id, title: resource.title })
     }
 
@@ -106,7 +106,7 @@ export const useCreateCollection = (): useCreateCollectionReturn => {
     onModalOpen: onOpen,
     onModalClose: onClose,
     saveResource,
-    duplicateResourceMessage,
+    duplicateResourceId,
     form,
     collectionResources: fields,
     removeResource: remove,

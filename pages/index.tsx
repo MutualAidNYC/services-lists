@@ -13,6 +13,7 @@ import {
   Spacer,
   Stack,
   Text,
+  useBreakpointValue,
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import {
@@ -119,6 +120,8 @@ export const HomePage: NextPage = () => {
     selectedNeighborhoods,
   ])
 
+  const numPages = useBreakpointValue({ base: 5, md: 10 })
+
   const {
     page,
     setPage,
@@ -131,7 +134,7 @@ export const HomePage: NextPage = () => {
   } = usePagination({
     totalItems: filteredResources.length,
     initialPageSize: 6,
-    pagesDisplayed: 10,
+    pagesDisplayed: numPages === undefined ? 10 : numPages,
   })
 
   const { onModalOpen, saveResource, ...createCollectionModalProps } =
@@ -155,7 +158,7 @@ export const HomePage: NextPage = () => {
         <Heading as="h1" fontSize="5xl" mb="24px">
           Resource Hub
         </Heading>
-        <Text maxW="50%">
+        <Text maxW={{ base: '100%', lg: '50%' }}>
           Our community-sourced, volunteer-curated library is a growing
           collection of the many resources available to New Yorkers. Mutual Aid
           NYC is committed to building a comprehensive list of high-quality
@@ -168,7 +171,7 @@ export const HomePage: NextPage = () => {
       <Stack
         bgColor="Primary.50"
         py="72px"
-        px="112px"
+        px={{ base: '10%', lg: '112px' }}
         direction={{ base: 'column', md: 'row' }}
         align={{ base: undefined, md: 'center' }}
         spacing="16px"
@@ -185,76 +188,96 @@ export const HomePage: NextPage = () => {
           />
         </InputGroup>
       </Stack>
-      <Stack spacing="32px" px="112px" py="64px">
+      <Stack spacing="32px" px={{ base: '10%', lg: '112px' }} py="64px">
         <Button onClick={onModalOpen}>View your list</Button>
-        <Flex w="100%">
-          <Flex w="50%">
-            <Box w="50%" pr="20px">
-              <Select
-                isMulti
-                isSearchable
-                options={allNeeds?.map((need) => ({
-                  value: need.Need,
-                  label: need.Need,
-                }))}
-                onChange={(values) =>
-                  setSelectedNeeds(values.map((value) => value.value))
-                }
-                placeholder="Filter by need"
-              />
-            </Box>
-            <Box w="50%">
-              <Select
-                isMulti
-                isSearchable
-                options={allNeighborhoods
-                  ?.map((neighborhood) => ({
-                    value: neighborhood['Neighborhood Name'],
-                    label: neighborhood['Neighborhood Name'],
-                  }))
-                  .sort(function (a, b) {
-                    return a.label.localeCompare(b.label)
-                  })}
-                onChange={(values) =>
-                  setSelectedNeighborhoods(values.map((value) => value.value))
-                }
-                placeholder="Filter by neighborhood"
-              />
-            </Box>
-          </Flex>
-          <Flex w="50%">
-            <Spacer />
-            <Box w="30%">
-              <Flex>
-                <Spacer />
-                <IconButton
-                  aria-label="sort"
-                  size="sg"
-                  variant="outline"
-                  icon={
-                    resourceSortAscending ? <ChevronsUp /> : <ChevronsDown />
+        <Stack w="100%" direction={{ base: 'column', lg: 'row' }}>
+          <Stack w="100%" direction={{ base: 'column', lg: 'row' }}>
+            <Stack
+              w={{ base: '100%', lg: '50%' }}
+              direction={{ base: 'column', lg: 'row' }}
+            >
+              <Box
+                w={{ base: '100%', lg: '50%' }}
+                pr={{ base: '0px', lg: '20px' }}
+              >
+                <Select
+                  isMulti
+                  isSearchable
+                  options={allNeeds?.map((need) => ({
+                    value: need.Need,
+                    label: need.Need,
+                  }))}
+                  onChange={(values) =>
+                    setSelectedNeeds(values.map((value) => value.value))
                   }
-                  onClick={changeResourceSortOrder}
-                  title={resourceSortLabel}
+                  placeholder="Filter by need"
                 />
-                <Box w="80%">
-                  <Select
-                    isSearchable={false}
-                    options={RESOURCE_SORT_METHODS.map((method) => ({
-                      value: method,
-                      label: method,
-                    }))}
-                    onChange={(value) =>
-                      value ? setResourceSortMethod(value.value) : null
+              </Box>
+              <Box w={{ base: '100%', lg: '50%' }}>
+                <Select
+                  isMulti
+                  isSearchable
+                  options={allNeighborhoods
+                    ?.map((neighborhood) => ({
+                      value: neighborhood['Neighborhood Name'],
+                      label: neighborhood['Neighborhood Name'],
+                    }))
+                    .sort(function (a, b) {
+                      return a.label.localeCompare(b.label)
+                    })}
+                  onChange={(values) =>
+                    setSelectedNeighborhoods(values.map((value) => value.value))
+                  }
+                  placeholder="Filter by neighborhood"
+                />
+              </Box>
+            </Stack>
+
+            <Stack
+              w={{ base: '100%', lg: '50%' }}
+              direction={{ base: 'column', lg: 'row' }}
+            >
+              <Spacer />
+              <Box w={{ base: '100%', lg: '30%' }}>
+                <Flex>
+                  <Spacer />
+                  <IconButton
+                    aria-label="sort"
+                    size="sg"
+                    variant="outline"
+                    icon={
+                      resourceSortAscending ? <ChevronsUp /> : <ChevronsDown />
                     }
-                    placeholder="Sort by"
+                    onClick={changeResourceSortOrder}
+                    title={resourceSortLabel}
                   />
-                </Box>
-              </Flex>
-            </Box>
-          </Flex>
-        </Flex>
-        <Grid templateColumns="repeat(3, 1fr)" gap="32px" py="32px">
+                  <Box w={{ base: '100%', lg: '80%' }}>
+                    <Select
+                      isSearchable={false}
+                      options={RESOURCE_SORT_METHODS.map((method) => ({
+                        value: method,
+                        label: method,
+                      }))}
+                      onChange={(value) =>
+                        value ? setResourceSortMethod(value.value) : null
+                      }
+                      placeholder="Sort by"
+                    />
+                  </Box>
+                </Flex>
+              </Box>
+            </Stack>
+          </Stack>
+        </Stack>
+        <Grid
+          templateColumns={{
+            base: 'repeat(1, 1fr)',
+            md: 'repeat(2, 1fr)',
+            lg: 'repeat(3, 1fr)',
+          }}
+          gap="32px"
+          py="32px"
+        >
           {filteredResources
             .slice((page - 1) * pageSize, page * pageSize)
             .map((resource) => (
@@ -276,8 +299,19 @@ export const HomePage: NextPage = () => {
           next={next}
         />
       </Stack>
+      <Pagination
+        page={page}
+        setPage={setPage}
+        range={range}
+        hasPrevious={hasPrevious}
+        hasNext={hasNext}
+        previous={previous}
+        next={next}
+      />
       <Center bgColor="Gray.50" flexDirection="column" py="96px">
-        <Heading pb="20px">Contribute to the Resource Hub</Heading>
+        <Heading pb="20px" textAlign="center">
+          Contribute to the Resource Hub
+        </Heading>
         <Text pb="40px" textAlign="center">
           If you know of resources that aren’t included in our database, please
           submit it to MANYC.
