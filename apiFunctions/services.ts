@@ -4,7 +4,7 @@ import {
   Need,
   Neighborhood,
   Resource,
-  ServicesList,
+  ServicesList
 } from 'models'
 import { AxiosClient } from './axios'
 
@@ -104,7 +104,7 @@ export const createServicesLists = (
           name: list.name,
           description: list.description,
           Status: list.Status,
-          Resources: list.Resources,
+          resources: list.resources,
           creator: list.creator,
         },
       }
