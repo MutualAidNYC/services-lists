@@ -23,7 +23,7 @@ type CreateCollectionForm = Pick<
 
 const fieldRequiredMessage = 'Cannot be blank'
 
-const createListSchema = object({
+const schema = object({
   name: string().required(fieldRequiredMessage),
   creator: string().required(fieldRequiredMessage),
   description: string().required(fieldRequiredMessage),
@@ -46,7 +46,7 @@ export type useCreateCollectionReturn = {
 export const useCreateCollection = (): useCreateCollectionReturn => {
   const form = useForm<CreateCollectionForm>({
     mode: 'onBlur',
-    resolver: yupResolver(createListSchema),
+    resolver: yupResolver(schema),
     defaultValues: {
       resources: [],
     },
@@ -72,6 +72,7 @@ export const useCreateCollection = (): useCreateCollectionReturn => {
   const onValidSubmit: SubmitHandler<CreateCollectionForm> = (data) => {
     createCollectionMutation([
       {
+        // Set status to "Draft" b/c research team has to approve new collections
         status: 'Draft',
         name: data.name,
         description: data.description,
@@ -86,6 +87,7 @@ export const useCreateCollection = (): useCreateCollectionReturn => {
   const [duplicateResourceId, setDuplicateResourceId] = useState('')
 
   const saveResource = (resource: Resource) => {
+    // Check if saved resource is already in the form
     if (
       form.getValues('resources').filter((r) => r.id === resource.id).length > 0
     ) {
@@ -98,10 +100,16 @@ export const useCreateCollection = (): useCreateCollectionReturn => {
     onOpen()
   }
 
+  const onCloseWrapper = () => {
+    onClose()
+    // Clear duplicate on modal close
+    setDuplicateResourceId('')
+  }
+
   return {
     isModalOpen: isOpen,
     onModalOpen: onOpen,
-    onModalClose: onClose,
+    onModalClose: onCloseWrapper,
     saveResource,
     duplicateResourceId,
     form,
