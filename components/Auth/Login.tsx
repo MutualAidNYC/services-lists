@@ -9,12 +9,12 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useHookFormProps } from 'hooks'
 import { AuthState } from 'models/users'
 import React, { Dispatch, SetStateAction, useState } from 'react'
 import { Eye, EyeOff } from 'react-feather'
 import { ErrorOption, useForm } from 'react-hook-form'
 import { emailSignIn } from 'utils/firebase'
+import { getHookFormProps } from 'utils/form'
 import * as yup from 'yup'
 import { GoogleSignInButton } from '.'
 
@@ -74,7 +74,7 @@ const Login = ({ setCurrentState }: LoginProps): JSX.Element => {
           <Input
             type="email"
             isRequired
-            {...useHookFormProps('email', form)}
+            {...getHookFormProps('email', form)}
             _invalid={{ borderColor: 'red', outlineColor: 'none' }}
             placeholder="Email Address"
             onKeyDown={(e) => {
@@ -88,7 +88,7 @@ const Login = ({ setCurrentState }: LoginProps): JSX.Element => {
         <InputGroup>
           <Input
             isRequired
-            {...useHookFormProps('password', form)}
+            {...getHookFormProps('password', form)}
             _invalid={{ borderColor: 'red', outlineColor: 'none' }}
             type={showPassword ? 'text' : 'password'}
             placeholder="Password"

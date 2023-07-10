@@ -5,12 +5,12 @@ import {
   UseFormReturn,
 } from 'react-hook-form'
 
-interface HookFormProps extends UseFormRegisterReturn {
+type HookFormProps = UseFormRegisterReturn & {
   isInvalid: boolean
   error: string
 }
 
-export const useHookFormProps = <T extends FieldValues>(
+export const getHookFormProps = <T extends FieldValues>(
   name: Path<T>,
   form: UseFormReturn<T>
 ): HookFormProps => {

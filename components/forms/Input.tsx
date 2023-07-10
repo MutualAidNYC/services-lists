@@ -1,27 +1,23 @@
 import {
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
   forwardRef,
   Input as ChakraInput,
   InputProps as ChakraInputProps,
 } from '@chakra-ui/react'
+import { FormControl, FormControlChildProps } from './FormControl'
 
-interface InputProps extends ChakraInputProps {
-  label?: string
-  error?: string
-}
+type InputProps = ChakraInputProps & FormControlChildProps
 
 export const Input = forwardRef<InputProps, 'input'>(
   (
     {
+      id,
+      isRequired,
       isDisabled,
       isInvalid,
       isReadOnly,
-      isRequired,
-      id,
       label,
       error,
+      helperText,
       ...props
     },
     ref
@@ -29,14 +25,15 @@ export const Input = forwardRef<InputProps, 'input'>(
     return (
       <FormControl
         id={id}
-        isDisabled={isDisabled}
-        isReadOnly={isReadOnly}
         isRequired={isRequired}
+        isDisabled={isDisabled}
         isInvalid={isInvalid}
+        isReadOnly={isReadOnly}
+        label={label}
+        error={error}
+        helperText={helperText}
       >
-        {label && <FormLabel htmlFor={id}>{label}</FormLabel>}
         <ChakraInput ref={ref} {...props} />
-        {error && <FormErrorMessage>{error}</FormErrorMessage>}
       </FormControl>
     )
   }

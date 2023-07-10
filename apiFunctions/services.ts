@@ -4,7 +4,7 @@ import {
   Need,
   Neighborhood,
   Resource,
-  ServicesList
+  ServicesList,
 } from 'models'
 import { AxiosClient } from './axios'
 
@@ -101,11 +101,7 @@ export const createServicesLists = (
     servicesLists.map((list) => {
       return {
         fields: {
-          name: list.name,
-          description: list.description,
-          Status: list.Status,
-          resources: list.resources,
-          creator: list.creator,
+          ...list,
         },
       }
     })

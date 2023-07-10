@@ -21,19 +21,13 @@ import {
   getAllResources,
   selectAllNeighborhoods,
 } from 'apiFunctions'
-import {
-  CreateListAlert,
-  CreateListDrawer,
-  Pagination,
-  ResourceCard,
-} from 'components'
+import { CreateCollectionModal, Pagination, ResourceCard } from 'components'
 import Fuse from 'fuse.js'
-import { CreateListProvider, useCreateList, usePagination } from 'hooks'
+import { useCreateCollection, usePagination } from 'hooks'
 import {
+  ResourceSortMethod,
   RESOURCE_SEARCH_FIELDS,
   RESOURCE_SORT_METHODS,
-  Resource,
-  ResourceSortMethod,
 } from 'models'
 import { NextPage } from 'next'
 import Head from 'next/head'
@@ -141,14 +135,8 @@ export const HomePage: NextPage = () => {
     pagesDisplayed: numPages === undefined ? 10 : numPages,
   })
 
-  const createListHandler = useCreateList()
-  const { onAlertOpen, onDrawerOpen } = createListHandler
-
-  const [selectedResource, setSelectedResource] = useState<Resource>()
-  const saveResource = (resource: Resource) => {
-    setSelectedResource(resource)
-    onAlertOpen()
-  }
+  const { onModalOpen, saveResource, ...createCollectionModalProps } =
+    useCreateCollection()
 
   return (
     <>
@@ -161,11 +149,7 @@ export const HomePage: NextPage = () => {
         <meta name="image" content="/manyc_logo.png" />
         <link rel="icon" href="/icon.ico" />
       </Head>
-      <CreateListProvider value={createListHandler}>
-        <CreateListAlert selectedService={selectedResource} />
-        <CreateListDrawer />
-      </CreateListProvider>
-      <Box px={{ base: '10%', lg: '112px' }} py="96px">
+      <Box px={{ base: '10%', lg: '112px' }}>
         <Text fontWeight="semibold" color="Primary.600" mb="12px">
           Community Resources
         </Text>
@@ -203,7 +187,6 @@ export const HomePage: NextPage = () => {
         </InputGroup>
       </Stack>
       <Stack spacing="32px" px={{ base: '10%', lg: '112px' }} py="64px">
-        <Button onClick={onDrawerOpen}>View your list</Button>
         <Stack w="100%" direction={{ base: 'column', lg: 'row' }}>
           <Stack w="100%" direction={{ base: 'column', lg: 'row' }}>
             <Stack
@@ -246,7 +229,6 @@ export const HomePage: NextPage = () => {
                 />
               </Box>
             </Stack>
-
             <Stack
               w={{ base: '100%', lg: '50%' }}
               direction={{ base: 'column', lg: 'row' }}
@@ -283,6 +265,9 @@ export const HomePage: NextPage = () => {
             </Stack>
           </Stack>
         </Stack>
+        {createCollectionModalProps.collectionResources.length > 0 && (
+          <Button onClick={onModalOpen}>View your collection</Button>
+        )}
         <Grid
           templateColumns={{
             base: 'repeat(1, 1fr)',
@@ -302,6 +287,7 @@ export const HomePage: NextPage = () => {
               />
             ))}
         </Grid>
+        <CreateCollectionModal {...createCollectionModalProps} />
       </Stack>
       <Pagination
         page={page}
