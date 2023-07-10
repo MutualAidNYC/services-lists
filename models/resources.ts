@@ -43,7 +43,7 @@ export const RESOURCE_SEARCH_FIELDS: (keyof Resource)[] = [
 export type CreateServicesListRequest = {
   name: string
   description: string
-  Status: ResourceListStatus
+  status: ResourceListStatus
   /** `Resources` table IDs */
   resources: string[]
   creator: string

@@ -9,12 +9,12 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useHookFormProps } from 'hooks'
 import { AuthState } from 'models/users'
 import React, { Dispatch, SetStateAction, useState } from 'react'
 import { Eye, EyeOff } from 'react-feather'
 import { ErrorOption, useForm } from 'react-hook-form'
 import { emailSignUp } from 'utils/firebase'
+import { getHookFormProps } from 'utils/form'
 import * as yup from 'yup'
 import { GoogleSignInButton } from '.'
 
@@ -94,7 +94,7 @@ const SignUp = ({ setCurrentState }: SignUpProps): JSX.Element => {
         <HStack>
           <Input
             isRequired
-            {...useHookFormProps('firstName', form)}
+            {...getHookFormProps('firstName', form)}
             _invalid={{ borderColor: 'red', outlineColor: 'none' }}
             type="text"
             placeholder="First Name"
@@ -107,7 +107,7 @@ const SignUp = ({ setCurrentState }: SignUpProps): JSX.Element => {
 
           <Input
             isRequired
-            {...useHookFormProps('lastName', form)}
+            {...getHookFormProps('lastName', form)}
             _invalid={{ borderColor: 'red', outlineColor: 'none' }}
             type="text"
             placeholder="Last Name"
@@ -120,7 +120,7 @@ const SignUp = ({ setCurrentState }: SignUpProps): JSX.Element => {
         </HStack>
 
         <Input
-          {...useHookFormProps('organization', form)}
+          {...getHookFormProps('organization', form)}
           _invalid={{ borderColor: 'red', outlineColor: 'none' }}
           type="text"
           placeholder="Organization (Optional)"
@@ -133,7 +133,7 @@ const SignUp = ({ setCurrentState }: SignUpProps): JSX.Element => {
 
         <Input
           isRequired
-          {...useHookFormProps('email', form)}
+          {...getHookFormProps('email', form)}
           _invalid={{ borderColor: 'red', outlineColor: 'none' }}
           type="email"
           placeholder="Email Address"
@@ -147,7 +147,7 @@ const SignUp = ({ setCurrentState }: SignUpProps): JSX.Element => {
         <InputGroup>
           <Input
             isRequired
-            {...useHookFormProps('password', form)}
+            {...getHookFormProps('password', form)}
             _invalid={{ borderColor: 'red', outlineColor: 'none' }}
             type={showPassword ? 'text' : 'password'}
             placeholder="Password"

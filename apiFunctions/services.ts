@@ -110,11 +110,7 @@ export const createServicesLists = (
     servicesLists.map((list) => {
       return {
         fields: {
-          name: list.name,
-          description: list.description,
-          Status: list.Status,
-          resources: list.resources,
-          creator: list.creator,
+          ...list,
         },
       }
     })

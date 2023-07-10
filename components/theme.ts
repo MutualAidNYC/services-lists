@@ -34,6 +34,7 @@ export const theme = extendTheme({
     subheading1: '28px',
     subheading2: '20px',
     subheading3: '16px',
+    subtitle: '14px',
   },
   styles: {
     global: {
