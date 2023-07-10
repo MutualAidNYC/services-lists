@@ -1,23 +1,28 @@
 import { Button, Center, Flex, IconButton, Stack, Text } from '@chakra-ui/react'
-import { Input, Textarea } from 'components'
-import { Modal } from 'components/Modal'
-import {
-  ResourceField,
-  useCreateCollectionReturn,
-} from 'hooks/useCreateCollection'
+import { Input, Modal, Textarea } from 'components'
+import { ResourceField, useCreateCollectionReturn } from 'hooks'
 import { Minus } from 'react-feather'
-import { getHookFormProps } from 'utils/form'
+import { getHookFormProps } from 'utils'
 
 const CreateCollectionResource = ({
   resource,
+  duplicateResourceId,
   removeResource,
 }: {
   resource: ResourceField
+  duplicateResourceId?: string
   removeResource: () => void
 }): JSX.Element => {
   return (
     <Flex alignItems="center" justifyContent="space-between">
-      <Text>{resource.title}</Text>
+      <Flex alignItems="start" direction="column">
+        <Text>{resource.title}</Text>
+        {resource.id === duplicateResourceId && (
+          <Text fontSize="subtitle" color="red">
+            You&apos;ve already added this resource
+          </Text>
+        )}
+      </Flex>
       <IconButton
         aria-label="Remove resource from list"
         icon={<Minus />}
@@ -48,9 +53,16 @@ export const CreateCollectionModal = ({
       isOpen={isModalOpen}
       onClose={onModalClose}
       title="Save resources to a collection"
+      size={{ base: 'xs', sm: 'md', md: 'xl' }}
     >
       <Stack as="form" onSubmit={onSubmit} spacing="32px">
         <Stack spacing="16px">
+          <Text fontSize="subtitle">
+            <Text as="span" color="red">
+              *
+            </Text>
+            Required field
+          </Text>
           <Input
             isRequired
             id="name"
@@ -79,6 +91,7 @@ export const CreateCollectionModal = ({
               <CreateCollectionResource
                 key={resource.key}
                 resource={resource}
+                duplicateResourceId={duplicateResourceId}
                 removeResource={() => removeResource(i)}
               />
             ))}
@@ -87,7 +100,6 @@ export const CreateCollectionModal = ({
           <Center>Save at least one resource to your collection.</Center>
         )}
         <Stack direction={{ base: 'column', sm: 'row' }} spacing="16px">
-          <Button onClick={onModalClose}>Close</Button>
           <Button
             type="submit"
             isDisabled={!isValid}
@@ -95,6 +107,7 @@ export const CreateCollectionModal = ({
           >
             Create collection
           </Button>
+          <Button onClick={onModalClose}>Close</Button>
         </Stack>
       </Stack>
     </Modal>

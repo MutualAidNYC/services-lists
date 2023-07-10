@@ -19,7 +19,7 @@ export const Modal = ({
   ...props
 }: ModalProps): JSX.Element => {
   return (
-    <ChakraModal size="xl" {...props}>
+    <ChakraModal {...props}>
       <ModalOverlay />
       <ModalContent>
         {title && (

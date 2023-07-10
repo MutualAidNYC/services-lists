@@ -21,11 +21,9 @@ import {
   getAllResources,
   selectAllNeighborhoods,
 } from 'apiFunctions'
-import { Pagination, ResourceCard } from 'components'
-import { CreateCollectionModal } from 'components/CreateCollectionModal'
+import { CreateCollectionModal, Pagination, ResourceCard } from 'components'
 import Fuse from 'fuse.js'
-import { usePagination } from 'hooks'
-import { useCreateCollection } from 'hooks/useCreateCollection'
+import { useCreateCollection, usePagination } from 'hooks'
 import {
   ResourceSortMethod,
   RESOURCE_SEARCH_FIELDS,
@@ -189,7 +187,6 @@ export const HomePage: NextPage = () => {
         </InputGroup>
       </Stack>
       <Stack spacing="32px" px={{ base: '10%', lg: '112px' }} py="64px">
-        <Button onClick={onModalOpen}>View your list</Button>
         <Stack w="100%" direction={{ base: 'column', lg: 'row' }}>
           <Stack w="100%" direction={{ base: 'column', lg: 'row' }}>
             <Stack
@@ -232,7 +229,6 @@ export const HomePage: NextPage = () => {
                 />
               </Box>
             </Stack>
-
             <Stack
               w={{ base: '100%', lg: '50%' }}
               direction={{ base: 'column', lg: 'row' }}
@@ -269,6 +265,9 @@ export const HomePage: NextPage = () => {
             </Stack>
           </Stack>
         </Stack>
+        {createCollectionModalProps.collectionResources.length > 0 && (
+          <Button onClick={onModalOpen}>View your collection</Button>
+        )}
         <Grid
           templateColumns={{
             base: 'repeat(1, 1fr)',
@@ -289,15 +288,6 @@ export const HomePage: NextPage = () => {
             ))}
         </Grid>
         <CreateCollectionModal {...createCollectionModalProps} />
-        <Pagination
-          page={page}
-          setPage={setPage}
-          range={range}
-          hasPrevious={hasPrevious}
-          hasNext={hasNext}
-          previous={previous}
-          next={next}
-        />
       </Stack>
       <Pagination
         page={page}

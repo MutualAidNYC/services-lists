@@ -1,3 +1,4 @@
+export * from './useCreateCollection'
 export * from './useFilters'
 export * from './usePagination'
 export * from './useServicesList'

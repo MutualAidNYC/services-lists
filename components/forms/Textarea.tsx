@@ -7,7 +7,7 @@ import { FormControl, FormControlChildProps } from './FormControl'
 
 type TextareaProps = ChakraTextareaProps & FormControlChildProps
 
-export const Textarea = forwardRef<TextareaProps, 'input'>(
+export const Textarea = forwardRef<TextareaProps, 'textarea'>(
   (
     {
       id,

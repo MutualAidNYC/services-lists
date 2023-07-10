@@ -51,13 +51,10 @@ export const useCreateCollection = (): useCreateCollectionReturn => {
       resources: [],
     },
   })
-  const { fields, append, remove } = useFieldArray<
-    CreateCollectionForm,
-    'resources',
-    'key'
-  >({
+  const { fields, append, remove } = useFieldArray({
     name: 'resources',
     control: form.control,
+    keyName: 'key',
   })
 
   const router = useRouter()
@@ -75,11 +72,11 @@ export const useCreateCollection = (): useCreateCollectionReturn => {
   const onValidSubmit: SubmitHandler<CreateCollectionForm> = (data) => {
     createCollectionMutation([
       {
-        Status: 'Draft',
+        status: 'Draft',
         name: data.name,
         description: data.description,
         creator: data.creator,
-        Resources: data.resources.map((resource) => resource.id),
+        resources: data.resources.map((resource) => resource.id),
       },
     ])
   }
