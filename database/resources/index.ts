@@ -6,3 +6,4 @@ export const ResourcesAirtableClient = new AirtableClient(
 )
 
 export * from './needs'
+export * from './neighborhoods'
