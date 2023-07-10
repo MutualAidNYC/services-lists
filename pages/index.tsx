@@ -16,11 +16,7 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
-import {
-  getAllNeeds,
-  getAllResources,
-  selectAllNeighborhoods,
-} from 'apiFunctions'
+import { getAllNeeds, getAllNeighborhoods, getAllResources } from 'apiFunctions'
 import {
   CreateListAlert,
   CreateListDrawer,
@@ -50,8 +46,8 @@ export const HomePage: NextPage = () => {
   const { data: allNeeds } = useQuery(['getAllNeeds'], () => getAllNeeds())
   const [selectedNeeds, setSelectedNeeds] = useState<string[]>([])
 
-  const { data: allNeighborhoods } = useQuery(['selectAllNeighborhoods'], () =>
-    selectAllNeighborhoods()
+  const { data: allNeighborhoods } = useQuery(['getAllNeighborhoods'], () =>
+    getAllNeighborhoods()
   )
   const [selectedNeighborhoods, setSelectedNeighborhoods] = useState<string[]>(
     []

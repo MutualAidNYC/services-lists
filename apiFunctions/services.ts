@@ -4,7 +4,7 @@ import {
   Need,
   Neighborhood,
   Resource,
-  ServicesList
+  ServicesList,
 } from 'models'
 import { AxiosClient } from './axios'
 
@@ -62,6 +62,15 @@ export const getAllNeeds = async (filter = ''): Promise<Need[]> => {
   return response.data
 }
 
+export const getAllNeighborhoods = async (
+  filter = ''
+): Promise<Neighborhood[]> => {
+  const response = await ServicesAxiosClient.get<Neighborhood[]>(
+    `/neighborhoods?filter=${filter}`
+  )
+  return response.data
+}
+
 // Airtable functions
 
 export const findService = (id: string): Promise<Resource> => {
@@ -109,14 +118,5 @@ export const createServicesLists = (
         },
       }
     })
-  )
-}
-
-export const selectAllNeighborhoods = (
-  filterFormula?: string
-): Promise<Neighborhood[]> => {
-  return ServicesAirtableClient.selectAll<Neighborhood>(
-    'Ref - Neighborhoods',
-    filterFormula
   )
 }
