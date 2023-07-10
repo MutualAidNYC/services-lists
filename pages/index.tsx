@@ -149,7 +149,7 @@ export const HomePage: NextPage = () => {
         <meta name="image" content="/manyc_logo.png" />
         <link rel="icon" href="/icon.ico" />
       </Head>
-      <Box px="112px" py="96px">
+      <Box px={{ base: '10%', lg: '112px' }}>
         <Text fontWeight="semibold" color="Primary.600" mb="12px">
           Community Resources
         </Text>
