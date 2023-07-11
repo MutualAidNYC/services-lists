@@ -47,6 +47,7 @@ export type CreateServicesListRequest = {
   /** `Resources` table IDs */
   resources: string[]
   creator: string
+  userId?: string
 }
 
 export type ServicesList = CreateServicesListRequest & {

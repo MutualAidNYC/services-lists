@@ -1,7 +1,7 @@
 import { useDisclosure } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
-import { createServicesLists } from 'apiFunctions'
+import { postServicesList } from 'apiFunctions'
 import { CreateServicesListRequest, Resource } from 'models'
 import { Collection } from 'models/collections'
 import { useRouter } from 'next/router'
@@ -13,6 +13,7 @@ import {
   UseFormReturn,
 } from 'react-hook-form'
 import { array, object, string } from 'yup'
+import { useUser } from 'components'
 
 export type ResourceField = { id: string; title: string }
 
@@ -61,7 +62,7 @@ export const useCreateCollection = (): useCreateCollectionReturn => {
   const { mutate: createCollectionMutation, isLoading: isCreatingCollection } =
     useMutation(
       (createServicesListRequests: CreateServicesListRequest[]) =>
-        createServicesLists(createServicesListRequests),
+        postServicesList(createServicesListRequests),
       {
         onSuccess: (data) => {
           router.push(`/list/${data[0].id}`)
@@ -69,17 +70,33 @@ export const useCreateCollection = (): useCreateCollectionReturn => {
       }
     )
 
+  const userInfo = useUser()
   const onValidSubmit: SubmitHandler<CreateCollectionForm> = (data) => {
-    createCollectionMutation([
-      {
-        // Set status to "Draft" b/c research team has to approve new collections
-        status: 'Draft',
-        name: data.name,
-        description: data.description,
-        creator: data.creator,
-        resources: data.resources.map((resource) => resource.id),
-      },
-    ])
+    // This should be handled somewhere else (i.e. shouldn't be able to submit unless there's userInfo)
+    if (userInfo.user === null) {
+      createCollectionMutation([
+        {
+          // Set status to "Draft" b/c research team has to approve new collections
+          status: 'Draft',
+          name: data.name,
+          description: data.description,
+          creator: data.creator,
+          resources: data.resources.map((resource) => resource.id),
+        },
+      ])
+    } else {
+      createCollectionMutation([
+        {
+          // Set status to "Draft" b/c research team has to approve new collections
+          status: 'Draft',
+          name: data.name,
+          description: data.description,
+          creator: data.creator,
+          resources: data.resources.map((resource) => resource.id),
+          userId: userInfo.user.uid,
+        },
+      ])
+    }
   }
   const onSubmit = form.handleSubmit(onValidSubmit)
 
