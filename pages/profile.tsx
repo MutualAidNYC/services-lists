@@ -22,7 +22,7 @@ export const ProfilePage: NextPage = () => {
   const [tabIndex, setTabIndex] = useState(0)
 
   return (
-    <Stack spacing="32px" w="100%" p={{ base: 4, md: 12 }}>
+    <Stack spacing="32px" w="100%" height={'100vh'} p={{ base: 4, md: 12 }}>
       <Head>
         <title>Resource Lists</title>
         <meta
@@ -67,7 +67,8 @@ export const ProfilePage: NextPage = () => {
               >
                 <TabList color="black">
                   <Tab _selected={{ fontWeight: 700 }}>My Collections</Tab>
-                  <Tab _selected={{ fontWeight: 700 }}>Profile</Tab>
+                  {/* Removing this for now until we have a profile section/ decide what to do there */}
+                  {/* <Tab _selected={{ fontWeight: 700 }}>Profile</Tab> */}
                 </TabList>
               </Tabs>
 

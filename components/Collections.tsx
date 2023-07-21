@@ -45,12 +45,16 @@ export const Collections = ({ userData }: CollectionProps): JSX.Element => {
   return (
     <VStack alignItems="left" w="100%" spacing={4}>
       <ButtonGroup variant={'ghost'}>
-        <Button as="a" href="/">
-          Create New Collection
-        </Button>
-        <Button as="a" href="/">
+        {data?.length > 0 && (
+          <Button as="a" href="/">
+            Create New Collection
+          </Button>
+        )}
+
+        {/* Removing this for now until we have editing a collection set up*/}
+        {/* <Button as="a" href="/">
           Edit Collections
-        </Button>{' '}
+        </Button>{' '} */}
       </ButtonGroup>
 
       {data?.map((list) => (

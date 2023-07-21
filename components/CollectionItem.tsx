@@ -1,8 +1,8 @@
 import { Box, Heading, HStack, Link, Stack, Text } from '@chakra-ui/react'
 import { ServicesList } from 'models'
 import React from 'react'
-import { MoreVertical } from 'react-feather'
 import { formatDate } from 'utils'
+import { ShareLink } from './ShareLink'
 import { TaxonomySection } from './TaxonomySection'
 
 interface CollectionItemProps {
@@ -29,8 +29,12 @@ const CollectionItem = ({
         <Heading fontSize="subheading2" mb="16px">
           <Link href={`list/${servicesList.id}`}>{servicesList.name}</Link>
         </Heading>
-        {/* TODO on click should let you edit the list */}
-        <MoreVertical cursor={'pointer'} />
+        {/* TODO on click should let you edit the list and other actions */}
+        <ShareLink
+          resourceURL={`${window.location.href}list/${servicesList.id}`}
+          title={servicesList.name}
+          text={servicesList.description}
+        />
       </HStack>
       <Stack spacing="8px">
         <Text>{servicesList.description}</Text>
