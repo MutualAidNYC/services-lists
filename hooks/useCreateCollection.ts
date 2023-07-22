@@ -2,18 +2,18 @@ import { useDisclosure } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
 import { postServicesList } from 'apiFunctions'
+import { useUser } from 'components'
 import { CreateServicesListRequest, Resource } from 'models'
 import { Collection } from 'models/collections'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import {
   SubmitHandler,
+  UseFormReturn,
   useFieldArray,
   useForm,
-  UseFormReturn,
 } from 'react-hook-form'
 import { array, object, string } from 'yup'
-import { useUser } from 'components'
 
 export type ResourceField = { id: string; title: string }
 
@@ -72,31 +72,17 @@ export const useCreateCollection = (): useCreateCollectionReturn => {
 
   const userInfo = useUser()
   const onValidSubmit: SubmitHandler<CreateCollectionForm> = (data) => {
-    // This should be handled somewhere else (i.e. shouldn't be able to submit unless there's userInfo)
-    if (userInfo.user === null) {
-      createCollectionMutation([
-        {
-          // Set status to "Draft" b/c research team has to approve new collections
-          status: 'Draft',
-          name: data.name,
-          description: data.description,
-          creator: data.creator,
-          resources: data.resources.map((resource) => resource.id),
-        },
-      ])
-    } else {
-      createCollectionMutation([
-        {
-          // Set status to "Draft" b/c research team has to approve new collections
-          status: 'Draft',
-          name: data.name,
-          description: data.description,
-          creator: data.creator,
-          resources: data.resources.map((resource) => resource.id),
-          userId: userInfo.user.uid,
-        },
-      ])
-    }
+    createCollectionMutation([
+      {
+        // Set status to "Draft" b/c research team has to approve new collections
+        status: 'Draft',
+        name: data.name,
+        description: data.description,
+        creator: data.creator,
+        resources: data.resources.map((resource) => resource.id),
+        userId: userInfo.user === null ? undefined : userInfo.user.uid,
+      },
+    ])
   }
   const onSubmit = form.handleSubmit(onValidSubmit)
 

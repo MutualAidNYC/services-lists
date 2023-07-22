@@ -16,16 +16,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       break
     }
     case 'POST': {
+      const userIds = req.body.map((listData: { userId: string | null }) => {
+        return listData.userId
+      })
       const createdServicesLists = await createServicesLists(
         req.body as CreateServicesListRequest[]
       )
-      req.body.forEach((listData: { userId: string | null }, idx: number) => {
-        const userId = listData.userId
+      for (let idx = 0; idx < userIds.length; idx++) {
+        const userId = userIds[idx]
         const listId = createdServicesLists[idx].id
         if (!(userId === null)) {
           addToUserOwnedLists(listId, userId)
         }
-      })
+      }
       res.status(200).json(createdServicesLists)
       break
     }

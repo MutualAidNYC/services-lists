@@ -7,5 +7,5 @@ export type Collection = {
   description: string
   creator: string
   resources: string[]
-  createdAt: string
+  createdTime: string
 }

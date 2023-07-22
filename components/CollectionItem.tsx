@@ -35,7 +35,7 @@ const CollectionItem = ({
       <Stack spacing="8px">
         <Text>{servicesList.description}</Text>
         <Text>{`Created by ${servicesList.creator} on ${formatDate(
-          servicesList.createdAt
+          servicesList.createdTime
         )}`}</Text>
         <TaxonomySection taxonomies={taxonomies} />
       </Stack>
