@@ -47,13 +47,14 @@ export type CreateServicesListRequest = {
   /** `Resources` table IDs */
   resources: string[]
   creator: string
+  userId?: string
 }
 
 export type ServicesList = CreateServicesListRequest & {
   id: string
   ServicesNames: string[]
   taxonomies?: string[]
-  createdAt: string
+  createdTime: string
 }
 
 export const RESOURCE_SORT_METHODS = [

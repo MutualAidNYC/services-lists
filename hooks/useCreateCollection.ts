@@ -1,16 +1,17 @@
 import { useDisclosure } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
-import { createServicesLists } from 'apiFunctions'
+import { postServicesList } from 'apiFunctions'
+import { useUser } from 'components'
 import { CreateServicesListRequest, Resource } from 'models'
 import { Collection } from 'models/collections'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import {
   SubmitHandler,
+  UseFormReturn,
   useFieldArray,
   useForm,
-  UseFormReturn,
 } from 'react-hook-form'
 import { array, object, string } from 'yup'
 
@@ -61,7 +62,7 @@ export const useCreateCollection = (): useCreateCollectionReturn => {
   const { mutate: createCollectionMutation, isLoading: isCreatingCollection } =
     useMutation(
       (createServicesListRequests: CreateServicesListRequest[]) =>
-        createServicesLists(createServicesListRequests),
+        postServicesList(createServicesListRequests),
       {
         onSuccess: (data) => {
           router.push(`/list/${data[0].id}`)
@@ -69,6 +70,7 @@ export const useCreateCollection = (): useCreateCollectionReturn => {
       }
     )
 
+  const userInfo = useUser()
   const onValidSubmit: SubmitHandler<CreateCollectionForm> = (data) => {
     createCollectionMutation([
       {
@@ -78,6 +80,7 @@ export const useCreateCollection = (): useCreateCollectionReturn => {
         description: data.description,
         creator: data.creator,
         resources: data.resources.map((resource) => resource.id),
+        userId: userInfo.user === null ? undefined : userInfo.user.uid,
       },
     ])
   }

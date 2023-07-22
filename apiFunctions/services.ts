@@ -104,10 +104,12 @@ export const createServicesLists = (
       resolve([])
     })
   }
-
   return ServicesAirtableClient.create<CreateServicesListRequest>(
     'Resource Lists',
     servicesLists.map((list) => {
+      if ('userId' in list) {
+        delete list.userId
+      }
       return {
         fields: {
           ...list,

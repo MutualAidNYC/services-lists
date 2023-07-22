@@ -53,9 +53,15 @@ export const Collections = ({ userData }: CollectionProps): JSX.Element => {
         </Button>{' '}
       </ButtonGroup>
 
-      {data?.map((list) => (
-        <CollectionItem key={list.id} servicesList={list} />
-      ))}
+      {data
+        ?.sort(function (a, b) {
+          const aVal = a['createdTime'].toLowerCase().replace(/[^0-9a-z]/gi, '')
+          const bVal = b['createdTime'].toLowerCase().replace(/[^0-9a-z]/gi, '')
+          return aVal <= bVal ? 1 : -1
+        })
+        .map((list) => (
+          <CollectionItem key={list.id} servicesList={list} />
+        ))}
 
       {data?.length === 0 && !isLoading && (
         <VStack>
