@@ -31,7 +31,7 @@ const CollectionItem = ({
         </Heading>
         {/* TODO on click should let you edit the list and other actions */}
         <ShareLink
-          resourceURL={`${window.location.href}list/${servicesList.id}`}
+          resourceURL={`${window.location.origin}/list/${servicesList.id}`}
           title={servicesList.name}
           text={servicesList.description}
         />
