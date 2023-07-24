@@ -51,6 +51,7 @@ export const Collections = ({ userData }: CollectionProps): JSX.Element => {
           </Button>
         )}
 
+
         {/* Removing this for now until we have editing a collection set up*/}
         {/* <Button as="a" href="/">
           Edit Collections
