@@ -45,7 +45,7 @@ export const Collections = ({ userData }: CollectionProps): JSX.Element => {
   return (
     <VStack alignItems="left" w="100%" spacing={4}>
       <ButtonGroup variant={'ghost'}>
-        {data?.length > 0 && (
+        {(data?.length ?? 0) > 0 && (
           <Button as="a" href="/">
             Create New Collection
           </Button>
