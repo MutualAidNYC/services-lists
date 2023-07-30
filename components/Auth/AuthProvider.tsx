@@ -1,6 +1,7 @@
+import { useDisclosure } from '@chakra-ui/react'
 import { onAuthStateChanged, Unsubscribe, User } from 'firebase/auth'
 import { doc, onSnapshot } from 'firebase/firestore'
-import { UserDoc } from 'models/users'
+import { UserDocument } from 'models/users'
 import React, {
   createContext,
   ReactNode,
@@ -10,47 +11,46 @@ import React, {
 } from 'react'
 import { auth, userRef } from 'utils/firebase'
 
-const AuthContext = createContext<{
-  user: User | null
-  loading: boolean
-  userData: UserDoc | null
-}>({
-  user: null,
-  loading: true,
-  userData: null,
-})
-
-export const useUser = () => {
-  return useContext(AuthContext)
+type UseAuthReturn = {
+  /** User object for people who've been authenticated */
+  authUser?: User
+  isLoading: boolean
+  /** User database object for storing non-auth info such as a user's collections */
+  userData?: UserDocument
+  isModalOpen: boolean
+  onModalOpen: () => void
+  onModalClose: () => void
 }
 
-//There is a distinction between user and userData
-//User is the data used by Firebase to distinguish different user accounts
-//userDoc is the data we use to handle list ownership
+const AuthContext = createContext<UseAuthReturn>({} as UseAuthReturn)
+
+export const useAuth = () => {
+  return useContext(AuthContext)
+}
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [userData, setUserData] = useState<UserDoc | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [authUser, setAuthUser] = useState<User>()
+  const [userData, setUserData] = useState<UserDocument>()
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   useEffect(() => {
-    setLoading(true)
+    setIsLoading(true)
     let userDocUnsub: Unsubscribe
     const authUserUnsub = onAuthStateChanged(auth, (authUser) => {
       if (authUser) {
         userDocUnsub = onSnapshot(doc(userRef, authUser.uid), (doc) => {
-          const data = doc.data() as UserDoc
+          const data = doc.data() as UserDocument
           setUserData(data)
         })
-        setUser(authUser)
-        setLoading(false)
+        setAuthUser(authUser)
       } else {
-        setUser(null)
-        setUserData(null)
-        setLoading(false)
+        setAuthUser(undefined)
+        setUserData(undefined)
       }
+      setIsLoading(false)
     })
     return () => {
       if (typeof userDocUnsub === 'function') {
@@ -61,7 +61,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, loading, userData }}>
+    <AuthContext.Provider
+      value={{
+        authUser,
+        isLoading,
+        userData,
+        isModalOpen: isOpen,
+        onModalOpen: onOpen,
+        onModalClose: onClose,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )

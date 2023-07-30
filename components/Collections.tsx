@@ -8,12 +8,12 @@ import {
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { getServicesList } from 'apiFunctions'
-import { UserDoc } from 'models/users'
+import { UserDocument } from 'models/users'
 import React from 'react'
 import CollectionItem from './CollectionItem'
 
 interface CollectionProps {
-  userData: UserDoc
+  userData: UserDocument
 }
 
 export const Collections = ({ userData }: CollectionProps): JSX.Element => {
@@ -50,7 +50,6 @@ export const Collections = ({ userData }: CollectionProps): JSX.Element => {
             Create New Collection
           </Button>
         )}
-
 
         {/* Removing this for now until we have editing a collection set up*/}
         {/* <Button as="a" href="/">
