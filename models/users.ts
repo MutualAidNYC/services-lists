@@ -1,4 +1,5 @@
-export interface UserDoc {
+/** User Firestore document  */
+export interface UserDocument {
   name: string
   email: string
   organization?: string

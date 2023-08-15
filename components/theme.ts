@@ -47,10 +47,10 @@ export const theme = extendTheme({
     Text: {
       variants: {
         clickable: {
+          textDecoration: 'underline',
           cursor: 'pointer',
           _hover: {
             fontWeight: 'bold',
-            textDecoration: 'underline',
           },
         },
       },

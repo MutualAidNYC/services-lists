@@ -9,14 +9,14 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { Collections } from 'components'
-import { AuthContainer, useUser } from 'components/Auth'
+import { AuthContainer, useAuth } from 'components/Auth'
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
 import { signout } from 'utils/firebase'
 
 export const ProfilePage: NextPage = () => {
-  const { user, userData, loading } = useUser()
+  const { authUser: user, userData, isLoading } = useAuth()
 
   // 0 -> Collections  1 -> Profile
   const [tabIndex, setTabIndex] = useState(0)
@@ -33,15 +33,15 @@ export const ProfilePage: NextPage = () => {
         <link rel="icon" href="/icon.ico" />
       </Head>
       <Stack spacing="16px" w="100%" alignItems={'center'}>
-        {loading && <Spinner variant="primary" />}
-        {!user && !loading && (
+        {isLoading && <Spinner variant="primary" />}
+        {!user && !isLoading && (
           <AuthContainer
             displayBorder={true}
             initialState={'log_in'}
             descriptiveText={'You must be signed in to view this page'}
           />
         )}
-        {userData && !loading && (
+        {userData && !isLoading && (
           <Stack w="100%" direction={'column'} maxW="7xl">
             <HStack w="100%" justifyContent={'space-between'} color="black">
               <Text fontSize="5xl" fontWeight={'bold'}>
