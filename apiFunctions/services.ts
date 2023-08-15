@@ -6,7 +6,7 @@ import {
   Resource,
   ServicesList,
 } from 'models'
-import { AxiosClient } from './axios'
+import { AxiosClient } from './clients'
 
 const ServicesAxiosClient = new AxiosClient('/api')
 
