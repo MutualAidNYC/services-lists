@@ -1,8 +1,9 @@
 import {
-  Heading,
   HStack,
+  Heading,
   IconButton,
   Link,
+  LinkOverlay,
   Stack,
   Text,
 } from '@chakra-ui/react'
@@ -29,7 +30,9 @@ export const ResourceCard = ({
       justify="space-between"
     >
       <Stack spacing="24px">
-        <Heading fontSize="2xl">{resource.title}</Heading>
+  
+        <Heading fontSize="2xl">{resource.link && (<Link href={resource.link}>{resource.title}</Link>)}</Heading> 
+      
         {resource.groupName && resource.groupName != NO_ASSOCIATED_GROUP && (
           <Text fontSize="xl" fontWeight="semibold" color="Gray.900">
             {resource.groupName}
