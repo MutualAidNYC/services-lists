@@ -3,7 +3,6 @@ import {
   Heading,
   IconButton,
   Link,
-  LinkOverlay,
   Stack,
   Text,
 } from '@chakra-ui/react'
