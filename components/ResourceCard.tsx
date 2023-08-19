@@ -29,8 +29,7 @@ export const ResourceCard = ({
       justify="space-between"
     >
       <Stack spacing="24px">
-  
-        <Heading fontSize="2xl">{resource.link && (<Link href={resource.link}>{resource.title}</Link>)}</Heading> 
+        {resource.link ? (<Heading fontSize="2xl"><Link href={resource.link}>{resource.title}</Link></Heading>):(<Heading fontSize="2xl">{resource.title}</Heading>)}
       
         {resource.groupName && resource.groupName != NO_ASSOCIATED_GROUP && (
           <Text fontSize="xl" fontWeight="semibold" color="Gray.900">
