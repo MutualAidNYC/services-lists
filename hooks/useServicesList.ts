@@ -5,6 +5,7 @@ import { createContext, useContext } from 'react'
 import { useFilters } from './useFilters'
 
 export interface ServiceListHandler {
+  description: string
   isLoading: boolean
   listName: string
   visibleServices: Resource[]
@@ -27,6 +28,7 @@ export const useServiceList = (listId: string): ServiceListHandler => {
     retry: false,
     refetchOnWindowFocus: false,
   })
+  const { description = '' } = serviceList || {}
 
   const servicesQueryOptions =
     serviceList?.resources?.map((serviceId) => {
@@ -54,6 +56,7 @@ export const useServiceList = (listId: string): ServiceListHandler => {
   )
 
   return {
+    description,
     isLoading: isLoadingServiceList || isLoadingServices,
     listName: serviceList?.name ?? '',
     visibleServices: filteredServices,

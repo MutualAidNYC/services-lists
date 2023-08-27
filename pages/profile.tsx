@@ -11,7 +11,7 @@ import {
 import { Collections } from 'components'
 import { AuthContainer, useAuth } from 'components/Auth'
 import { NextPage } from 'next'
-import Head from 'next/head'
+import { NextSeo } from 'next-seo'
 import { useState } from 'react'
 import { signout } from 'utils/firebase'
 
@@ -23,15 +23,12 @@ export const ProfilePage: NextPage = () => {
 
   return (
     <Stack spacing="32px" w="100%" height={'100vh'} p={{ base: 4, md: 12 }}>
-      <Head>
-        <title>Resource Lists</title>
-        <meta
-          name="description"
-          content={'Your Mutual Aid NYC profile page.'}
-        />
-        <meta name="image" content="/manyc_logo.png" />
-        <link rel="icon" href="/icon.ico" />
-      </Head>
+      <NextSeo
+        title="Resource Lists - Account Page"
+        description="Your Mutual Aid NYC account page."
+        canonical="https://lists.mutualaid.nyc/profile"
+      />
+
       <Stack spacing="16px" w="100%" alignItems={'center'}>
         {isLoading && <Spinner variant="primary" />}
         {!user && !isLoading && (
