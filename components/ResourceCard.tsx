@@ -4,11 +4,11 @@ import {
   IconButton,
   Link,
   Stack,
-  Text,
+  Text
 } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import { NO_ASSOCIATED_GROUP, Resource } from 'models'
-import { Bookmark, ExternalLink } from 'react-feather'
+import { ExternalLink, PlusCircle } from 'react-feather'
 
 export const ResourceCard = ({
   resource,
@@ -72,7 +72,7 @@ export const ResourceCard = ({
       <HStack spacing="12px">
         <IconButton
           aria-label="Save resource"
-          icon={<Bookmark />}
+          icon={<PlusCircle/>}
           onClick={saveResource}
           variant="outline"
         />
