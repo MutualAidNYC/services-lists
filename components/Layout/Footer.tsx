@@ -8,6 +8,8 @@ import {
   Text,
 } from '@chakra-ui/react'
 
+const currentYear: number = new Date().getFullYear()
+
 export const Footer = (): JSX.Element => {
   return (
     <Stack w="100%" alignItems={'center'}>
@@ -21,7 +23,7 @@ export const Footer = (): JSX.Element => {
         justify="space-between"
       >
         <HStack>
-          <Text letterSpacing={1.4}> © 2022 </Text>
+          <Text letterSpacing={1.4}> © {currentYear} </Text>
           <Text> Mutual Aid NYC</Text>
         </HStack>
         <HStack
