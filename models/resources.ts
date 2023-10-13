@@ -40,6 +40,14 @@ export const RESOURCE_SEARCH_FIELDS: (keyof Resource)[] = [
   'details',
 ]
 
+export const RESOURCE_SORT_METHODS = [
+  'title',
+  'Created Time',
+  'Last Modified',
+] as const
+
+export type ResourceSortMethod = typeof RESOURCE_SORT_METHODS[number]
+
 export type CreateServicesListRequest = {
   name: string
   description: string
@@ -56,11 +64,3 @@ export type ServicesList = CreateServicesListRequest & {
   taxonomies?: string[]
   createdTime: string
 }
-
-export const RESOURCE_SORT_METHODS = [
-  'Last Modified',
-  'Created Time',
-  'title',
-] as const
-
-export type ResourceSortMethod = typeof RESOURCE_SORT_METHODS[number]
