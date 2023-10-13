@@ -1,48 +1,31 @@
-import Airtable, { Base, FieldSet } from 'airtable'
-
-interface AirtableCreateObject<T> {
-  fields: T
-}
-
-export interface AirtableCreateResponse {
-  id: string
-}
+import Airtable from 'airtable'
+import { QueryParams } from 'airtable/lib/query_params'
 
 export class AirtableClient {
-  private readonly base: Base
+  private readonly base: Airtable.Base
 
   constructor(apiKey: string, baseId: string) {
     this.base = new Airtable({ apiKey: apiKey }).base(baseId)
   }
 
-  async create<T extends FieldSet>(
+  async create<T extends Airtable.FieldSet>(
     tableName: string,
-    recordObjects: AirtableCreateObject<T>[]
-  ): Promise<AirtableCreateResponse[]> {
-    const records = await this.base<T>(tableName).create(recordObjects)
-
-    return records.map((record) => {
-      return {
-        id: record.id,
-      }
-    })
+    recordsData: { fields: Partial<T> }[]
+  ): Promise<Airtable.Records<T>> {
+    return this.base<T>(tableName).create(recordsData)
   }
 
-  async find<T extends FieldSet>(tableName: string, id: string): Promise<T> {
-    const record = await this.base.table<T>(tableName).find(id)
-    return record.fields
+  async find<T extends Airtable.FieldSet>(
+    tableName: string,
+    id: string
+  ): Promise<Airtable.Record<T>> {
+    return this.base.table<T>(tableName).find(id)
   }
 
-  async selectAll<T extends FieldSet>(
+  async selectAll<T extends Airtable.FieldSet>(
     tableName: string,
-    filterFormula = ''
-  ): Promise<T[]> {
-    const records = await this.base<T>(tableName)
-      .select({
-        filterByFormula: filterFormula,
-      })
-      .all()
-
-    return records.map((record) => record.fields)
+    queryParams?: QueryParams<T>
+  ): Promise<Airtable.Records<T>> {
+    return this.base<T>(tableName).select(queryParams).all()
   }
 }
