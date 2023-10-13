@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react'
 import { AddressWithLabel, Resource } from 'models'
 import { NextPage } from 'next'
+import { NextSeo } from 'next-seo'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useRef, useState } from 'react'
@@ -48,6 +49,7 @@ export const ListPage: NextPage = () => {
   const serviceListHandler = useServiceList(router.query.listId as string)
 
   const {
+    description,
     isLoading,
     listName,
     visibleServices,
@@ -180,6 +182,26 @@ export const ListPage: NextPage = () => {
       spacing={0}
       px={{ base: 2, md: 24 }}
     >
+      <NextSeo
+        title={listName || 'loading list...'}
+        description={description || listName}
+        canonical="https://lists.mutualaid.nyc/list"
+        openGraph={{
+          type: 'website',
+          locale: 'en_US',
+          url: `https://lists.mutualaid.nyc/list/${router.query.listId}`,
+          siteName: 'Mutual Aid NYC',
+          title: listName,
+          description: description || listName,
+          images: [
+            {
+              url: 'https://lists.mutualaid.nyc/manyc_logo.png',
+              type: 'png',
+              alt: 'Mutual Aid NYC Banner',
+            },
+          ],
+        }}
+      />
       <Head>
         <title>{listName}</title>
         <meta name="description" content={listName} />

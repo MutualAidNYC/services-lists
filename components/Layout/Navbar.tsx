@@ -11,14 +11,13 @@ import {
   MenuList,
   Stack,
   Text,
-  useDisclosure,
 } from '@chakra-ui/react'
-import { AuthModal, useUser } from 'components'
+import { AuthModal, useAuth } from 'components'
 import { User } from 'react-feather'
 
 export const Navbar = (): JSX.Element => {
-  const { onOpen, isOpen, onClose } = useDisclosure()
-  const { loading, userData } = useUser()
+  const { isLoading, userData, isModalOpen, onModalOpen, onModalClose } =
+    useAuth()
 
   return (
     <Stack
@@ -29,8 +28,8 @@ export const Navbar = (): JSX.Element => {
       bgColor="white"
     >
       <AuthModal
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={isModalOpen}
+        onClose={onModalClose}
         message={'Login to MANY Resources Hub'}
       />
       <Flex
@@ -56,7 +55,7 @@ export const Navbar = (): JSX.Element => {
           </Link>
           <Link href="https://mutualaid.nyc/">About Mutual Aid NYC</Link>
         </HStack>
-        {userData && !loading && (
+        {userData && !isLoading && (
           <Link href="/profile">
             <HStack cursor="pointer" _hover={{ textDecoration: 'underline' }}>
               <User />
@@ -64,11 +63,11 @@ export const Navbar = (): JSX.Element => {
             </HStack>
           </Link>
         )}
-        {!userData && !loading && (
+        {!userData && !isLoading && (
           <HStack
             cursor="pointer"
             _hover={{ textDecoration: 'underline' }}
-            onClick={onOpen}
+            onClick={onModalOpen}
           >
             <User />
             <Text> Log In/ Sign Up </Text>
@@ -149,13 +148,15 @@ export const Navbar = (): JSX.Element => {
             <MenuItem>
               <Link href="https://mutualaid.nyc/">About Mutual Aid NYC</Link>
             </MenuItem>
-            <MenuItem onClick={!userData && !loading ? onOpen : undefined}>
-              {userData && !loading && (
+            <MenuItem
+              onClick={!userData && !isLoading ? onModalOpen : undefined}
+            >
+              {userData && !isLoading && (
                 <Link href="/profile">
                   <Text> Account </Text>
                 </Link>
               )}
-              {!userData && !loading && <Text> Log In/ Sign Up </Text>}
+              {!userData && !isLoading && <Text> Log In/ Sign Up </Text>}
             </MenuItem>
           </MenuList>
         </Menu>

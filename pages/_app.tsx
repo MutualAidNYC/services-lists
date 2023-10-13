@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthProvider } from 'components'
 import { Fonts, Navbar } from 'components/Layout'
 import { Footer } from 'components/Layout/Footer'
+import { DefaultSeo } from 'next-seo'
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
@@ -48,6 +49,32 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
               page_path: window.location.pathname,
             });
           `,
+        }}
+      />
+      <DefaultSeo
+        title="Mutual Aid NYC"
+        description="Our community-sourced, volunteer-curated library is a growing collection of the many resources available to New Yorkers. Mutual Aid NYC is committed to building a comprehensive list of high-quality resources—check back frequently, as new resources are added every day!"
+        canonical="https://lists.mutualaid.nyc/"
+        openGraph={{
+          type: 'website',
+          locale: 'en_US',
+          url: 'https://lists.mutualaid.nyc/',
+          siteName: 'Mutual Aid NYC',
+          title: 'Mutual Aid NYC',
+          description:
+            'Our community-sourced, volunteer-curated library is a growing collection of the many resources available to New Yorkers. Mutual Aid NYC is committed to building a comprehensive list of high-quality resources—check back frequently, as new resources are added every day!',
+          images: [
+            {
+              url: 'https://lists.mutualaid.nyc/manyc_logo.png',
+              type: 'png',
+              alt: 'Mutual Aid NYC Banner',
+            },
+          ],
+        }}
+        twitter={{
+          handle: '@MutualAidNYC',
+          site: '@MutualAidNYC',
+          cardType: 'summary_large_image',
         }}
       />
       <QueryClientProvider client={queryClient}>

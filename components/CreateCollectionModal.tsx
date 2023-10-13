@@ -3,6 +3,7 @@ import { Input, Modal, Textarea } from 'components'
 import { ResourceField, useCreateCollectionReturn } from 'hooks'
 import { Minus } from 'react-feather'
 import { getHookFormProps } from 'utils'
+import { useAuth } from './Auth'
 
 const CreateCollectionResource = ({
   resource,
@@ -47,6 +48,8 @@ export const CreateCollectionModal = ({
 >): JSX.Element => {
   const { formState } = form
   const { isValid } = formState
+
+  const { authUser, onModalOpen: onAuthModalOpen } = useAuth()
 
   return (
     <Modal
@@ -99,10 +102,19 @@ export const CreateCollectionModal = ({
         ) : (
           <Center>Save at least one resource to your collection.</Center>
         )}
+        {!authUser && (
+          <Text>
+            You must{' '}
+            <Text as="span" variant="clickable" onClick={onAuthModalOpen}>
+              create an account or login
+            </Text>{' '}
+            before creating an collection.
+          </Text>
+        )}
         <Stack direction={{ base: 'column', sm: 'row' }} spacing="16px">
           <Button
             type="submit"
-            isDisabled={!isValid}
+            isDisabled={!(isValid && Boolean(authUser))}
             isLoading={isCreatingCollection}
           >
             Create collection

@@ -1,14 +1,14 @@
 import {
-  Heading,
   HStack,
+  Heading,
   IconButton,
   Link,
   Stack,
-  Text,
+  Text
 } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import { NO_ASSOCIATED_GROUP, Resource } from 'models'
-import { Bookmark, ExternalLink } from 'react-feather'
+import { ExternalLink, PlusCircle } from 'react-feather'
 
 export const ResourceCard = ({
   resource,
@@ -29,7 +29,8 @@ export const ResourceCard = ({
       justify="space-between"
     >
       <Stack spacing="24px">
-        <Heading fontSize="2xl">{resource.title}</Heading>
+        {resource.link ? (<Heading fontSize="2xl"><Link href={resource.link}>{resource.title}</Link></Heading>):(<Heading fontSize="2xl">{resource.title}</Heading>)}
+      
         {resource.groupName && resource.groupName != NO_ASSOCIATED_GROUP && (
           <Text fontSize="xl" fontWeight="semibold" color="Gray.900">
             {resource.groupName}
@@ -72,7 +73,7 @@ export const ResourceCard = ({
       <HStack spacing="12px">
         <IconButton
           aria-label="Save resource"
-          icon={<Bookmark />}
+          icon={<PlusCircle/>}
           onClick={saveResource}
           variant="outline"
         />

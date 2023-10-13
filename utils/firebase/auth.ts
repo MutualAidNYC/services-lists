@@ -7,7 +7,7 @@ import {
   updateProfile,
 } from 'firebase/auth'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
-import { PasswordAuthResponse, UserDoc } from 'models/users'
+import { PasswordAuthResponse, UserDocument } from 'models/users'
 import { auth, authProvider, userRef } from './init'
 
 export const googleSignIn = async () => {
@@ -20,7 +20,7 @@ export const googleSignIn = async () => {
       return
     }
 
-    const newAccInfo: UserDoc = {
+    const newAccInfo: UserDocument = {
       name: user.displayName || 'Not Available',
       email: user.email || 'Not Available',
       lists: [],
@@ -52,7 +52,7 @@ export const emailSignUp = async (
 
     const user = userCredential.user
 
-    const newUser: UserDoc = {
+    const newUser: UserDocument = {
       name: firstName + ' ' + lastName,
       email: email,
       organization: organization,

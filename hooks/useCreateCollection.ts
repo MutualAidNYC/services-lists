@@ -2,16 +2,16 @@ import { useDisclosure } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
 import { postServicesList } from 'apiFunctions'
-import { useUser } from 'components'
+import { useAuth } from 'components'
 import { CreateServicesListRequest, Resource } from 'models'
 import { Collection } from 'models/collections'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import {
   SubmitHandler,
-  UseFormReturn,
   useFieldArray,
   useForm,
+  UseFormReturn,
 } from 'react-hook-form'
 import { array, object, string } from 'yup'
 
@@ -70,7 +70,7 @@ export const useCreateCollection = (): useCreateCollectionReturn => {
       }
     )
 
-  const userInfo = useUser()
+  const userInfo = useAuth()
   const onValidSubmit: SubmitHandler<CreateCollectionForm> = (data) => {
     createCollectionMutation([
       {
@@ -80,7 +80,7 @@ export const useCreateCollection = (): useCreateCollectionReturn => {
         description: data.description,
         creator: data.creator,
         resources: data.resources.map((resource) => resource.id),
-        userId: userInfo.user === null ? undefined : userInfo.user.uid,
+        userId: userInfo.authUser ? userInfo.authUser.uid : undefined,
       },
     ])
   }

@@ -9,39 +9,36 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { Collections } from 'components'
-import { AuthContainer, useUser } from 'components/Auth'
+import { AuthContainer, useAuth } from 'components/Auth'
 import { NextPage } from 'next'
-import Head from 'next/head'
+import { NextSeo } from 'next-seo'
 import { useState } from 'react'
 import { signout } from 'utils/firebase'
 
 export const ProfilePage: NextPage = () => {
-  const { user, userData, loading } = useUser()
+  const { authUser: user, userData, isLoading } = useAuth()
 
   // 0 -> Collections  1 -> Profile
   const [tabIndex, setTabIndex] = useState(0)
 
   return (
     <Stack spacing="32px" w="100%" height={'100vh'} p={{ base: 4, md: 12 }}>
-      <Head>
-        <title>Resource Lists</title>
-        <meta
-          name="description"
-          content={'Your Mutual Aid NYC profile page.'}
-        />
-        <meta name="image" content="/manyc_logo.png" />
-        <link rel="icon" href="/icon.ico" />
-      </Head>
+      <NextSeo
+        title="Resource Lists - Account Page"
+        description="Your Mutual Aid NYC account page."
+        canonical="https://lists.mutualaid.nyc/profile"
+      />
+
       <Stack spacing="16px" w="100%" alignItems={'center'}>
-        {loading && <Spinner variant="primary" />}
-        {!user && !loading && (
+        {isLoading && <Spinner variant="primary" />}
+        {!user && !isLoading && (
           <AuthContainer
             displayBorder={true}
             initialState={'log_in'}
             descriptiveText={'You must be signed in to view this page'}
           />
         )}
-        {userData && !loading && (
+        {userData && !isLoading && (
           <Stack w="100%" direction={'column'} maxW="7xl">
             <HStack w="100%" justifyContent={'space-between'} color="black">
               <Text fontSize="5xl" fontWeight={'bold'}>
