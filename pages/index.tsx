@@ -13,6 +13,7 @@ import {
   Spacer,
   Stack,
   Text,
+  useBoolean,
   useBreakpointValue,
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
@@ -34,7 +35,7 @@ import { fuseSearch } from 'utils'
 
 export const HomePage: NextPage = () => {
   const { data: allResources } = useQuery(['getAllResources'], () =>
-    getAllResources()
+    getAllResources("NOT({status} = 'Do Not Publish')")
   )
 
   const { data: allNeeds } = useQuery(['getAllNeeds'], () => getAllNeeds())
@@ -46,25 +47,17 @@ export const HomePage: NextPage = () => {
   const [selectedNeighborhoods, setSelectedNeighborhoods] = useState<string[]>(
     []
   )
-  const [resourceSortLabel, setResourceSortLabel] =
-    useState<string>('Sort Ascending')
-
-  const [resourceSortMethod, setResourceSortMethod] =
-    useState<ResourceSortMethod>('Last Modified')
-  const [resourceSortAscending, setResourceSortAscending] =
-    useState<boolean>(false)
-  const changeResourceSortOrder = () => {
-    setResourceSortLabel(
-      resourceSortAscending ? 'Sort Ascending' : 'Sort Descending'
-    )
-    setResourceSortAscending(!resourceSortAscending)
-  }
 
   const fuse = useMemo(() => {
     return new Fuse(allResources ?? [], { keys: RESOURCE_SEARCH_FIELDS })
   }, [allResources])
   // For keyword searches
   const [keyword, setKeyword] = useState('')
+
+  const [resourceSortMethod, setResourceSortMethod] = useState<
+    ResourceSortMethod | undefined
+  >()
+  const [resourceSortAscending, setResourceSortAscending] = useBoolean(true)
 
   const filteredResources = useMemo(() => {
     // Return all resources if keyword is an empty string
@@ -89,19 +82,13 @@ export const HomePage: NextPage = () => {
       )
     }
 
-    filteredResources = filteredResources.sort(function (a, b) {
-      const aVal = a[resourceSortMethod]
-        .toLowerCase()
-        .replace(/[^0-9a-z]/gi, '')
-      const bVal = b[resourceSortMethod]
-        .toLowerCase()
-        .replace(/[^0-9a-z]/gi, '')
-      if (resourceSortAscending) {
-        return bVal <= aVal ? 1 : -1
-      } else {
-        return aVal <= bVal ? 1 : -1
-      }
-    })
+    if (resourceSortMethod !== undefined) {
+      filteredResources = filteredResources.sort((a, b) =>
+        resourceSortAscending
+          ? a[resourceSortMethod].localeCompare(b[resourceSortMethod])
+          : b[resourceSortMethod].localeCompare(a[resourceSortMethod])
+      )
+    }
 
     return filteredResources
   }, [
@@ -240,18 +227,18 @@ export const HomePage: NextPage = () => {
                     icon={
                       resourceSortAscending ? <ChevronsUp /> : <ChevronsDown />
                     }
-                    onClick={changeResourceSortOrder}
-                    title={resourceSortLabel}
+                    onClick={setResourceSortAscending.toggle}
                   />
                   <Box w={{ base: '100%', lg: '80%' }}>
                     <Select
+                      isClearable
                       isSearchable={false}
                       options={RESOURCE_SORT_METHODS.map((method) => ({
                         value: method,
                         label: method,
                       }))}
-                      onChange={(value) =>
-                        value ? setResourceSortMethod(value.value) : null
+                      onChange={(newValue) =>
+                        setResourceSortMethod(newValue?.value)
                       }
                       placeholder="Sort by"
                     />
