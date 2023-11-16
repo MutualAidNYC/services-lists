@@ -1,4 +1,3 @@
-import { AirtableClient, AirtableCreateResponse } from 'database'
 import {
   CreateServicesListRequest,
   Need,
@@ -6,40 +5,33 @@ import {
   Resource,
   ServicesList,
 } from 'models'
-import { AxiosClient } from './axios'
+import { AxiosClient } from './clients'
 
-const ServicesAxiosClient = new AxiosClient('/api')
-
-const ServicesAirtableClient = new AirtableClient(
-  process.env.NEXT_PUBLIC_RESOURCES_API_KEY ?? '',
-  process.env.NEXT_PUBLIC_RESOURCES_BASE_ID ?? ''
-)
+const httpClient = new AxiosClient('/api')
 
 // HTTP client functions
 
-export const getService = async (id: string): Promise<Resource> => {
-  const response = await ServicesAxiosClient.get<Resource>(`/services/${id}`)
+export const getResource = async (id: string): Promise<Resource> => {
+  const response = await httpClient.get<Resource>(`/services/${id}`)
   return response.data
 }
 
 export const getAllResources = async (filter = ''): Promise<Resource[]> => {
-  const response = await ServicesAxiosClient.get<Resource[]>(
+  const response = await httpClient.get<Resource[]>(
     `/services?filter=${filter}`
   )
   return response.data
 }
 
 export const getServicesList = async (id: string): Promise<ServicesList> => {
-  const response = await ServicesAxiosClient.get<ServicesList>(
-    `/services-lists/${id}`
-  )
+  const response = await httpClient.get<ServicesList>(`/services-lists/${id}`)
   return response.data
 }
 
 export const getAllServicesLists = async (
   filter = ''
 ): Promise<ServicesList[]> => {
-  const response = await ServicesAxiosClient.get<ServicesList[]>(
+  const response = await httpClient.get<ServicesList[]>(
     `/services-lists?filter=${filter}`
   )
   return response.data
@@ -48,7 +40,7 @@ export const getAllServicesLists = async (
 export const postServicesList = async (
   data: CreateServicesListRequest[]
 ): Promise<AirtableCreateResponse[]> => {
-  const response = await ServicesAxiosClient.post<
+  const response = await httpClient.post<
     AirtableCreateResponse[],
     CreateServicesListRequest[]
   >('/services-lists', data)
@@ -56,45 +48,20 @@ export const postServicesList = async (
 }
 
 export const getAllNeeds = async (filter = ''): Promise<Need[]> => {
-  const response = await ServicesAxiosClient.get<Need[]>(
-    `/needs?filter=${filter}`
-  )
+  const response = await httpClient.get<Need[]>(`/needs?filter=${filter}`)
   return response.data
 }
 
 export const getAllNeighborhoods = async (
   filter = ''
 ): Promise<Neighborhood[]> => {
-  const response = await ServicesAxiosClient.get<Neighborhood[]>(
+  const response = await httpClient.get<Neighborhood[]>(
     `/neighborhoods?filter=${filter}`
   )
   return response.data
 }
 
 // Airtable functions
-
-export const findService = (id: string): Promise<Resource> => {
-  return ServicesAirtableClient.find<Resource>('Resources', id)
-}
-
-export const selectAllServices = (
-  filterFormula?: string
-): Promise<Resource[]> => {
-  return ServicesAirtableClient.selectAll<Resource>('Resources', filterFormula)
-}
-
-export const findServiceList = (id: string): Promise<ServicesList> => {
-  return ServicesAirtableClient.find<ServicesList>('Resource Lists', id)
-}
-
-export const selectAllServicesLists = (
-  filterFormula?: string
-): Promise<ServicesList[]> => {
-  return ServicesAirtableClient.selectAll<ServicesList>(
-    'Resource Lists',
-    filterFormula
-  )
-}
 
 export const createServicesLists = (
   servicesLists: CreateServicesListRequest[]

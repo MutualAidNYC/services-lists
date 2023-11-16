@@ -1,10 +1,21 @@
-import { selectAllServices } from 'apiFunctions'
+import { QueryParams } from 'airtable/lib/query_params'
+import { ResourcesAirtableClient } from 'database'
+import { Resource } from 'models'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Cache } from 'utils'
 
-const cache = new Cache(selectAllServices, 'GET /api/services')
+const selectAllResources = async (
+  queryParams?: QueryParams<Resource>
+): Promise<Resource[]> => {
+  return (
+    await ResourcesAirtableClient.selectAll<Resource>('Ref - Need', queryParams)
+  ).map((record) => record.fields)
+}
+
+const cache = new Cache(selectAllResources, 'GET /api/resources')
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const services = await cache.getCachedData(req.query.filter as string)
-  res.status(200).json(services)
+  res
+    .status(200)
+    .json(cache.getCachedData({ filterByFormula: req.query.filter as string }))
 }

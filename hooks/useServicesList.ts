@@ -1,5 +1,5 @@
 import { useQueries, useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { getService, getServicesList } from 'apiFunctions'
+import { getResource, getServicesList } from 'apiFunctions'
 import { Resource, ServicesList } from 'models'
 import { createContext, useContext } from 'react'
 import { useFilters } from './useFilters'
@@ -34,7 +34,7 @@ export const useServiceList = (listId: string): ServiceListHandler => {
     serviceList?.resources?.map((serviceId) => {
       return {
         queryKey: ['service', serviceId],
-        queryFn: () => getService(serviceId),
+        queryFn: () => getResource(serviceId),
         config: {
           enabled: !!serviceId,
           retry: false,
