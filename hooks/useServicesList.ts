@@ -1,37 +1,30 @@
 import { useQueries, useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { getService, getServicesList } from 'apiFunctions'
-import { Resource, ServicesList } from 'models'
-import { createContext, useContext } from 'react'
+import { getCollection, getService } from 'apiFunctions'
+import { Collection, Resource } from 'models'
 import { useFilters } from './useFilters'
 
 export interface ServiceListHandler {
-  description: string
   isLoading: boolean
-  listName: string
+  collection?: Collection
   visibleServices: Resource[]
   numServices: number
   setSearchQuery: (query: string) => void
   defaultMapCenter: google.maps.LatLngLiteral
 }
 
-const ServiceListContext = createContext({} as ServiceListHandler)
-export const ServiceListProvider = ServiceListContext.Provider
-export const useServiceListContext = (): ServiceListHandler =>
-  useContext(ServiceListContext)
-
-export const useServiceList = (listId: string): ServiceListHandler => {
-  const { isLoading: isLoadingServiceList, data: serviceList } = useQuery<
-    ServicesList,
-    Error
-  >(['serviceList', listId], () => getServicesList(listId), {
-    enabled: !!listId,
-    retry: false,
-    refetchOnWindowFocus: false,
-  })
-  const { description = '' } = serviceList || {}
+export const useServiceList = (collectionId: string): ServiceListHandler => {
+  const { isLoading: isLoadingCollection, data: collection } = useQuery(
+    ['collection', collectionId],
+    () => getCollection(collectionId),
+    {
+      enabled: !!collectionId,
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  )
 
   const servicesQueryOptions =
-    serviceList?.resources?.map((serviceId) => {
+    collection?.resources?.map((serviceId) => {
       return {
         queryKey: ['service', serviceId],
         queryFn: () => getService(serviceId),
@@ -56,9 +49,8 @@ export const useServiceList = (listId: string): ServiceListHandler => {
   )
 
   return {
-    description,
-    isLoading: isLoadingServiceList || isLoadingServices,
-    listName: serviceList?.name ?? '',
+    isLoading: isLoadingCollection || isLoadingServices,
+    collection,
     visibleServices: filteredServices,
     numServices: baseServices.length,
     setSearchQuery,

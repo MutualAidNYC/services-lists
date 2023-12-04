@@ -13,15 +13,15 @@ import React, { useEffect, useState } from 'react'
 import { FacebookIcon, ShareIcon, TwitterIcon } from './Icons'
 
 interface ShareLinkProps extends BoxProps {
-  resourceURL: string
-  text: string
+  url: string
   title: string
+  text?: string
 }
 
 export const ShareLink = ({
-  resourceURL,
-  text,
+  url,
   title,
+  text,
 }: ShareLinkProps): JSX.Element => {
   const [deviceType, setDeviceType] = useState('desktop')
 
@@ -51,9 +51,9 @@ export const ShareLink = ({
         <ShareIcon
           onClick={() =>
             navigator.share({
-              text: text,
-              url: resourceURL,
-              title: title,
+              url,
+              text,
+              title,
             })
           }
         />
@@ -73,7 +73,7 @@ export const ShareLink = ({
                   'https://twitter.com/intent/tweet?text=' +
                     encodeURI(title) +
                     '&url=' +
-                    encodeURI(resourceURL),
+                    encodeURI(url),
                   '_blank'
                 )
               }
@@ -85,7 +85,7 @@ export const ShareLink = ({
               onClick={() =>
                 window.open(
                   'https://www.facebook.com/dialog/share?href=' +
-                    encodeURI(resourceURL) +
+                    encodeURI(url) +
                     '&dialog=popup&app_id=' +
                     facebookAppID,
                   '_blank'
@@ -98,7 +98,7 @@ export const ShareLink = ({
             </MenuItem>
             <MenuItem
               onClick={() => {
-                navigator.clipboard.writeText(resourceURL)
+                navigator.clipboard.writeText(url)
               }}
             >
               <CopyIcon mr={2} />
