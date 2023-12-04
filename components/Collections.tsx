@@ -7,7 +7,7 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
-import { getServicesList } from 'apiFunctions'
+import { getCollection } from 'apiFunctions'
 import { UserDocument } from 'models/users'
 import React from 'react'
 import CollectionItem from './CollectionItem'
@@ -19,7 +19,7 @@ interface CollectionProps {
 export const Collections = ({ userData }: CollectionProps): JSX.Element => {
   const queryFn = async () => {
     // remove duplicates and create fetch promises
-    const promises = userData.lists.map((list) => getServicesList(list))
+    const promises = userData.lists.map((list) => getCollection(list))
 
     // fetch all lists in parallel and remove ones that errored
     const result = (

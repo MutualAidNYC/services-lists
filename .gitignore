@@ -31,6 +31,5 @@ yarn-error.log*
 
 tsconfig.tsbuildinfo
 
-
-# vs code settings
-.vscode/
+# VS Code settings
+/.vscode

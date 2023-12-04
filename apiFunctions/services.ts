@@ -1,5 +1,6 @@
 import { AirtableClient, AirtableCreateResponse } from 'database'
 import {
+  Collection,
   CreateServicesListRequest,
   Need,
   Neighborhood,
@@ -29,8 +30,8 @@ export const getAllResources = async (filter = ''): Promise<Resource[]> => {
   return response.data
 }
 
-export const getServicesList = async (id: string): Promise<ServicesList> => {
-  const response = await ServicesAxiosClient.get<ServicesList>(
+export const getCollection = async (id: string): Promise<Collection> => {
+  const response = await ServicesAxiosClient.get<Collection>(
     `/services-lists/${id}`
   )
   return response.data
@@ -83,8 +84,8 @@ export const selectAllServices = (
   return ServicesAirtableClient.selectAll<Resource>('Resources', filterFormula)
 }
 
-export const findServiceList = (id: string): Promise<ServicesList> => {
-  return ServicesAirtableClient.find<ServicesList>('Resource Lists', id)
+export const findCollection = (id: string): Promise<Collection> => {
+  return ServicesAirtableClient.find<Collection>('Resource Lists', id)
 }
 
 export const selectAllServicesLists = (
