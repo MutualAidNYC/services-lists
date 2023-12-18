@@ -70,21 +70,21 @@ export const CreateCollectionModal = ({
             isRequired
             id="name"
             label="Collection name"
-            helperText="Ex: Senator Gonzalez's District 59 Resources"
+            helperText="Ex: Queens Housing Resources"
             {...getHookFormProps('name', form)}
           />
           <Input
             isRequired
             id="creator"
             label="Creator name"
-            helperText="Ex: Kristen Gonzalez"
+            helperText="Ex: John Smith"
             {...getHookFormProps('creator', form)}
           />
           <Textarea
             isRequired
             id="description"
             label="Description"
-            helperText="Ex: Mutual aid resources for NY State Senate District 59"
+            helperText="Ex: Housing Resources for residents seeking housing support or assistance in the Queens Borough."
             {...getHookFormProps('description', form)}
           />
         </Stack>
