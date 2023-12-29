@@ -63,8 +63,8 @@ export const Collections = ({ userData }: CollectionProps): JSX.Element => {
           const bVal = b['createdTime'].toLowerCase().replace(/[^0-9a-z]/gi, '')
           return aVal <= bVal ? 1 : -1
         })
-        .map((list) => (
-          <CollectionItem key={list.id} collection={list} />
+        .map((collection) => (
+          <CollectionItem key={collection.id} collection={collection} />
         ))}
 
       {data?.length === 0 && !isLoading && (
