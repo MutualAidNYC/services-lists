@@ -30,7 +30,7 @@ export const ServicesListItem = ({
           <Link href={`list/${servicesList.id}`}>{servicesList.name}</Link>
         </Heading>
         <ShareLink
-          resourceURL={`${window.location.href}list/${servicesList.id}`}
+          url={`${window.location.href}list/${servicesList.id}`}
           title={servicesList.name}
           text={servicesList.description}
         />

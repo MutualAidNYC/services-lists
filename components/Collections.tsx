@@ -64,7 +64,7 @@ export const Collections = ({ userData }: CollectionProps): JSX.Element => {
           return aVal <= bVal ? 1 : -1
         })
         .map((list) => (
-          <CollectionItem key={list.id} servicesList={list} />
+          <CollectionItem key={list.id} collection={list} />
         ))}
 
       {data?.length === 0 && !isLoading && (
