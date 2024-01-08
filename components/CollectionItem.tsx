@@ -1,20 +1,17 @@
 import { Box, Heading, HStack, Link, Stack, Text } from '@chakra-ui/react'
-import { ServicesList } from 'models'
+import { Collection } from 'models'
 import React from 'react'
 import { formatDate } from 'utils'
 import { ShareLink } from './ShareLink'
-import { TaxonomySection } from './TaxonomySection'
 
 interface CollectionItemProps {
-  servicesList: ServicesList
+  collection: Collection
 }
 
 const CollectionItem = ({
-  servicesList,
+  collection,
   ...props
 }: CollectionItemProps): JSX.Element => {
-  const taxonomies = [...new Set(servicesList?.taxonomies)]
-
   return (
     <Box
       {...props}
@@ -27,21 +24,20 @@ const CollectionItem = ({
     >
       <HStack justifyContent={'space-between'} w="100%">
         <Heading fontSize="subheading2" mb="16px">
-          <Link href={`list/${servicesList.id}`}>{servicesList.name}</Link>
+          <Link href={`list/${collection.id}`}>{collection.name}</Link>
         </Heading>
         {/* TODO on click should let you edit the list and other actions */}
         <ShareLink
-          resourceURL={`${window.location.origin}/list/${servicesList.id}`}
-          title={servicesList.name}
-          text={servicesList.description}
+          url={`${window.location.origin}/list/${collection.id}`}
+          title={collection.name}
+          text={collection.description}
         />
       </HStack>
       <Stack spacing="8px">
-        <Text>{servicesList.description}</Text>
-        <Text>{`Created by ${servicesList.creator} on ${formatDate(
-          servicesList.createdTime
+        <Text>{collection.description}</Text>
+        <Text>{`Created by ${collection.creator} on ${formatDate(
+          collection.createdTime
         )}`}</Text>
-        <TaxonomySection taxonomies={taxonomies} />
       </Stack>
     </Box>
   )
