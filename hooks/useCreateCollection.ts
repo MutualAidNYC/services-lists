@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
 import { postServicesList } from 'apiFunctions'
 import { useAuth } from 'components'
-import { CreateServicesListRequest, Resource } from 'models'
+import { CreateServicesListRequest, Resource, Service } from 'models'
 import { Collection } from 'models/collections'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -35,7 +35,7 @@ export type useCreateCollectionReturn = {
   isModalOpen: boolean
   onModalOpen: () => void
   onModalClose: () => void
-  saveResource: (resource: Resource) => void
+  saveResource: (resource: Service) => void
   duplicateResourceId: string
   form: UseFormReturn<CreateCollectionForm, unknown>
   collectionResources: (ResourceField & { key: string })[]
@@ -89,7 +89,7 @@ export const useCreateCollection = (): useCreateCollectionReturn => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [duplicateResourceId, setDuplicateResourceId] = useState('')
 
-  const saveResource = (resource: Resource) => {
+  const saveResource = (resource: Service) => {
     // Check if saved resource is already in the form
     if (
       form.getValues('resources').filter((r) => r.id === resource.id).length > 0
@@ -97,7 +97,7 @@ export const useCreateCollection = (): useCreateCollectionReturn => {
       setDuplicateResourceId(resource.id)
     } else {
       setDuplicateResourceId('')
-      append({ id: resource.id, title: resource.title })
+      append({ id: resource.id, title: resource.name })
     }
 
     onOpen()
