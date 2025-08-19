@@ -67,8 +67,8 @@ export const HomePage: NextPage = () => {
 
     if (selectedNeeds.length > 0) {
       filteredResources = filteredResources.filter(
-        (resource) =>
-          resource.needs && selectedNeeds?.includes(resource.needs[0])
+        (service) =>
+          service.needFocus && selectedNeeds?.includes(service.needFocus[0])
       )
     }
 
@@ -265,7 +265,7 @@ export const HomePage: NextPage = () => {
             .map((resource) => (
               <ResourceCard
                 key={resource.id}
-                resource={resource}
+                service={resource}
                 saveResource={() => saveResource(resource)}
               />
             ))}
