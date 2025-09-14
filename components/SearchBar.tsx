@@ -9,6 +9,7 @@ import { Search } from 'react-feather'
 
 interface SearchBarProps extends InputGroupProps {
   handleSearch: (query: string) => void
+  placeholder?: string
 }
 
 export const SearchBar = ({
