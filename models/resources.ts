@@ -34,6 +34,56 @@ export type Resource = {
   // Not all resources have addresses
 } & Partial<Address>
 
+export type Service = {
+  id: string
+  name: string
+  status: ResourceStatus
+  communityFocus?: string[]
+  ResourceType?: string[]
+  service_areas?: string[]
+  description?: string
+  languages?: string[]
+  attributes?: string[]
+  locations?: string[]
+  url?: string
+  phoneNumbers?: string
+  email?: string
+  Notes?: string
+  organizations?: string[]
+  'x-QualityController'?: string[]
+  'x-Researchers'?: string[]
+  'x-Contact'?: string 
+  'x-address'?: any[]
+  'x-Resources Lists'?: string[]
+  'Combined Taxonomy Terms'?: any
+  needFocus?: string[]
+  neighborhoodNames?: string[]
+  groupName?: any[]
+  assured_date?: string
+  assured_email?: string
+  application_process?: string
+  taxonomy_terms?: string[]
+  last_modified: string
+  alternative_name?: string
+  minimum_age?: number
+  maximum_age?: number
+  interpretation_services?: string[]
+  fees_description?: string
+  accreditations?: string
+  programs?: string[]
+  schedules?: string[]
+  contacts?: string[]
+  eligibility_description?: string
+  alert?: string
+  license?: string
+  Created: string
+  service_locations?: string[]
+  funding?: string[]
+  cost_options?: string[]
+  required_document?: string[]
+
+} 
+
 export const RESOURCE_SEARCH_FIELDS: (keyof Resource)[] = [
   'title',
   'groupName',
@@ -41,9 +91,9 @@ export const RESOURCE_SEARCH_FIELDS: (keyof Resource)[] = [
 ]
 
 export const RESOURCE_SORT_METHODS = [
-  'title',
-  'Created Time',
-  'Last Modified',
+  'name',
+  'Created',
+  'last_modified',
 ] as const
 
 export type ResourceSortMethod = typeof RESOURCE_SORT_METHODS[number]
