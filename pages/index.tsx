@@ -201,7 +201,9 @@ export const HomePage: NextPage = () => {
                     ?.map((community) => ({
                       value: community['name'],
                       label: community['name'],
-                    }))}
+                    }))
+                    .sort((a, b) => a.label.localeCompare(b.label))
+                  }
                   onChange={(values) =>
                     setSelectedCommunities(values.map((value) => value.value))
                   }
