@@ -28,10 +28,11 @@ As of our most recent design, the major components of the project are as follows
 
 ## Requirements
 
-- [Node.js](https://nodejs.org/en/download/releases) (max version: 16.20.0) - Downloads are under "Releases" for each Node version. The installers for Windows have the `.msi` file extension, `.pkg` for macOS.
-  - This Node.js version cap is because [the project's version of Next.js (11.1.4), doesn't support above the specified version](https://github.com/vercel/next.js/issues/30078).
+- [Node.js](https://nodejs.org/en/download/releases) (max version: 20.17.0) - Downloads are under "Releases" for each Node version. The installers for Windows have the `.msi` file extension, `.pkg` for macOS.
+  - ~~This Node.js version cap is because [the project's version of Next.js (11.1.4), doesn't support above the specified version](https://github.com/vercel/next.js/issues/30078).~~
   - To install and easily switch between versions of Node when running locally, install [nvm](https://github.com/nvm-sh/nvm) (Node Version Manager).
-  - Alternatively, the `NODE_OPTIONS` environment variable can be set before running locally with Node v17+: `NODE_OPTIONS=--openssl-legacy-provider npm run dev`
+  - Run `nvm use` to match your local environment's Node version with the version specified in the `.nvmrc` file.
+  - ~~Alternatively, the `NODE_OPTIONS` environment variable can be set before running locally with Node v17+: `NODE_OPTIONS=--openssl-legacy-provider npm run dev`~~
 - [Yarn 1](https://classic.yarnpkg.com/lang/en/)
 
 ## Running Locally
