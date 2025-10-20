@@ -1,4 +1,5 @@
 import Airtable, { Base, FieldSet } from 'airtable'
+import { QueryParams } from 'airtable/lib/query_params'
 
 interface AirtableCreateObject<T> {
   fields: T
@@ -42,7 +43,7 @@ export class AirtableClient {
         filterByFormula: filterFormula,
       })
       .all()
-
     return records.map((record) => record.fields)
   }
+
 }
