@@ -1,6 +1,8 @@
-# Mutual Aid NYC Services Lists
+# Mutual Aid NYC Community Resources Lists
 
-A [Next.js](https://nextjs.org) website for displaying and creating NYC health, human and social services lists in the [Open Referral](https://openreferral.org) data format. Data is stored in [Airtable](https://airtable.com) and managed by the Mutual Aid NYC research team.
+A [Next.js](https://nextjs.org) website to find, create custom lists of, and share resources from the [Mutual Aid NYC](https://mutualaid.nyc/) Community Resources Library. The Library is a community-sourced, volunteer-curated collection of free and low cost services, support, and mutual aid available to New Yorkers. 
+
+Adapted from the [Open Referral](https://openreferral.org) data format, data is stored in [Airtable](https://airtable.com) and managed by Mutual Aid NYC volunteers.
 
 ## Technical Overview
 
@@ -11,7 +13,7 @@ As of our most recent design, the major components of the project are as follows
 - Backend
   - Uses Next.js's API routes to wrap (to hide API keys from request headers) and cache Airtable API calls.
 - Database
-  - An Airtable that existed before the start of this project and that is mainly updated manually by the the Mutual Aid NYC research team.
+  - An Airtable base that is maintained manually by the the Mutual Aid NYC research team. The public and volunteers submit resources and help keep information up to date.
 
 ## Tech Stack
 
@@ -26,10 +28,11 @@ As of our most recent design, the major components of the project are as follows
 
 ## Requirements
 
-- [Node.js](https://nodejs.org/en/download/releases) (max version: 16.20.0) - Downloads are under "Releases" for each Node version. The installers for Windows have the `.msi` file extension, `.pkg` for macOS.
-  - This Node.js version cap is because [the project's version of Next.js (11.1.4), doesn't support above the specified version](https://github.com/vercel/next.js/issues/30078).
+- [Node.js](https://nodejs.org/en/download/releases) (max version: 20.17.0) - Downloads are under "Releases" for each Node version. The installers for Windows have the `.msi` file extension, `.pkg` for macOS.
+  - ~~This Node.js version cap is because [the project's version of Next.js (11.1.4), doesn't support above the specified version](https://github.com/vercel/next.js/issues/30078).~~
   - To install and easily switch between versions of Node when running locally, install [nvm](https://github.com/nvm-sh/nvm) (Node Version Manager).
-  - Alternatively, the `NODE_OPTIONS` environment variable can be set before running locally with Node v17+: `NODE_OPTIONS=--openssl-legacy-provider npm run dev`
+  - Run `nvm use` to match your local environment's Node version with the version specified in the `.nvmrc` file.
+  - ~~Alternatively, the `NODE_OPTIONS` environment variable can be set before running locally with Node v17+: `NODE_OPTIONS=--openssl-legacy-provider npm run dev`~~
 - [Yarn 1](https://classic.yarnpkg.com/lang/en/)
 
 ## Running Locally
@@ -55,6 +58,7 @@ As of our most recent design, the major components of the project are as follows
 
 - To run unit tests, run `yarn test`.
 - The project's test configuration is specified in the `jest.config.js` file.
+  
 - ### Testing Tech Stack
   - [ts-jest](https://github.com/kulshekhar/ts-jest)
   - [React Hooks Testing Library](https://react-hooks-testing-library.com/)
@@ -80,3 +84,9 @@ As of our most recent design, the major components of the project are as follows
 
 - To run the formatter, run `yarn format` - this will format all the files in the project except those specified in the `.prettierignore` file.
 - The formatter's configuration is specified in the `.prettierrc.json` file.
+
+## Contributing
+
+This is an open-source project and we welcome contributions! If you are an outside contributor and want to report a bug, or have an idea of how to enhance the application, file an issue in this repository. This will provide a location to discuss proposed implementations of fixes or enhancements, and can then be tied to a subsequent pull request.
+
+If you want to join our developer team to contribute ideas and update code, join us as a [volunteer at Mutual Aid NYC](https://mutualaid.nyc/get-involved/).

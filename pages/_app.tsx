@@ -37,9 +37,11 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <>
       <Script
+        id="app-ga"
         src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
       />
       <Script
+        id="app-ga-init"
         dangerouslySetInnerHTML={{
           __html: `
             window.dataLayer = window.dataLayer || [];
