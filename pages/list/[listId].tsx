@@ -10,7 +10,7 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { Map, SearchBar, ServiceItem, ShareLink } from 'components'
-import { AddressWithLabel, Resource } from 'models'
+import { AddressWithLabel, Service } from 'models'
 import { GetServerSideProps, NextPage } from 'next'
 import { NextSeo } from 'next-seo'
 import Head from 'next/head'
@@ -25,18 +25,18 @@ import Select, {
 import { useServiceList } from '../../hooks'
 
 const getAddressWithLabel = (
-  service: Resource
+  service: Service
 ): AddressWithLabel | undefined => {
-  if (service.streetAddress) {
+  if (service['x-streetAddress']) {
     return {
-      streetAddress: service.streetAddress,
-      city: service.city,
-      state: service.state,
-      zip: service.zip,
-      latitude: service.latitude,
-      longitude: service.longitude,
-      label: service.title,
-    } as AddressWithLabel
+      streetAddress: service['x-streetAddress'],
+      city: service['x-city'],
+      state: service['x-state'],
+      zip: service['x-zip'],
+      latitude: service['y-latitude'],
+      longitude: service['y-longitude'],
+      label: service.name,
+    } as unknown as AddressWithLabel
   }
 }
 
@@ -138,7 +138,7 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
   const getAllUniqueTaxonomies = (): string[] => {
     const taxonomies: string[] = []
     for (let i = 0; i < visibleServices.length; i++) {
-      const serviceTaxonomies = visibleServices[i].needs
+      const serviceTaxonomies = visibleServices[i].needFocus
       if (serviceTaxonomies) {
         for (let n = 0; n < serviceTaxonomies.length; n++) {
           if (!taxonomies.includes(serviceTaxonomies[n])) {
@@ -150,11 +150,11 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
     return taxonomies
   }
 
-  const getFilteredList = (list: Resource[]): Resource[] => {
+  const getFilteredList = (list: Service[]): Service[] => {
     if (taxonomyFilters.length > 0) {
-      const filteredList: Resource[] = []
+      const filteredList: Service[] = []
       for (let i = 0; i < list.length; i++) {
-        const taxonomies = list[i].needs
+        const taxonomies = list[i].needFocus
         if (taxonomies) {
           for (let n = 0; n < taxonomyFilters.length; n++) {
             if (taxonomies.includes(taxonomyFilters[n])) {
@@ -170,7 +170,7 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
   }
 
   const getFilteredAddressList = (
-    resources: Resource[]
+    resources: Service[]
   ): AddressWithLabel[] => {
     const addressArr = []
     for (let i = 0; i < resources.length; i++) {
@@ -300,7 +300,7 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
               list={visibleServices}
               useMinimalControls={true}
               itemsPerPage={maxAmountDisplayed}
-              renderList={(list: Resource[]) => {
+              renderList={(list: Service[]) => {
                 return (
                   <VStack
                     px={2}
@@ -323,7 +323,7 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
                   >
                     <>
                       {!isLoading &&
-                        list.map((item: Resource) => {
+                        list.map((item: Service) => {
                           return (
                             <Box w="100%" cursor="pointer" key={item.id}>
                               <ServiceItem

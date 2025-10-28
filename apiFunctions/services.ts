@@ -61,6 +61,7 @@ export const getAllNeeds = async (filter = ''): Promise<Need[]> => {
   const response = await ServicesAxiosClient.get<Need[]>(
     `/needs?filter=${filter}`
   )
+  console.log("NEED: ", response);
   return response.data
 }
 

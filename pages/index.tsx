@@ -38,7 +38,7 @@ export const HomePage: NextPage = () => {
     getAllResources("NOT({status} = 'Do Not Publish')")
   )
 
-  const { data: allNeeds } = useQuery(['getAllNeeds'], () => getAllNeeds())
+  const { data: allNeeds } = useQuery(['getAllNeeds'], () => getAllNeeds("taxonomy = 'MANYC Community Focus'"))
   const [selectedNeeds, setSelectedNeeds] = useState<string[]>([])
 
   const { data: allNeighborhoods } = useQuery(['getAllNeighborhoods'], () =>
@@ -75,8 +75,8 @@ export const HomePage: NextPage = () => {
     if (selectedNeighborhoods.length > 0) {
       filteredResources = filteredResources.filter(
         (resource) =>
-          resource.neighborhoodNames &&
-          resource.neighborhoodNames.filter((neighborhood) =>
+          resource.neighborhood &&
+          resource.neighborhood.filter((neighborhood) =>
             selectedNeighborhoods.includes(neighborhood)
           ).length >= 1
       )

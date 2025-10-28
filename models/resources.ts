@@ -9,12 +9,12 @@ export type ResourceStatus =
 export const NO_ASSOCIATED_GROUP = '-No Associated Group'
 
 export type Address = {
-  streetAddress: string
-  city: string
-  state: string
-  zip: string
-  latitude: number
-  longitude: number
+  'x-streetAddress': string
+  'x-city': string
+  'x-state': string
+  'x-zip': string
+  'y-latitude': number
+  'y-longitude': number
 }
 
 export type Resource = {
@@ -39,50 +39,21 @@ export type Service = {
   name: string
   status: ResourceStatus
   communityFocus?: string[]
-  ResourceType?: string[]
-  service_areas?: string[]
   description?: string
   languages?: string[]
-  attributes?: string[]
-  locations?: string[]
   url?: string
   phoneNumbers?: string
   email?: string
-  Notes?: string
   organizations?: string[]
-  'x-QualityController'?: string[]
-  'x-Researchers'?: string[]
-  'x-Contact'?: string 
-  'x-address'?: any[]
   'x-Resources Lists'?: string[]
-  'Combined Taxonomy Terms'?: any
+  'x-address'?: any[]
   needFocus?: string[]
-  neighborhoodNames?: string[]
   groupName?: any[]
   assured_date?: string
-  assured_email?: string
-  application_process?: string
-  taxonomy_terms?: string[]
+  neighborhoodNames?: string[]
   last_modified: string
-  alternative_name?: string
-  minimum_age?: number
-  maximum_age?: number
-  interpretation_services?: string[]
-  fees_description?: string
-  accreditations?: string
-  programs?: string[]
-  schedules?: string[]
-  contacts?: string[]
-  eligibility_description?: string
-  alert?: string
-  license?: string
   Created: string
-  service_locations?: string[]
-  funding?: string[]
-  cost_options?: string[]
-  required_document?: string[]
-
-} 
+} & Partial<Address>
 
 export const RESOURCE_SEARCH_FIELDS: (keyof Resource)[] = [
   'title',

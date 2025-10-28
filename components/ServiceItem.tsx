@@ -17,13 +17,13 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { AddressWithLabel, Resource } from 'models'
+import { AddressWithLabel, Resource, Service } from 'models'
 import { TaxonomySection } from './TaxonomySection'
 
 interface AddServiceButtonProps {
   onAlertOpen: () => void
-  service: Resource
-  setSelectedService: (service: Resource) => void
+  service: Service
+  setSelectedService: (service: Service) => void
 }
 
 const AddServiceButton = ({
@@ -52,8 +52,8 @@ const AddServiceButton = ({
 interface SearchAddressIconProps {
   selectedAddress: AddressWithLabel | undefined
   setSelectedAddressWithLabel: (address: AddressWithLabel | undefined) => void
-  getAddressWithLabel: (service: Resource) => AddressWithLabel | undefined
-  service: Resource
+  getAddressWithLabel: (service: Service) => AddressWithLabel | undefined
+  service: Service
 }
 
 const SearchAddressIcon = ({
@@ -87,12 +87,12 @@ const SearchAddressIcon = ({
 }
 
 interface ServiceItemProps extends BoxProps {
-  service: Resource
+  service: Service
   onAlertOpen?: () => void
-  setSelectedService?: (service: Resource) => void
+  setSelectedService?: (service: Service) => void
   selectedAddress?: AddressWithLabel | undefined
   setSelectedAddress?: (address: AddressWithLabel | undefined) => void
-  getAddressWithLabel?: (service: Resource) => AddressWithLabel | undefined
+  getAddressWithLabel?: (service: Service) => AddressWithLabel | undefined
 }
 
 export const ServiceItem = ({
@@ -119,8 +119,8 @@ export const ServiceItem = ({
         <LinkBox>
           <HStack spacing="8px">
             <LinkIcon />
-            <LinkOverlay href={service.link}>
-              <Heading fontSize="subheading2">{service.title}</Heading>
+            <LinkOverlay href={service.url}>
+              <Heading fontSize="subheading2">{service.name}</Heading>
             </LinkOverlay>
           </HStack>
         </LinkBox>
@@ -132,10 +132,10 @@ export const ServiceItem = ({
           />
         )}
       </Stack>
-      {service.groupName && service.groupName != '-No Associated Group' && (
+      {service.organizations && !service.organizations.includes('-No Associated Group') && (
         <Text>Group: {service.groupName}</Text>
       )}
-      <Text>{service.details}</Text>
+      <Text>{service.description}</Text>
       {service.email && (
         <LinkBox>
           <HStack spacing="8px">
@@ -146,12 +146,12 @@ export const ServiceItem = ({
           </HStack>
         </LinkBox>
       )}
-      {service.phone && (
+      {service.phoneNumbers && (
         <LinkBox>
           <HStack spacing="8px">
             <PhoneIcon />
-            <LinkOverlay href={`tel:${service.phone}`}>
-              {service.phone}
+            <LinkOverlay href={`tel:${service.phoneNumbers}`}>
+              {service.phoneNumbers}
             </LinkOverlay>
           </HStack>
         </LinkBox>
@@ -163,8 +163,8 @@ export const ServiceItem = ({
         flexDirection="row"
         justifyContent="space-between"
       >
-        {service.needs && <TaxonomySection taxonomies={service.needs} />}
-        {service.streetAddress && setSelectedAddress && getAddressWithLabel && (
+        {service.needFocus && <TaxonomySection taxonomies={service.needFocus} />}
+        {service['x-streetAddress'] && setSelectedAddress && getAddressWithLabel && (
           <SearchAddressIcon
             selectedAddress={selectedAddress}
             setSelectedAddressWithLabel={setSelectedAddress}

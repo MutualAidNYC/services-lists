@@ -25,6 +25,7 @@ export const useFilters = <T>(
       refetchOnWindowFocus: false,
     }
   )
+  console.log("TERMS: ", taxonomyTerms);
   const taxonomyOptions = taxonomyTerms?.map((term) => {
     return { value: term.Need, label: term.Need }
   })
