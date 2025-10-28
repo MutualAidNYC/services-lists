@@ -19,12 +19,13 @@ export const useFilters = <T>(
 ): FiltersHandler<T> => {
   const { isLoading, data: taxonomyTerms } = useQuery<Need[], Error>(
     ['taxonomies'],
-    () => getAllNeeds("AND(Need != '-Not Listed',Resources)"),
+    () => getAllNeeds("AND(Need != '-Not Listed',services)"),
     {
       retry: false,
       refetchOnWindowFocus: false,
     }
   )
+  console.log("TERMS: ", taxonomyTerms);
   const taxonomyOptions = taxonomyTerms?.map((term) => {
     return { value: term.Need, label: term.Need }
   })
