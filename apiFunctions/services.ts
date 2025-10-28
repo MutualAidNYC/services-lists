@@ -3,7 +3,7 @@ import {
   Collection,
   CreateServicesListRequest,
   Need,
-  Neighborhood,
+  Community,
   Resource,
   ServicesList,
   Service
@@ -65,11 +65,11 @@ export const getAllNeeds = async (filter = ''): Promise<Need[]> => {
   return response.data
 }
 
-export const getAllNeighborhoods = async (
+export const getAllCommunities = async (
   filter = ''
-): Promise<Neighborhood[]> => {
-  const response = await ServicesAxiosClient.get<Neighborhood[]>(
-    `/neighborhoods?filter=${filter}`
+): Promise<Community[]> => {
+  const response = await ServicesAxiosClient.get<Community[]>(
+    `/communities?filter=${filter}`
   )
   return response.data
 }

@@ -17,7 +17,7 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
-import { getAllNeeds, getAllNeighborhoods, getAllResources } from 'apiFunctions'
+import { getAllNeeds, getAllCommunities, getAllResources } from 'apiFunctions'
 import { CreateCollectionModal, Pagination, ResourceCard } from 'components'
 import Fuse from 'fuse.js'
 import { useCreateCollection, usePagination } from 'hooks'
@@ -41,10 +41,10 @@ export const HomePage: NextPage = () => {
   const { data: allNeeds } = useQuery(['getAllNeeds'], () => getAllNeeds("taxonomy = 'MANYC Community Focus'"))
   const [selectedNeeds, setSelectedNeeds] = useState<string[]>([])
 
-  const { data: allNeighborhoods } = useQuery(['getAllNeighborhoods'], () =>
-    getAllNeighborhoods()
+  const { data: allCommunities } = useQuery(['getAllCommunities'], () =>
+    getAllCommunities("taxonomy = 'MANYC Community Focus'")
   )
-  const [selectedNeighborhoods, setSelectedNeighborhoods] = useState<string[]>(
+  const [selectedCommunities, setSelectedCommunities] = useState<string[]>(
     []
   )
 
@@ -72,13 +72,13 @@ export const HomePage: NextPage = () => {
       )
     }
 
-    if (selectedNeighborhoods.length > 0) {
+    if (selectedCommunities.length > 0) {
       filteredResources = filteredResources.filter(
-        (resource) =>
-          resource.neighborhood &&
-          resource.neighborhood.filter((neighborhood) =>
-            selectedNeighborhoods.includes(neighborhood)
-          ).length >= 1
+        (service) =>
+          service.communityFocus &&
+          service.communityFocus.some((focus) =>
+            selectedCommunities.includes(focus)
+          )
       )
     }
 
@@ -98,7 +98,7 @@ export const HomePage: NextPage = () => {
     resourceSortAscending,
     resourceSortMethod,
     selectedNeeds,
-    selectedNeighborhoods,
+    selectedCommunities,
   ])
 
   const numPages = useBreakpointValue({ base: 5, md: 10 })
@@ -197,18 +197,17 @@ export const HomePage: NextPage = () => {
                 <Select
                   isMulti
                   isSearchable
-                  options={allNeighborhoods
-                    ?.map((neighborhood) => ({
-                      value: neighborhood['Neighborhood Name'],
-                      label: neighborhood['Neighborhood Name'],
+                  options={allCommunities
+                    ?.map((community) => ({
+                      value: community['name'],
+                      label: community['name'],
                     }))
-                    .sort(function (a, b) {
-                      return a.label.localeCompare(b.label)
-                    })}
-                  onChange={(values) =>
-                    setSelectedNeighborhoods(values.map((value) => value.value))
+                    .sort((a, b) => a.label.localeCompare(b.label))
                   }
-                  placeholder="Filter by neighborhood"
+                  onChange={(values) =>
+                    setSelectedCommunities(values.map((value) => value.value))
+                  }
+                  placeholder="Filter by community"
                 />
               </Box>
             </Stack>
