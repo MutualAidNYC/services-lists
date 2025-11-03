@@ -16,23 +16,23 @@ export type Address = {
   'y-latitude': number
   'y-longitude': number
 }
-
-export type Resource = {
-  id: string
-  title: string
-  status: ResourceStatus
-  groupName?: string
-  details: string
-  link?: string
-  phone?: string
-  email?: string
-  /** Resources should have only one need - array shape comes from Airtable mapping */
-  needs?: string[]
-  neighborhoodNames?: string[]
-  'Created Time': string
-  'Last Modified': string
-  // Not all resources have addresses
-} & Partial<Address>
+// Replaced with Service type in migration to new Airtable in 2025
+// export type Resource = {
+//   id: string
+//   title: string
+//   status: ResourceStatus
+//   groupName?: string
+//   details: string
+//   link?: string
+//   phone?: string
+//   email?: string
+//   /** Resources should have only one need - array shape comes from Airtable mapping */
+//   needs?: string[]
+//   neighborhoodNames?: string[]
+//   'Created Time': string
+//   'Last Modified': string
+//   // Not all resources have addresses
+// } & Partial<Address>
 
 export type Service = {
   id: string
@@ -55,10 +55,10 @@ export type Service = {
   Created: string
 } & Partial<Address>
 
-export const RESOURCE_SEARCH_FIELDS: (keyof Resource)[] = [
-  'title',
+export const RESOURCE_SEARCH_FIELDS: (keyof Service)[] = [
+  'name',
   'groupName',
-  'details',
+  'description',
 ]
 
 export const RESOURCE_SORT_METHODS = [
