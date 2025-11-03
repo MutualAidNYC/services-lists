@@ -87,14 +87,14 @@ export const selectAllServices = (
 }
 
 export const findCollection = (id: string): Promise<Collection> => {
-  return ServicesAirtableClient.find<Collection>('x-Resources to Add', id)
+  return ServicesAirtableClient.find<Collection>('x-Resources Lists', id)
 }
 
 export const selectAllServicesLists = (
   filterFormula?: string
 ): Promise<ServicesList[]> => {
   return ServicesAirtableClient.selectAll<ServicesList>(
-    'x-Resources to Add',
+    'x-Resources Lists',
     filterFormula
   )
 }
@@ -108,7 +108,7 @@ export const createServicesLists = (
     })
   }
   return ServicesAirtableClient.create<CreateServicesListRequest>(
-    'x-Resources to Add',
+    'x-Resources Lists',
     servicesLists.map((list) => {
       if ('userId' in list) {
         delete list.userId
