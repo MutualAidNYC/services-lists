@@ -7,7 +7,7 @@ import {
   Text
 } from '@chakra-ui/react'
 import dayjs from 'dayjs'
-import { NO_ASSOCIATED_GROUP, Resource, Service } from 'models'
+import { NO_ASSOCIATED_GROUP, Service } from 'models'
 import { ExternalLink, PlusCircle } from 'react-feather'
 
 export const ResourceCard = ({

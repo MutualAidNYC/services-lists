@@ -1,6 +1,6 @@
 import { useQueries, useQuery, UseQueryOptions } from '@tanstack/react-query'
 import { getCollection, getService } from 'apiFunctions'
-import { Collection, Resource, Service } from 'models'
+import { Collection, Service } from 'models'
 import { useFilters } from './useFilters'
 
 export interface ServiceListHandler {

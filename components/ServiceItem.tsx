@@ -17,7 +17,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { AddressWithLabel, Resource, Service } from 'models'
+import { AddressWithLabel, Service } from 'models'
 import { TaxonomySection } from './TaxonomySection'
 
 interface AddServiceButtonProps {
