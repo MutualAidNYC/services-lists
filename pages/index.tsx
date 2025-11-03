@@ -38,11 +38,17 @@ export const HomePage: NextPage = () => {
     getAllResources("NOT({status} = 'Do Not Publish')")
   )
 
-  const { data: allNeeds } = useQuery(['getAllNeeds'], () => getAllNeeds("taxonomy = 'MANYC Community Focus'"))
-  const [selectedNeeds, setSelectedNeeds] = useState<string[]>([])
+  const { data: allNeeds } = useQuery(['getAllNeeds'], () => 
+        // include only taxonomy terms that include, but are not limited to, 'MANYC Need' in taxonomy field
+    getAllNeeds("FIND('MANYC Need', ARRAYJOIN({taxonomy}, ',')) > 0")
+  )
+  const [selectedNeeds, setSelectedNeeds] = useState<string[]>(
+    []
+  )
 
   const { data: allCommunities } = useQuery(['getAllCommunities'], () =>
-    getAllCommunities("taxonomy = 'MANYC Community Focus'")
+    // include only taxonomy terms that include, but are not limited to, 'MANYC Community Focus' in taxonomy field
+    getAllCommunities("FIND('MANYC Community Focus', ARRAYJOIN({taxonomy}, ',')) > 0")
   )
   const [selectedCommunities, setSelectedCommunities] = useState<string[]>(
     []
@@ -184,8 +190,8 @@ export const HomePage: NextPage = () => {
                   isMulti
                   isSearchable
                   options={allNeeds?.map((need) => ({
-                    value: need.Need,
-                    label: need.Need,
+                    value: need.name,
+                    label: need.name,
                   }))}
                   onChange={(values) =>
                     setSelectedNeeds(values.map((value) => value.value))
@@ -199,8 +205,8 @@ export const HomePage: NextPage = () => {
                   isSearchable
                   options={allCommunities
                     ?.map((community) => ({
-                      value: community['name'],
-                      label: community['name'],
+                      value: community.name,
+                      label: community.name,
                     }))
                     .sort((a, b) => a.label.localeCompare(b.label))
                   }
