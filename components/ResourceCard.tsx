@@ -27,8 +27,10 @@ export const ResourceCard = ({
       height="100%"
       direction="column"
       justify="space-between"
-    >
+      >
+      
       <Stack spacing="24px">
+        
         {resource.link ? (<Heading fontSize="2xl"><Link href={resource.link}>{resource.title}</Link></Heading>):(<Heading fontSize="2xl">{resource.title}</Heading>)}
       
         {resource.groupName && resource.groupName != NO_ASSOCIATED_GROUP && (
@@ -36,11 +38,20 @@ export const ResourceCard = ({
             {resource.groupName}
           </Text>
         )}
+
+
         {resource.needs && (
           <Text fontSize="xl" fontWeight="semibold" color="Gray.900">
             {`Need: ${resource.needs[0]}`}
           </Text>
         )}
+
+        {resource.neighborhoodNames ? (<Text>{resource.neighborhoodNames}</Text>): null }
+
+        {/* {resource.streetAddress ? (<Link >{resource.streetAddress}</Link>): null } */}
+
+        {resource.streetAddress ? (<Link href={"https://www.google.com/search?q=" + resource.streetAddress} target="_blank" rel="noopener noreferrer" >{resource.streetAddress}</Link>): null }
+
         <Text>
           {`Last Modified: ${dayjs(resource['Last Modified']).format(
             'DD MMM YYYY, h:mm a'
