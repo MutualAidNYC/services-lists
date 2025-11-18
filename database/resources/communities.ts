@@ -1,11 +1,11 @@
-import { Need } from 'models'
+import { Community } from 'models'
 import { ResourcesAirtableClient } from '.'
 
-export const selectAllNeeds = (
+export const selectAllCommunities = (
   filterFormula?: string
-): Promise<Need[]> => {
+): Promise<Community[]> => {
   return ResourcesAirtableClient
-    .selectAll<Need>(
+    .selectAll<Community>(
       'taxonomy_terms', 
       filterFormula
     )

@@ -3,9 +3,10 @@ import {
   Collection,
   CreateServicesListRequest,
   Need,
-  Neighborhood,
+  Community,
   Resource,
   ServicesList,
+  Service
 } from 'models'
 import { AxiosClient } from './axios'
 
@@ -18,13 +19,13 @@ const ServicesAirtableClient = new AirtableClient(
 
 // HTTP client functions
 
-export const getService = async (id: string): Promise<Resource> => {
-  const response = await ServicesAxiosClient.get<Resource>(`/services/${id}`)
+export const getService = async (id: string): Promise<Service> => {
+  const response = await ServicesAxiosClient.get<Service>(`/services/${id}`)
   return response.data
 }
 
-export const getAllResources = async (filter = ''): Promise<Resource[]> => {
-  const response = await ServicesAxiosClient.get<Resource[]>(
+export const getAllResources = async (filter = ''): Promise<Service[]> => {
+  const response = await ServicesAxiosClient.get<Service[]>(
     `/services?filter=${filter}`
   )
   return response.data
@@ -60,14 +61,15 @@ export const getAllNeeds = async (filter = ''): Promise<Need[]> => {
   const response = await ServicesAxiosClient.get<Need[]>(
     `/needs?filter=${filter}`
   )
+  console.log("NEED: ", response);
   return response.data
 }
 
-export const getAllNeighborhoods = async (
+export const getAllCommunities = async (
   filter = ''
-): Promise<Neighborhood[]> => {
-  const response = await ServicesAxiosClient.get<Neighborhood[]>(
-    `/neighborhoods?filter=${filter}`
+): Promise<Community[]> => {
+  const response = await ServicesAxiosClient.get<Community[]>(
+    `/communities?filter=${filter}`
   )
   return response.data
 }
@@ -81,18 +83,18 @@ export const findService = (id: string): Promise<Resource> => {
 export const selectAllServices = (
   filterFormula?: string
 ): Promise<Resource[]> => {
-  return ServicesAirtableClient.selectAll<Resource>('Resources', filterFormula)
+  return ServicesAirtableClient.selectAll<Resource>('services', filterFormula)
 }
 
 export const findCollection = (id: string): Promise<Collection> => {
-  return ServicesAirtableClient.find<Collection>('Resource Lists', id)
+  return ServicesAirtableClient.find<Collection>('x-Resources Lists', id)
 }
 
 export const selectAllServicesLists = (
   filterFormula?: string
 ): Promise<ServicesList[]> => {
   return ServicesAirtableClient.selectAll<ServicesList>(
-    'Resource Lists',
+    'x-Resources Lists',
     filterFormula
   )
 }
@@ -106,7 +108,7 @@ export const createServicesLists = (
     })
   }
   return ServicesAirtableClient.create<CreateServicesListRequest>(
-    'Resource Lists',
+    'x-Resources Lists',
     servicesLists.map((list) => {
       if ('userId' in list) {
         delete list.userId

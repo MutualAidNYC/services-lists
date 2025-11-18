@@ -9,41 +9,62 @@ export type ResourceStatus =
 export const NO_ASSOCIATED_GROUP = '-No Associated Group'
 
 export type Address = {
-  streetAddress: string
-  city: string
-  state: string
-  zip: string
-  latitude: number
-  longitude: number
+  'x-streetAddress': string
+  'x-city': string
+  'x-state': string
+  'x-zip': string
+  'y-latitude': number
+  'y-longitude': number
 }
+// Replaced with Service type in migration to new Airtable in 2025
+// export type Resource = {
+//   id: string
+//   title: string
+//   status: ResourceStatus
+//   groupName?: string
+//   details: string
+//   link?: string
+//   phone?: string
+//   email?: string
+//   /** Resources should have only one need - array shape comes from Airtable mapping */
+//   needs?: string[]
+//   neighborhoodNames?: string[]
+//   'Created Time': string
+//   'Last Modified': string
+//   // Not all resources have addresses
+// } & Partial<Address>
 
-export type Resource = {
+export type Service = {
   id: string
-  title: string
+  name: string
   status: ResourceStatus
-  groupName?: string
-  details: string
-  link?: string
-  phone?: string
+  communityFocus?: string[]
+  description?: string
+  languages?: string[]
+  url?: string
+  phoneNumbers?: string
   email?: string
-  /** Resources should have only one need - array shape comes from Airtable mapping */
-  needs?: string[]
+  organizations?: string[]
+  'x-Resources Lists'?: string[]
+  'x-address'?: any[]
+  needFocus?: string[]
+  groupName?: any[]
+  assured_date?: string
   neighborhoodNames?: string[]
-  'Created Time': string
-  'Last Modified': string
-  // Not all resources have addresses
+  last_modified: string
+  Created: string
 } & Partial<Address>
 
-export const RESOURCE_SEARCH_FIELDS: (keyof Resource)[] = [
-  'title',
+export const RESOURCE_SEARCH_FIELDS: (keyof Service)[] = [
+  'name',
   'groupName',
-  'details',
+  'description',
 ]
 
 export const RESOURCE_SORT_METHODS = [
-  'title',
-  'Created Time',
-  'Last Modified',
+  'name',
+  'Created',
+  'last_modified',
 ] as const
 
 export type ResourceSortMethod = typeof RESOURCE_SORT_METHODS[number]
