@@ -37,7 +37,6 @@ export const HomePage: NextPage = () => {
   const { data: allResources } = useQuery(['getAllResources'], () =>
     getAllResources("NOT({status} = 'Do Not Publish')")
   )
-
   const { data: allNeeds } = useQuery(['getAllNeeds'], () => 
         // include only taxonomy terms that include, but are not limited to, 'MANYC Need' in taxonomy field
     getAllNeeds("FIND('MANYC Need', ARRAYJOIN({taxonomy}, ',')) > 0")

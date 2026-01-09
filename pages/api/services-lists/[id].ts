@@ -3,5 +3,6 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const serviceList = await findCollection(req.query.id as string)
+  console.log(serviceList)
   res.status(200).json(serviceList)
 }

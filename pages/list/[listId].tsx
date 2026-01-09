@@ -27,7 +27,7 @@ import { useServiceList } from '../../hooks'
 const getAddressWithLabel = (
   service: Service
 ): AddressWithLabel | undefined => {
-  if (service['x-streetAddress']) {
+  if (service && service['x-streetAddress']) {
     return {
       streetAddress: service['x-streetAddress'],
       city: service['x-city'],
@@ -65,7 +65,7 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
     setSearchQuery,
     defaultMapCenter,
   } = serviceListHandler
-
+  console.log("service list: ", visibleServices)
   const mapElement = useRef<HTMLDivElement>(null)
 
   const scrollToMap = () => {
@@ -138,7 +138,7 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
   const getAllUniqueTaxonomies = (): string[] => {
     const taxonomies: string[] = []
     for (let i = 0; i < visibleServices.length; i++) {
-      const serviceTaxonomies = visibleServices[i].needFocus
+      const serviceTaxonomies = visibleServices[i]?.needFocus
       if (serviceTaxonomies) {
         for (let n = 0; n < serviceTaxonomies.length; n++) {
           if (!taxonomies.includes(serviceTaxonomies[n])) {
@@ -323,9 +323,9 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
                   >
                     <>
                       {!isLoading &&
-                        list.map((item: Service) => {
+                        list.filter(item => item).map((item: Service) => {
                           return (
-                            <Box w="100%" cursor="pointer" key={item.id}>
+                            <Box w="100%" cursor="pointer" key={item?.id}>
                               <ServiceItem
                                 service={item}
                                 selectedAddress={selectedAddress}

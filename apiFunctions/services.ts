@@ -32,10 +32,12 @@ export const getAllResources = async (filter = ''): Promise<Service[]> => {
 }
 
 export const getCollection = async (id: string): Promise<Collection> => {
+  console.log("getting collection:" , id);
   const response = await ServicesAxiosClient.get<Collection>(
     `/services-lists/${id}`
   )
-  return response.data
+  console.log(response.data)
+  return {...response.data, id}
 }
 
 export const getAllServicesLists = async (
@@ -61,7 +63,6 @@ export const getAllNeeds = async (filter = ''): Promise<Need[]> => {
   const response = await ServicesAxiosClient.get<Need[]>(
     `/needs?filter=${filter}`
   )
-  console.log("NEED: ", response);
   return response.data
 }
 
