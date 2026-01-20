@@ -65,7 +65,6 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
     setSearchQuery,
     defaultMapCenter,
   } = serviceListHandler
-  console.log("service list: ", visibleServices)
   const mapElement = useRef<HTMLDivElement>(null)
 
   const scrollToMap = () => {

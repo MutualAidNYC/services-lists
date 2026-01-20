@@ -22,8 +22,7 @@ export const useServiceList = (collectionId: string): ServiceListHandler => {
       refetchOnWindowFocus: false,
     }
   )
-  console.log("collection: ", collection)
-
+  
   const servicesQueryOptions =
     collection?.resources?.map((serviceId) => {
       return {

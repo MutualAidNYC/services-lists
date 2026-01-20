@@ -32,11 +32,9 @@ export const getAllResources = async (filter = ''): Promise<Service[]> => {
 }
 
 export const getCollection = async (id: string): Promise<Collection> => {
-  console.log("getting collection:" , id);
   const response = await ServicesAxiosClient.get<Collection>(
     `/services-lists/${id}`
   )
-  console.log(response.data)
   return {...response.data, id}
 }
 
