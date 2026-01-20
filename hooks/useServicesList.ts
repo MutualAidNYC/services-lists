@@ -10,6 +10,8 @@ export interface ServiceListHandler {
   numServices: number
   setSearchQuery: (query: string) => void
   defaultMapCenter: google.maps.LatLngLiteral
+  setTaxonomyFilters: (filters: string[]) => void
+  taxonomyFilters: string[]
 }
 
 export const useServiceList = (collectionId: string): ServiceListHandler => {
@@ -42,7 +44,7 @@ export const useServiceList = (collectionId: string): ServiceListHandler => {
     (result) => result.isLoading
   )
   const baseServices = serviceQueryResults.map((result) => result.data)
-  const { filteredData: filteredServices, setSearchQuery } = useFilters(
+  const { filteredData: filteredServices, setSearchQuery, setTaxonomyFilters, taxonomyFilters } = useFilters(
     isLoadingServices ? [] : (baseServices as Service[]),
     ['name', 'description'],
     'needFocus'
@@ -55,5 +57,7 @@ export const useServiceList = (collectionId: string): ServiceListHandler => {
     numServices: baseServices.length,
     setSearchQuery,
     defaultMapCenter: { lat: 40.73061, lng: -73.935242 }, // NYC lat, lng
+    setTaxonomyFilters,
+    taxonomyFilters
   }
 }

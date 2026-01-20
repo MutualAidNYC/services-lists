@@ -132,7 +132,7 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
   }
 
   const [selectedAddress, setSelectedAddress] = useState<AddressWithLabel>()
-  const [taxonomyFilters, setTaxonomyFilters] = useState<string[]>([])
+  const {taxonomyFilters, setTaxonomyFilters} = serviceListHandler
 
   const getAllUniqueTaxonomies = (): string[] => {
     const taxonomies: string[] = []
@@ -367,7 +367,7 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
                     value: option,
                   }))}
                   onChange={(e) => {
-                    setTaxonomyFilters(e.map((e) => e.value))
+                    setTaxonomyFilters(e ? e.map((o) => o.value) : [])
                   }}
                   styles={filterStyles}
                 />

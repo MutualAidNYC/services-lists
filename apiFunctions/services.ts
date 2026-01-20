@@ -76,7 +76,7 @@ export const getAllCommunities = async (
 // Airtable functions
 
 export const findService = (id: string): Promise<Resource> => {
-  return ServicesAirtableClient.find<Resource>('Resources', id)
+  return ServicesAirtableClient.find<Resource>('services', id)
 }
 
 export const selectAllServices = (

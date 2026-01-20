@@ -73,7 +73,7 @@ export type CreateServicesListRequest = {
   name: string
   description: string
   status: ResourceListStatus
-  /** `Resources` table IDs */
+  /** `Services` table IDs */
   resources: string[]
   creator: string
   userId?: string
