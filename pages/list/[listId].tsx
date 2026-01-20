@@ -22,7 +22,6 @@ import Select, {
   StylesConfig,
 } from 'react-select'
 import { useServiceList, usePagination } from 'hooks'
-import { number } from 'yup';
 
 const getAddressWithLabel = (
   service: Service
@@ -65,7 +64,6 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
     setSearchQuery,
     defaultMapCenter,
   } = serviceListHandler
-//   console.log("service list: ", visibleServices)
   const mapElement = useRef<HTMLDivElement>(null)
 
   const scrollToMap = () => {
