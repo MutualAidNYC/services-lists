@@ -71,3 +71,19 @@ export const Pagination = ({
     </HStack>
   )
 }
+
+export const PaginationText = ({
+	page,
+	perpage,
+	total
+}:{ 
+	page: number, 
+	perpage: number, 
+	total: number
+}) => {
+	const pageStart = ((page - 1) * perpage ) + 1;
+	const pageEnd = Math.min( page * perpage, total );
+	return (
+		<>{`Showing ${pageStart} - ${pageEnd} out of ${total} results.`}</>
+	);
+}

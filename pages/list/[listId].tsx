@@ -9,7 +9,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react'
-import { Map, Pagination, SearchBar, ServiceItem, ShareLink } from 'components'
+import { Map, Pagination, PaginationText, SearchBar, ServiceItem, ShareLink } from 'components'
 import { AddressWithLabel, Service } from 'models'
 import { GetServerSideProps, NextPage } from 'next'
 import { NextSeo } from 'next-seo'
@@ -188,24 +188,6 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
 	  initialPageSize: maxAmountDisplayed,
 	  pagesDisplayed: 10,
 	});
-
-	const PaginationText = function (
-		{
-			page,
-			perpage,
-			total
-		}:
-		{ 
-			page: number, 
-			perpage: number, 
-			total: number
-		} ) {
-		const pageStart = ((page - 1) * perpage ) + 1;
-		const pageEnd = Math.min( page * perpage, total );
-		return (
-			<>{`Showing ${pageStart} - ${pageEnd} out of ${total} results.`}</>
-		);
-	}
 
 	useEffect(() => {
 		setPageSize(maxAmountDisplayed);
