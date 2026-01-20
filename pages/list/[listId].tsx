@@ -169,8 +169,15 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
 
   const getFilteredAddressList = (
     resources: Service[]
-  ): (AddressWithLabel)[] => {
-	return resources.map(getAddressWithLabel).filter( r => r !== undefined );
+  ): AddressWithLabel[] => {
+    const addressArr = []
+    for (let i = 0; i < resources.length; i++) {
+      const address = getAddressWithLabel(resources[i])
+      if (address) {
+        addressArr.push(address)
+      }
+    }
+    return addressArr
   }
 
   const {
