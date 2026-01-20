@@ -35,7 +35,7 @@ export const getCollection = async (id: string): Promise<Collection> => {
   const response = await ServicesAxiosClient.get<Collection>(
     `/services-lists/${id}`
   )
-  return response.data
+  return {...response.data, id}
 }
 
 export const getAllServicesLists = async (
@@ -61,7 +61,6 @@ export const getAllNeeds = async (filter = ''): Promise<Need[]> => {
   const response = await ServicesAxiosClient.get<Need[]>(
     `/needs?filter=${filter}`
   )
-  console.log("NEED: ", response);
   return response.data
 }
 
@@ -77,7 +76,7 @@ export const getAllCommunities = async (
 // Airtable functions
 
 export const findService = (id: string): Promise<Resource> => {
-  return ServicesAirtableClient.find<Resource>('Resources', id)
+  return ServicesAirtableClient.find<Resource>('services', id)
 }
 
 export const selectAllServices = (

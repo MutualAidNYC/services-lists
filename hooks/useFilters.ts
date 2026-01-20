@@ -10,6 +10,7 @@ export interface FiltersHandler<T> {
   setSearchQuery: (query: string) => void
   taxonomyOptions: { value: string; label: string }[]
   setTaxonomyFilters: (filters: string[]) => void
+  taxonomyFilters: string[]
 }
 
 export const useFilters = <T>(
@@ -19,13 +20,12 @@ export const useFilters = <T>(
 ): FiltersHandler<T> => {
   const { isLoading, data: taxonomyTerms } = useQuery<Need[], Error>(
     ['taxonomies'],
-    () => getAllNeeds("AND(Need != '-Not Listed',services)"),
+    () => getAllNeeds("AND('needFocus' != '-Not Listed', services != '')"),
     {
       retry: false,
       refetchOnWindowFocus: false,
     }
   )
-  console.log("TERMS: ", taxonomyTerms);
   const taxonomyOptions = taxonomyTerms?.map((term) => {
     return { value: term.Need, label: term.Need }
   })
@@ -65,5 +65,6 @@ export const useFilters = <T>(
     setSearchQuery,
     taxonomyOptions: taxonomyOptions ?? [],
     setTaxonomyFilters,
+    taxonomyFilters
   }
 }
