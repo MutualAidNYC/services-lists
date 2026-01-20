@@ -148,24 +148,24 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
     return taxonomies
   }
 
-  const filteredList = useMemo( (): Service[] => {
-	if ( taxonomyFilters.length === 0 ) {
-		return visibleServices;
-	}
-	const filteredList: Service[] = []
-	for (let i = 0; i < visibleServices.length; i++) {
-		const taxonomies = visibleServices[i].needFocus
-		if (taxonomies) {
-			for (let n = 0; n < taxonomyFilters.length; n++) {
-				if (taxonomies.includes(taxonomyFilters[n])) {
-					filteredList.push(visibleServices[i])
-					break
-				}
-			}
-		}
-	}
-	return filteredList
-  }, [visibleServices, taxonomyFilters] );
+    const filteredList = useMemo( (): Service[] => {
+        if ( taxonomyFilters.length === 0 ) {
+            return visibleServices;
+        }
+        const filteredList: Service[] = []
+        for (let i = 0; i < visibleServices.length; i++) {
+            const taxonomies = visibleServices[i].needFocus
+            if (taxonomies) {
+                for (let n = 0; n < taxonomyFilters.length; n++) {
+                    if (taxonomies.includes(taxonomyFilters[n])) {
+                        filteredList.push(visibleServices[i])
+                        break
+                    }
+                }
+            }
+        }
+        return filteredList
+    }, [visibleServices, taxonomyFilters] );
 
   const getFilteredAddressList = (
     resources: Service[]
