@@ -181,24 +181,24 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
   }
 
   const {
-	  page,
-	  setPage,
-	  pageSize,
-	  range,
-	  hasPrevious,
-	  hasNext,
-	  previous,
-	  next,
-	  setPageSize,
-	} = usePagination({
-	  totalItems: filteredList.length,
-	  initialPageSize: maxAmountDisplayed,
-	  pagesDisplayed: 10,
-	});
+    page,
+    setPage,
+    pageSize,
+    range,
+    hasPrevious,
+    hasNext,
+    previous,
+    next,
+    setPageSize,
+  } = usePagination({
+    totalItems: filteredList.length,
+    initialPageSize: maxAmountDisplayed,
+    pagesDisplayed: 10,
+  });
 
-	useEffect(() => {
-		setPageSize(maxAmountDisplayed);
-	}, [maxAmountDisplayed])
+  useEffect(() => {
+    setPageSize(maxAmountDisplayed);
+  }, [maxAmountDisplayed])
 
   return (
     <VStack
@@ -312,37 +312,37 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
               display={{ base: 'none', md: 'inherit' }}
               px={'2'}
             />
-			<Stack spacing="1lh" alignItems="center">
-				{ isLoading && <Spinner variant={'primary'} /> }
-				{ !isLoading && (
-					<>
-						{ filteredList
-							.slice((page - 1) * pageSize, page * pageSize)
-							.map((item: Service) => (
-								<Box w="100%" key={item?.id}>
-									<ServiceItem
-										service={item}
-										selectedAddress={selectedAddress}
-										setSelectedAddress={setSelectedAddress}
-										getAddressWithLabel={getAddressWithLabel}
-									/>
-								</Box>
-						)) }
-						<Pagination
-							page={page}
-							setPage={setPage}
-							range={range}
-							hasPrevious={hasPrevious}
-							hasNext={hasNext}
-							previous={previous}
-							next={next}
-						/>
-						<Text textAlign="center" fontWeight="light">
-							<PaginationText page={page} perpage={pageSize} total={numServices} />
-						</Text>
-					</>
-				)}
-			</Stack>
+      <Stack spacing="1lh" alignItems="center">
+        { isLoading && <Spinner variant={'primary'} /> }
+        { !isLoading && (
+          <>
+            { filteredList
+              .slice((page - 1) * pageSize, page * pageSize)
+              .map((item: Service) => (
+                <Box w="100%" key={item?.id}>
+                  <ServiceItem
+                    service={item}
+                    selectedAddress={selectedAddress}
+                    setSelectedAddress={setSelectedAddress}
+                    getAddressWithLabel={getAddressWithLabel}
+                  />
+                </Box>
+            )) }
+            <Pagination
+              page={page}
+              setPage={setPage}
+              range={range}
+              hasPrevious={hasPrevious}
+              hasNext={hasNext}
+              previous={previous}
+              next={next}
+            />
+            <Text textAlign="center" fontWeight="light">
+              <PaginationText page={page} perpage={pageSize} total={numServices} />
+            </Text>
+          </>
+        )}
+      </Stack>
           </Box>
           <VStack w={{ base: '100%', md: '44%' }} height="100%">
             <HStack
