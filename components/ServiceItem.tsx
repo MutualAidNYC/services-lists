@@ -95,6 +95,21 @@ interface ServiceItemProps extends BoxProps {
   getMapMarkerAddress?: (service: Service) => MapMarkerAddress | undefined
 }
 
+function validateUrl( url: string | undefined ): boolean {
+
+	if ( ! url ) {
+		return false;
+	}
+
+	try {
+		new URL( url ?? '' );
+	} catch ( err ) {
+		return false;
+	}
+
+	return true;
+}
+
 export const ServiceItem = ({
   service,
   onAlertOpen,
@@ -103,6 +118,10 @@ export const ServiceItem = ({
   setSelectedAddress,
   getMapMarkerAddress,
 }: ServiceItemProps): JSX.Element => {
+
+
+	const urlIsValid = validateUrl( service.url );
+
   return (
     <Stack
       spacing="8px"
@@ -116,14 +135,12 @@ export const ServiceItem = ({
         align="center"
         justifyContent="space-between"
       >
-        <LinkBox>
-          <HStack spacing="8px">
-            <LinkIcon />
-            <LinkOverlay href={service.url}>
-              <Heading fontSize="subheading2">{service.name}</Heading>
-            </LinkOverlay>
-          </HStack>
-        </LinkBox>
+		<HStack spacing="8px">
+			{ urlIsValid ? <LinkIcon /> : null }
+			<Heading fontSize="subheading2">
+				{ urlIsValid ? (<a href={service.url}>{service.name}</a>) : service.name }
+			</Heading>
+		</HStack>
         {onAlertOpen && setSelectedService && (
           <AddServiceButton
             onAlertOpen={onAlertOpen}
@@ -137,24 +154,20 @@ export const ServiceItem = ({
       )}
       <Text>{service.description}</Text>
       {service.email && (
-        <LinkBox>
-          <HStack spacing="8px">
-            <EmailIcon />
-            <LinkOverlay href={`mailto:${service.email}`}>
-              {service.email}
-            </LinkOverlay>
-          </HStack>
-        </LinkBox>
+		<HStack spacing="8px">
+			<EmailIcon />
+			<a href={`mailto:${service.email}`}>
+				{service.email}
+			</a>
+		</HStack>
       )}
       {service.phoneNumbers && (
-        <LinkBox>
-          <HStack spacing="8px">
-            <PhoneIcon />
-            <LinkOverlay href={`tel:${service.phoneNumbers}`}>
-              {service.phoneNumbers}
-            </LinkOverlay>
-          </HStack>
-        </LinkBox>
+		<HStack spacing="8px">
+			<PhoneIcon />
+			<a href={`tel:${service.phoneNumbers}`}>
+				{service.phoneNumbers}
+			</a>
+		</HStack>
       )}
       <Box
         maxW="100%"
