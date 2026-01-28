@@ -18,7 +18,7 @@ import {
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { getAllNeeds, getAllCommunities, getAllResources } from 'apiFunctions'
-import { CreateCollectionModal, Pagination, ResourceCard } from 'components'
+import { CreateCollectionModal, Pagination, PaginationText, ResourceCard } from 'components'
 import Fuse from 'fuse.js'
 import { useCreateCollection, usePagination } from 'hooks'
 import {
@@ -275,7 +275,6 @@ export const HomePage: NextPage = () => {
             ))}
         </Grid>
         <CreateCollectionModal {...createCollectionModalProps} />
-      </Stack>
       <Pagination
         page={page}
         setPage={setPage}
@@ -285,6 +284,10 @@ export const HomePage: NextPage = () => {
         previous={previous}
         next={next}
       />
+      <Text textAlign="center" fontWeight="light">
+        <PaginationText page={page} perpage={pageSize} total={filteredResources.length} />
+      </Text>
+    </Stack>
       <Center bgColor="Gray.50" flexDirection="column" py="96px">
         <Heading pb="20px" textAlign="center">
           Contribute to the Resource Hub
