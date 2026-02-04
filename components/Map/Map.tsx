@@ -31,10 +31,10 @@ export const Map = ({
 
   const coords: GeolibInputCoordinates[] = []
   addresses.forEach((address) => {
-    if (address.latitude && address.longitude) {
+    if (address['y-latitude'] && address['y-longitude']) {
       coords.push({
-        lat: address.latitude,
-        lng: address.longitude,
+        lat: address['y-latitude'],
+        lng: address['y-longitude'],
       })
     }
   })
