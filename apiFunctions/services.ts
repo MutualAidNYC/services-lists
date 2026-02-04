@@ -4,7 +4,6 @@ import {
   CreateServicesListRequest,
   Need,
   Community,
-  Resource,
   ServicesList,
   Service
 } from 'models'
@@ -75,14 +74,14 @@ export const getAllCommunities = async (
 
 // Airtable functions
 
-export const findService = (id: string): Promise<Resource> => {
-  return ServicesAirtableClient.find<Resource>('services', id)
+export const findService = (id: string): Promise<Service> => {
+  return ServicesAirtableClient.find<Service>('services', id)
 }
 
 export const selectAllServices = (
   filterFormula?: string
-): Promise<Resource[]> => {
-  return ServicesAirtableClient.selectAll<Resource>('services', filterFormula)
+): Promise<Service[]> => {
+  return ServicesAirtableClient.selectAll<Service>('services', filterFormula)
 }
 
 export const findCollection = (id: string): Promise<Collection> => {
