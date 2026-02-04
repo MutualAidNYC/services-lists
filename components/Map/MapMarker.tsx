@@ -15,8 +15,8 @@ export const MapMarker = ({
   opacity,
 }: MapMarkerProps): JSX.Element => {
   const position = {
-    lat: Number(address['y-latitude']),
-    lng: Number(address['y-longitude']),
+    lat: Number(address.latitude),
+    lng: Number(address.longitude),
   }
 
   const marker = new google.maps.Marker()
@@ -43,8 +43,8 @@ export const MapMarker = ({
             <Heading fontSize="16px" mb="8px">
               {label}
             </Heading>
-            <Text>{address['x-streetAddress']}</Text>
-            <Text>{`${address['x-city']}, ${address['x-state']} ${address['x-zip']}`}</Text>
+            <Text>{address.streetAddress}</Text>
+            <Text>{`${address.city}, ${address.state} ${address.zip}`}</Text>
           </Box>
         </InfoWindow>
       )}
