@@ -6,13 +6,13 @@ import {
 } from '@react-google-maps/api'
 import { getCenter } from 'geolib'
 import { GeolibInputCoordinates } from 'geolib/es/types'
-import { AddressWithLabel } from 'models'
+import { MapMarkerAddress } from 'models'
 import { MapMarker } from './MapMarker'
 
 interface MapProps extends GoogleMapProps {
   defaultCenter: google.maps.LatLngLiteral
-  addresses: AddressWithLabel[]
-  selectedAddress?: AddressWithLabel
+  addresses: MapMarkerAddress[]
+  selectedAddress?: MapMarkerAddress
   width: string
   height: string
 }

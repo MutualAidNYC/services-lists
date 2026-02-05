@@ -1,11 +1,11 @@
 import { Box, Heading, Text } from '@chakra-ui/react'
 import { InfoWindow, Marker } from '@react-google-maps/api'
-import { Address } from 'models'
+import { MapMarkerAddress } from 'models'
 import { useState } from 'react'
 
 interface MapMarkerProps {
   label: string
-  address: Address
+  address: MapMarkerAddress
   opacity?: number | undefined
 }
 
