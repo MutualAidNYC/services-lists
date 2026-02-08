@@ -1,3 +1,9 @@
-import { Address } from 'models'
-
-export type AddressWithLabel = Address & { label: string }
+export type MapMarkerAddress = {
+	streetAddress: string,
+    city: string,
+    state: string,
+    zip: string,
+    latitude: number,
+    longitude: number,
+    label: string,
+}

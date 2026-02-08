@@ -10,7 +10,7 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { Map, Pagination, PaginationText, SearchBar, ServiceItem, ShareLink } from 'components'
-import { AddressWithLabel, Service } from 'models'
+import { MapMarkerAddress, Service } from 'models'
 import { GetServerSideProps, NextPage } from 'next'
 import { NextSeo } from 'next-seo'
 import Head from 'next/head'
@@ -23,9 +23,9 @@ import Select, {
 } from 'react-select'
 import { useServiceList, usePagination } from 'hooks'
 
-const getAddressWithLabel = (
+const getMapMarkerAddress = (
   service: Service
-): AddressWithLabel | undefined => {
+): MapMarkerAddress | undefined => {
   if (service && service['x-streetAddress']) {
     return {
       streetAddress: service['x-streetAddress'],
@@ -35,7 +35,7 @@ const getAddressWithLabel = (
       latitude: service['y-latitude'],
       longitude: service['y-longitude'],
       label: service.name,
-    } as unknown as AddressWithLabel
+    } as MapMarkerAddress
   }
 }
 
@@ -130,7 +130,7 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
     },
   }
 
-  const [selectedAddress, setSelectedAddress] = useState<AddressWithLabel>()
+  const [selectedAddress, setSelectedAddress] = useState<MapMarkerAddress>()
   const {taxonomyFilters, setTaxonomyFilters} = serviceListHandler
 
   const getAllUniqueTaxonomies = (): string[] => {
@@ -169,10 +169,10 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
 
   const getFilteredAddressList = (
     resources: Service[]
-  ): AddressWithLabel[] => {
+  ): MapMarkerAddress[] => {
     const addressArr = []
     for (let i = 0; i < resources.length; i++) {
-      const address = getAddressWithLabel(resources[i])
+      const address = getMapMarkerAddress(resources[i])
       if (address) {
         addressArr.push(address)
       }
@@ -324,7 +324,7 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
                     service={item}
                     selectedAddress={selectedAddress}
                     setSelectedAddress={setSelectedAddress}
-                    getAddressWithLabel={getAddressWithLabel}
+                    getMapMarkerAddress={getMapMarkerAddress}
                   />
                 </Box>
             )) }

@@ -17,7 +17,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { AddressWithLabel, Service } from 'models'
+import { MapMarkerAddress, Service } from 'models'
 import { TaxonomySection } from './TaxonomySection'
 
 interface AddServiceButtonProps {
@@ -50,25 +50,25 @@ const AddServiceButton = ({
 }
 
 interface SearchAddressIconProps {
-  selectedAddress: AddressWithLabel | undefined
-  setSelectedAddressWithLabel: (address: AddressWithLabel | undefined) => void
-  getAddressWithLabel: (service: Service) => AddressWithLabel | undefined
+  selectedAddress: MapMarkerAddress | undefined
+  setSelectedMapMarkerAddress: (address: MapMarkerAddress | undefined) => void
+  getMapMarkerAddress: (service: Service) => MapMarkerAddress | undefined
   service: Service
 }
 
 const SearchAddressIcon = ({
   selectedAddress,
-  setSelectedAddressWithLabel,
-  getAddressWithLabel,
+  setSelectedMapMarkerAddress,
+  getMapMarkerAddress,
   service,
 }: SearchAddressIconProps): JSX.Element => {
   const handleClick = () => {
-    const address = getAddressWithLabel(service)
+    const address = getMapMarkerAddress(service)
     if (address) {
       if (selectedAddress === address) {
-        setSelectedAddressWithLabel(undefined)
+        setSelectedMapMarkerAddress(undefined)
       } else {
-        setSelectedAddressWithLabel(address)
+        setSelectedMapMarkerAddress(address)
       }
     }
   }
@@ -76,8 +76,8 @@ const SearchAddressIcon = ({
   return (
     <Box>
       {selectedAddress &&
-      getAddressWithLabel(service) &&
-      selectedAddress === getAddressWithLabel(service) ? (
+      getMapMarkerAddress(service) &&
+      selectedAddress === getMapMarkerAddress(service) ? (
         <ViewOffIcon onClick={() => handleClick()} />
       ) : (
         <ViewIcon onClick={() => handleClick()} />
@@ -90,9 +90,9 @@ interface ServiceItemProps extends BoxProps {
   service: Service
   onAlertOpen?: () => void
   setSelectedService?: (service: Service) => void
-  selectedAddress?: AddressWithLabel | undefined
-  setSelectedAddress?: (address: AddressWithLabel | undefined) => void
-  getAddressWithLabel?: (service: Service) => AddressWithLabel | undefined
+  selectedAddress?: MapMarkerAddress | undefined
+  setSelectedAddress?: (address: MapMarkerAddress | undefined) => void
+  getMapMarkerAddress?: (service: Service) => MapMarkerAddress | undefined
 }
 
 export const ServiceItem = ({
@@ -101,7 +101,7 @@ export const ServiceItem = ({
   setSelectedService,
   selectedAddress,
   setSelectedAddress,
-  getAddressWithLabel,
+  getMapMarkerAddress,
 }: ServiceItemProps): JSX.Element => {
   return (
     <Stack
@@ -164,11 +164,11 @@ export const ServiceItem = ({
         justifyContent="space-between"
       >
         {service.needFocus && <TaxonomySection taxonomies={service.needFocus} />}
-        {service['x-streetAddress'] && setSelectedAddress && getAddressWithLabel && (
+        {service['x-streetAddress'] && setSelectedAddress && getMapMarkerAddress && (
           <SearchAddressIcon
             selectedAddress={selectedAddress}
-            setSelectedAddressWithLabel={setSelectedAddress}
-            getAddressWithLabel={getAddressWithLabel}
+            setSelectedMapMarkerAddress={setSelectedAddress}
+            getMapMarkerAddress={getMapMarkerAddress}
             service={service}
           />
         )}
