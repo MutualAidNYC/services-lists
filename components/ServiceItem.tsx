@@ -17,13 +17,13 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { AddressWithLabel, Resource } from 'models'
+import { MapMarkerAddress, Service } from 'models'
 import { TaxonomySection } from './TaxonomySection'
 
 interface AddServiceButtonProps {
   onAlertOpen: () => void
-  service: Resource
-  setSelectedService: (service: Resource) => void
+  service: Service
+  setSelectedService: (service: Service) => void
 }
 
 const AddServiceButton = ({
@@ -50,25 +50,25 @@ const AddServiceButton = ({
 }
 
 interface SearchAddressIconProps {
-  selectedAddress: AddressWithLabel | undefined
-  setSelectedAddressWithLabel: (address: AddressWithLabel | undefined) => void
-  getAddressWithLabel: (service: Resource) => AddressWithLabel | undefined
-  service: Resource
+  selectedAddress: MapMarkerAddress | undefined
+  setSelectedMapMarkerAddress: (address: MapMarkerAddress | undefined) => void
+  getMapMarkerAddress: (service: Service) => MapMarkerAddress | undefined
+  service: Service
 }
 
 const SearchAddressIcon = ({
   selectedAddress,
-  setSelectedAddressWithLabel,
-  getAddressWithLabel,
+  setSelectedMapMarkerAddress,
+  getMapMarkerAddress,
   service,
 }: SearchAddressIconProps): JSX.Element => {
   const handleClick = () => {
-    const address = getAddressWithLabel(service)
+    const address = getMapMarkerAddress(service)
     if (address) {
       if (selectedAddress === address) {
-        setSelectedAddressWithLabel(undefined)
+        setSelectedMapMarkerAddress(undefined)
       } else {
-        setSelectedAddressWithLabel(address)
+        setSelectedMapMarkerAddress(address)
       }
     }
   }
@@ -76,8 +76,8 @@ const SearchAddressIcon = ({
   return (
     <Box>
       {selectedAddress &&
-      getAddressWithLabel(service) &&
-      selectedAddress === getAddressWithLabel(service) ? (
+      getMapMarkerAddress(service) &&
+      selectedAddress === getMapMarkerAddress(service) ? (
         <ViewOffIcon onClick={() => handleClick()} />
       ) : (
         <ViewIcon onClick={() => handleClick()} />
@@ -87,12 +87,12 @@ const SearchAddressIcon = ({
 }
 
 interface ServiceItemProps extends BoxProps {
-  service: Resource
+  service: Service
   onAlertOpen?: () => void
-  setSelectedService?: (service: Resource) => void
-  selectedAddress?: AddressWithLabel | undefined
-  setSelectedAddress?: (address: AddressWithLabel | undefined) => void
-  getAddressWithLabel?: (service: Resource) => AddressWithLabel | undefined
+  setSelectedService?: (service: Service) => void
+  selectedAddress?: MapMarkerAddress | undefined
+  setSelectedAddress?: (address: MapMarkerAddress | undefined) => void
+  getMapMarkerAddress?: (service: Service) => MapMarkerAddress | undefined
 }
 
 export const ServiceItem = ({
@@ -101,7 +101,7 @@ export const ServiceItem = ({
   setSelectedService,
   selectedAddress,
   setSelectedAddress,
-  getAddressWithLabel,
+  getMapMarkerAddress,
 }: ServiceItemProps): JSX.Element => {
   return (
     <Stack
@@ -119,8 +119,8 @@ export const ServiceItem = ({
         <LinkBox>
           <HStack spacing="8px">
             <LinkIcon />
-            <LinkOverlay href={service.link}>
-              <Heading fontSize="subheading2">{service.title}</Heading>
+            <LinkOverlay href={service.url}>
+              <Heading fontSize="subheading2">{service.name}</Heading>
             </LinkOverlay>
           </HStack>
         </LinkBox>
@@ -132,10 +132,10 @@ export const ServiceItem = ({
           />
         )}
       </Stack>
-      {service.groupName && service.groupName != '-No Associated Group' && (
+      {service.organizations && !service.organizations.includes('-No Associated Group') && (
         <Text>Group: {service.groupName}</Text>
       )}
-      <Text>{service.details}</Text>
+      <Text>{service.description}</Text>
       {service.email && (
         <LinkBox>
           <HStack spacing="8px">
@@ -146,12 +146,12 @@ export const ServiceItem = ({
           </HStack>
         </LinkBox>
       )}
-      {service.phone && (
+      {service.phoneNumbers && (
         <LinkBox>
           <HStack spacing="8px">
             <PhoneIcon />
-            <LinkOverlay href={`tel:${service.phone}`}>
-              {service.phone}
+            <LinkOverlay href={`tel:${service.phoneNumbers}`}>
+              {service.phoneNumbers}
             </LinkOverlay>
           </HStack>
         </LinkBox>
@@ -163,12 +163,12 @@ export const ServiceItem = ({
         flexDirection="row"
         justifyContent="space-between"
       >
-        {service.needs && <TaxonomySection taxonomies={service.needs} />}
-        {service.streetAddress && setSelectedAddress && getAddressWithLabel && (
+        {service.needFocus && <TaxonomySection taxonomies={service.needFocus} />}
+        {service['x-streetAddress'] && setSelectedAddress && getMapMarkerAddress && (
           <SearchAddressIcon
             selectedAddress={selectedAddress}
-            setSelectedAddressWithLabel={setSelectedAddress}
-            getAddressWithLabel={getAddressWithLabel}
+            setSelectedMapMarkerAddress={setSelectedAddress}
+            getMapMarkerAddress={getMapMarkerAddress}
             service={service}
           />
         )}

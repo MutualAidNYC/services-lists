@@ -1,4 +1,5 @@
 export type Need = {
+  name: string
   Need: string
   /** List of resource IDs */
   Resources?: string[]

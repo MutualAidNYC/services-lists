@@ -17,8 +17,8 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
-import { getAllNeeds, getAllNeighborhoods, getAllResources } from 'apiFunctions'
-import { CreateCollectionModal, Pagination, ResourceCard } from 'components'
+import { getAllNeeds, getAllCommunities, getAllResources } from 'apiFunctions'
+import { CreateCollectionModal, Pagination, PaginationText, ResourceCard } from 'components'
 import Fuse from 'fuse.js'
 import { useCreateCollection, usePagination } from 'hooks'
 import {
@@ -37,14 +37,19 @@ export const HomePage: NextPage = () => {
   const { data: allResources } = useQuery(['getAllResources'], () =>
     getAllResources("NOT({status} = 'Do Not Publish')")
   )
-
-  const { data: allNeeds } = useQuery(['getAllNeeds'], () => getAllNeeds())
-  const [selectedNeeds, setSelectedNeeds] = useState<string[]>([])
-
-  const { data: allNeighborhoods } = useQuery(['getAllNeighborhoods'], () =>
-    getAllNeighborhoods()
+  const { data: allNeeds } = useQuery(['getAllNeeds'], () => 
+        // include only taxonomy terms that include, but are not limited to, 'MANYC Need' in taxonomy field
+    getAllNeeds("FIND('MANYC Need', ARRAYJOIN({taxonomy}, ',')) > 0")
   )
-  const [selectedNeighborhoods, setSelectedNeighborhoods] = useState<string[]>(
+  const [selectedNeeds, setSelectedNeeds] = useState<string[]>(
+    []
+  )
+
+  const { data: allCommunities } = useQuery(['getAllCommunities'], () =>
+    // include only taxonomy terms that include, but are not limited to, 'MANYC Community Focus' in taxonomy field
+    getAllCommunities("FIND('MANYC Community Focus', ARRAYJOIN({taxonomy}, ',')) > 0")
+  )
+  const [selectedCommunities, setSelectedCommunities] = useState<string[]>(
     []
   )
 
@@ -67,18 +72,18 @@ export const HomePage: NextPage = () => {
 
     if (selectedNeeds.length > 0) {
       filteredResources = filteredResources.filter(
-        (resource) =>
-          resource.needs && selectedNeeds?.includes(resource.needs[0])
+        (service) =>
+          service.needFocus && selectedNeeds?.includes(service.needFocus[0])
       )
     }
 
-    if (selectedNeighborhoods.length > 0) {
+    if (selectedCommunities.length > 0) {
       filteredResources = filteredResources.filter(
-        (resource) =>
-          resource.neighborhoodNames &&
-          resource.neighborhoodNames.filter((neighborhood) =>
-            selectedNeighborhoods.includes(neighborhood)
-          ).length >= 1
+        (service) =>
+          service.communityFocus &&
+          service.communityFocus.some((focus) =>
+            selectedCommunities.includes(focus)
+          )
       )
     }
 
@@ -98,7 +103,7 @@ export const HomePage: NextPage = () => {
     resourceSortAscending,
     resourceSortMethod,
     selectedNeeds,
-    selectedNeighborhoods,
+    selectedCommunities,
   ])
 
   const numPages = useBreakpointValue({ base: 5, md: 10 })
@@ -184,8 +189,8 @@ export const HomePage: NextPage = () => {
                   isMulti
                   isSearchable
                   options={allNeeds?.map((need) => ({
-                    value: need.Need,
-                    label: need.Need,
+                    value: need.name,
+                    label: need.name,
                   }))}
                   onChange={(values) =>
                     setSelectedNeeds(values.map((value) => value.value))
@@ -197,18 +202,17 @@ export const HomePage: NextPage = () => {
                 <Select
                   isMulti
                   isSearchable
-                  options={allNeighborhoods
-                    ?.map((neighborhood) => ({
-                      value: neighborhood['Neighborhood Name'],
-                      label: neighborhood['Neighborhood Name'],
+                  options={allCommunities
+                    ?.map((community) => ({
+                      value: community.name,
+                      label: community.name,
                     }))
-                    .sort(function (a, b) {
-                      return a.label.localeCompare(b.label)
-                    })}
-                  onChange={(values) =>
-                    setSelectedNeighborhoods(values.map((value) => value.value))
+                    .sort((a, b) => a.label.localeCompare(b.label))
                   }
-                  placeholder="Filter by neighborhood"
+                  onChange={(values) =>
+                    setSelectedCommunities(values.map((value) => value.value))
+                  }
+                  placeholder="Filter by community"
                 />
               </Box>
             </Stack>
@@ -265,13 +269,12 @@ export const HomePage: NextPage = () => {
             .map((resource) => (
               <ResourceCard
                 key={resource.id}
-                resource={resource}
+                service={resource}
                 saveResource={() => saveResource(resource)}
               />
             ))}
         </Grid>
         <CreateCollectionModal {...createCollectionModalProps} />
-      </Stack>
       <Pagination
         page={page}
         setPage={setPage}
@@ -281,6 +284,10 @@ export const HomePage: NextPage = () => {
         previous={previous}
         next={next}
       />
+      <Text textAlign="center" fontWeight="light">
+        <PaginationText page={page} perpage={pageSize} total={filteredResources.length} />
+      </Text>
+    </Stack>
       <Center bgColor="Gray.50" flexDirection="column" py="96px">
         <Heading pb="20px" textAlign="center">
           Contribute to the Resource Hub

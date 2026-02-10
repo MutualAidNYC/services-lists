@@ -5,7 +5,7 @@ export const selectAllNeighborhoods = (
   filterFormula?: string
 ): Promise<Neighborhood[]> => {
   return ResourcesAirtableClient.selectAll<Neighborhood>(
-    'Ref - Neighborhoods',
+    'X-Neighborhoods',
     filterFormula
   )
 }

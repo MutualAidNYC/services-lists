@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { range } from 'utils'
+import { useEffect } from 'react'
 
 export const ELLIPSIS = '...'
 
@@ -46,6 +47,11 @@ export const usePagination = ({
       setPage(page + 1)
     }
   }
+
+  // start from the initial page whenever the number of items changes.
+  useEffect( () => {
+    setPage(initialPage);
+  }, [totalItems] )
 
   return {
     page,

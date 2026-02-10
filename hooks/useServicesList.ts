@@ -1,15 +1,17 @@
 import { useQueries, useQuery, UseQueryOptions } from '@tanstack/react-query'
 import { getCollection, getService } from 'apiFunctions'
-import { Collection, Resource } from 'models'
+import { Collection, Service } from 'models'
 import { useFilters } from './useFilters'
 
 export interface ServiceListHandler {
   isLoading: boolean
   collection?: Collection
-  visibleServices: Resource[]
+  visibleServices: Service[]
   numServices: number
   setSearchQuery: (query: string) => void
   defaultMapCenter: google.maps.LatLngLiteral
+  setTaxonomyFilters: (filters: string[]) => void
+  taxonomyFilters: string[]
 }
 
 export const useServiceList = (collectionId: string): ServiceListHandler => {
@@ -22,7 +24,7 @@ export const useServiceList = (collectionId: string): ServiceListHandler => {
       refetchOnWindowFocus: false,
     }
   )
-
+  
   const servicesQueryOptions =
     collection?.resources?.map((serviceId) => {
       return {
@@ -35,17 +37,17 @@ export const useServiceList = (collectionId: string): ServiceListHandler => {
         },
       }
     }) ?? [] // cannot be undefined or useQueries throws an error
-  const serviceQueryResults = useQueries<UseQueryOptions<Resource, Error>[]>({
+  const serviceQueryResults = useQueries<UseQueryOptions<Service, Error>[]>({
     queries: servicesQueryOptions,
   })
   const isLoadingServices = serviceQueryResults.some(
     (result) => result.isLoading
   )
   const baseServices = serviceQueryResults.map((result) => result.data)
-  const { filteredData: filteredServices, setSearchQuery } = useFilters(
-    isLoadingServices ? [] : (baseServices as Resource[]),
-    ['title', 'details'],
-    'needs'
+  const { filteredData: filteredServices, setSearchQuery, setTaxonomyFilters, taxonomyFilters } = useFilters(
+    isLoadingServices ? [] : (baseServices as Service[]),
+    ['name', 'description'],
+    'needFocus'
   )
 
   return {
@@ -55,5 +57,7 @@ export const useServiceList = (collectionId: string): ServiceListHandler => {
     numServices: baseServices.length,
     setSearchQuery,
     defaultMapCenter: { lat: 40.73061, lng: -73.935242 }, // NYC lat, lng
+    setTaxonomyFilters,
+    taxonomyFilters
   }
 }

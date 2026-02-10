@@ -9,34 +9,33 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react'
-import { Map, SearchBar, ServiceItem, ShareLink } from 'components'
-import { AddressWithLabel, Resource } from 'models'
+import { Map, Pagination, PaginationText, SearchBar, ServiceItem, ShareLink } from 'components'
+import { MapMarkerAddress, Service } from 'models'
 import { GetServerSideProps, NextPage } from 'next'
 import { NextSeo } from 'next-seo'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useRef, useState } from 'react'
-import { PaginatedList } from 'react-paginated-list'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Select, {
   CSSObjectWithLabel,
   GroupBase,
   StylesConfig,
 } from 'react-select'
-import { useServiceList } from '../../hooks'
+import { useServiceList, usePagination } from 'hooks'
 
-const getAddressWithLabel = (
-  service: Resource
-): AddressWithLabel | undefined => {
-  if (service.streetAddress) {
+const getMapMarkerAddress = (
+  service: Service
+): MapMarkerAddress | undefined => {
+  if (service && service['x-streetAddress']) {
     return {
-      streetAddress: service.streetAddress,
-      city: service.city,
-      state: service.state,
-      zip: service.zip,
-      latitude: service.latitude,
-      longitude: service.longitude,
-      label: service.title,
-    } as AddressWithLabel
+      streetAddress: service['x-streetAddress'],
+      city: service['x-city'],
+      state: service['x-state'],
+      zip: service['x-zip'],
+      latitude: service['y-latitude'],
+      longitude: service['y-longitude'],
+      label: service.name,
+    } as MapMarkerAddress
   }
 }
 
@@ -65,7 +64,6 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
     setSearchQuery,
     defaultMapCenter,
   } = serviceListHandler
-
   const mapElement = useRef<HTMLDivElement>(null)
 
   const scrollToMap = () => {
@@ -132,13 +130,13 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
     },
   }
 
-  const [selectedAddress, setSelectedAddress] = useState<AddressWithLabel>()
-  const [taxonomyFilters, setTaxonomyFilters] = useState<string[]>([])
+  const [selectedAddress, setSelectedAddress] = useState<MapMarkerAddress>()
+  const {taxonomyFilters, setTaxonomyFilters} = serviceListHandler
 
   const getAllUniqueTaxonomies = (): string[] => {
     const taxonomies: string[] = []
     for (let i = 0; i < visibleServices.length; i++) {
-      const serviceTaxonomies = visibleServices[i].needs
+      const serviceTaxonomies = visibleServices[i]?.needFocus
       if (serviceTaxonomies) {
         for (let n = 0; n < serviceTaxonomies.length; n++) {
           if (!taxonomies.includes(serviceTaxonomies[n])) {
@@ -150,37 +148,57 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
     return taxonomies
   }
 
-  const getFilteredList = (list: Resource[]): Resource[] => {
-    if (taxonomyFilters.length > 0) {
-      const filteredList: Resource[] = []
-      for (let i = 0; i < list.length; i++) {
-        const taxonomies = list[i].needs
-        if (taxonomies) {
-          for (let n = 0; n < taxonomyFilters.length; n++) {
-            if (taxonomies.includes(taxonomyFilters[n])) {
-              filteredList.push(list[i])
-              break
-            }
-          }
+    const filteredList = useMemo( (): Service[] => {
+        if ( taxonomyFilters.length === 0 ) {
+            return visibleServices;
         }
-      }
-      return filteredList
-    }
-    return list
-  }
+        const filteredList: Service[] = []
+        for (let i = 0; i < visibleServices.length; i++) {
+            const taxonomies = visibleServices[i].needFocus
+            if (taxonomies) {
+                for (let n = 0; n < taxonomyFilters.length; n++) {
+                    if (taxonomies.includes(taxonomyFilters[n])) {
+                        filteredList.push(visibleServices[i])
+                        break
+                    }
+                }
+            }
+        }
+        return filteredList
+    }, [visibleServices, taxonomyFilters] );
 
   const getFilteredAddressList = (
-    resources: Resource[]
-  ): AddressWithLabel[] => {
+    resources: Service[]
+  ): MapMarkerAddress[] => {
     const addressArr = []
     for (let i = 0; i < resources.length; i++) {
-      const address = getAddressWithLabel(resources[i])
+      const address = getMapMarkerAddress(resources[i])
       if (address) {
         addressArr.push(address)
       }
     }
     return addressArr
   }
+
+  const {
+    page,
+    setPage,
+    pageSize,
+    range,
+    hasPrevious,
+    hasNext,
+    previous,
+    next,
+    setPageSize,
+  } = usePagination({
+    totalItems: filteredList.length,
+    initialPageSize: maxAmountDisplayed,
+    pagesDisplayed: 10,
+  });
+
+  useEffect(() => {
+    setPageSize(maxAmountDisplayed);
+  }, [maxAmountDisplayed])
 
   return (
     <VStack
@@ -262,7 +280,6 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
                 styles={filterStyles}
               />
             )}
-
             <Select
               isSearchable
               closeMenuOnSelect={true}
@@ -273,7 +290,6 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
               }}
               styles={pageViewStyles}
             />
-
             <ArrowDownIcon
               alignItems={'left'}
               ml={'16px'}
@@ -296,60 +312,37 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
               display={{ base: 'none', md: 'inherit' }}
               px={'2'}
             />
-            <PaginatedList
-              list={visibleServices}
-              useMinimalControls={true}
-              itemsPerPage={maxAmountDisplayed}
-              renderList={(list: Resource[]) => {
-                return (
-                  <VStack
-                    px={2}
-                    pt={4}
-                    maxHeight="calc(100vh - 200px)"
-                    overflowY="scroll"
-                    overflowX="hidden"
-                    css={{
-                      '&::-webkit-scrollbar': {
-                        width: '4px',
-                      },
-                      '&::-webkit-scrollbar-track': {
-                        width: '6px',
-                      },
-                      '&::-webkit-scrollbar-thumb': {
-                        background: 'grey',
-                        borderRadius: '24px',
-                      },
-                    }}
-                  >
-                    <>
-                      {!isLoading &&
-                        list.map((item: Resource) => {
-                          return (
-                            <Box w="100%" cursor="pointer" key={item.id}>
-                              <ServiceItem
-                                service={item}
-                                selectedAddress={selectedAddress}
-                                setSelectedAddress={setSelectedAddress}
-                                getAddressWithLabel={getAddressWithLabel}
-                              />
-                            </Box>
-                          )
-                        })}
-                      {isLoading && <Spinner variant={'primary'} />}
-                      <Box pb={8}> {/* Just for styling purposes */} </Box>
-                    </>
-                  </VStack>
-                )
-              }}
+      <Stack spacing="1lh" alignItems="center">
+        { isLoading && <Spinner variant={'primary'} /> }
+        { !isLoading && (
+          <>
+            { filteredList
+              .slice((page - 1) * pageSize, page * pageSize)
+              .map((item: Service) => (
+                <Box w="100%" key={item?.id}>
+                  <ServiceItem
+                    service={item}
+                    selectedAddress={selectedAddress}
+                    setSelectedAddress={setSelectedAddress}
+                    getMapMarkerAddress={getMapMarkerAddress}
+                  />
+                </Box>
+            )) }
+            <Pagination
+              page={page}
+              setPage={setPage}
+              range={range}
+              hasPrevious={hasPrevious}
+              hasNext={hasNext}
+              previous={previous}
+              next={next}
             />
             <Text textAlign="center" fontWeight="light">
-              {' '}
-              {` Showing ${
-                maxAmountDisplayed > visibleServices.length
-                  ? visibleServices.length
-                  : maxAmountDisplayed
-              } out of ${visibleServices.length} results.`}{' '}
+              <PaginationText page={page} perpage={pageSize} total={numServices} />
             </Text>
+          </>
+        )}
+      </Stack>
           </Box>
           <VStack w={{ base: '100%', md: '44%' }} height="100%">
             <HStack
@@ -368,7 +361,7 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
                     value: option,
                   }))}
                   onChange={(e) => {
-                    setTaxonomyFilters(e.map((e) => e.value))
+                    setTaxonomyFilters(e ? e.map((o) => o.value) : [])
                   }}
                   styles={filterStyles}
                 />
@@ -394,7 +387,7 @@ export const CollectionPage: NextPage<CollectionPageProps> = (
               <Map
                 defaultCenter={defaultMapCenter}
                 addresses={getFilteredAddressList(
-                  getFilteredList(visibleServices)
+                  filteredList
                 )}
                 selectedAddress={selectedAddress}
                 width={`${
