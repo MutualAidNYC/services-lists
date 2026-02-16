@@ -12,13 +12,12 @@ import {
   Button,
   Heading,
   HStack,
-  LinkBox,
-  LinkOverlay,
   Stack,
   Text,
 } from '@chakra-ui/react'
 import { MapMarkerAddress, Service } from 'models'
 import { TaxonomySection } from './TaxonomySection'
+import { isValidUrl } from 'utils'
 
 interface AddServiceButtonProps {
   onAlertOpen: () => void
@@ -95,21 +94,6 @@ interface ServiceItemProps extends BoxProps {
   getMapMarkerAddress?: (service: Service) => MapMarkerAddress | undefined
 }
 
-function validateUrl( url: string | undefined ): boolean {
-
-	if ( ! url ) {
-		return false;
-	}
-
-	try {
-		new URL( url ?? '' );
-	} catch ( err ) {
-		return false;
-	}
-
-	return true;
-}
-
 export const ServiceItem = ({
   service,
   onAlertOpen,
@@ -120,7 +104,7 @@ export const ServiceItem = ({
 }: ServiceItemProps): JSX.Element => {
 
 
-	const urlIsValid = validateUrl( service.url );
+  const urlIsValid = isValidUrl( service.url );
 
   return (
     <Stack
