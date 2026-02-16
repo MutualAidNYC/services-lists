@@ -18,6 +18,7 @@ import {
 import { MapMarkerAddress, Service } from 'models'
 import { TaxonomySection } from './TaxonomySection'
 import { isValidUrl } from 'utils'
+import { useMemo } from 'react'
 
 interface AddServiceButtonProps {
   onAlertOpen: () => void
@@ -103,8 +104,7 @@ export const ServiceItem = ({
   getMapMarkerAddress,
 }: ServiceItemProps): JSX.Element => {
 
-
-  const urlIsValid = isValidUrl( service.url );
+  const urlIsValid = useMemo( () => isValidUrl( service.url ), [service.url] );
 
   return (
     <Stack
